@@ -58,18 +58,27 @@ class hashValidator
 
     private function _validate($arg, $def)
     {
-        if(!isset($def['type'])){
-            throw new hashValidatorException('invalid define',self::ERR_INVALID_DEFINE);
+        if (!isset($def['type'])) {
+            throw new hashValidatorException('invalid define', self::ERR_INVALID_DEFINE);
         }
-        switch($def['type']){
+        switch ($def['type']) {
             case 'int':
-                return $this->_validateInt($arg,$def);
+                return $this->_validateInt($arg, $def);
+            case 'float':
+                return $this->_validateFloat($arg, $def);
+            case 'string':
+                return $this->_validateString($arg, $def);
+            case 'enum':
+                return $this->_validateEnum($arg, $def);
+            default:
+                throw new hashValidatorException('invalid type', self::ERR_INVALID_DEFINE);
         }
     }
 
-    private function _validateInt($arg,$def){
-        if(!is_numeric($arg)){
-            throw new hashValidatorException('invalid int value:'. var_export($arg),self::ERR_INVALID_VALUE);
+    private function _validateInt($arg, $def)
+    {
+        if (!is_numeric($arg)) {
+            throw new hashValidatorException('invalid int value:' . var_export($arg, true), self::ERR_INVALID_VALUE);
         }
         $val = (int)$arg;
         if (isset($def['min']) && $val < $def['min']) {
@@ -78,7 +87,49 @@ class hashValidator
         if (isset($def['max']) && $val > $def['max']) {
             throw new hashValidatorException('input:' . $val . ' grater than ' . $def['min'], self::ERR_INVALID_VALUE);
         }
-        return (int)$val;
+        return $val;
+    }
+
+    private function _validateFloat($arg, $def)
+    {
+        if (!is_numeric($arg)) {
+            throw new hashValidatorException('invalid int value:' . var_export($arg, true), self::ERR_INVALID_VALUE);
+        }
+        $val = (float)$arg;
+        if (isset($def['min']) && $val < $def['min']) {
+            throw new hashValidatorException('input:' . $val . ' less than ' . $def['min'], self::ERR_INVALID_VALUE);
+        }
+        if (isset($def['max']) && $val > $def['max']) {
+            throw new hashValidatorException('input:' . $val . ' grater than ' . $def['min'], self::ERR_INVALID_VALUE);
+        }
+        return $val;
+    }
+
+    private function _validateString($arg, $def)
+    {
+        if (!is_scalar($arg)) {
+            throw new hashValidatorException('invalid int value:' . var_export($arg, true), self::ERR_INVALID_VALUE);
+        }
+        $val = (string)$arg;
+        $len = strlen($val);
+        if (isset($def['min']) && $len < $def['min']) {
+            throw new hashValidatorException('input length:' . $len . ' less than ' . $def['min'], self::ERR_INVALID_VALUE);
+        }
+        if (isset($def['max']) && $len > $def['max']) {
+            throw new hashValidatorException('input length:' . $len . ' grater than ' . $def['min'], self::ERR_INVALID_VALUE);
+        }
+        if (isset($def['preg']) && !preg_match($def['preg'], $arg)) {
+            throw new hashValidatorException('input:' . $arg . ' not match ' . $def['preg'], self::ERR_INVALID_VALUE);
+        }
+        return $val;
+    }
+
+    private function _validateEnum($arg, $def)
+    {
+        if (!in_array($arg, $def['value'])) {
+            throw new hashValidatorException('input:' . $arg . ' not found in [' . implode(',', $def['value']) . ']', self::ERR_INVALID_VALUE);
+        }
+        return $arg;
     }
 }
 
