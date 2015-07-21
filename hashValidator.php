@@ -18,6 +18,8 @@ class hashValidator
     /** @var  array validation rule */
     private $define;
 
+    private $path = ['$arg'];
+
     public function __construct($arg, $type = self::DEFINE_ARRAY)
     {
         switch ($type) {
@@ -70,6 +72,10 @@ class hashValidator
                 return $this->_validateString($arg, $def);
             case 'enum':
                 return $this->_validateEnum($arg, $def);
+            case 'hash':
+                return $this->_validateHash($arg, $def);
+            case 'callback':
+                return $this->_validateCallBack($arg, $def);
             default:
                 throw new hashValidatorException('invalid type', self::ERR_INVALID_DEFINE);
         }
@@ -78,14 +84,14 @@ class hashValidator
     private function _validateInt($arg, $def)
     {
         if (!is_numeric($arg)) {
-            throw new hashValidatorException('invalid int value:' . var_export($arg, true), self::ERR_INVALID_VALUE);
+            throw new hashValidatorException('invalid int value:' . var_export($arg, true) . ' at ' . implode('', $this->path), self::ERR_INVALID_VALUE);
         }
         $val = (int)$arg;
         if (isset($def['min']) && $val < $def['min']) {
-            throw new hashValidatorException('input:' . $val . ' less than ' . $def['min'], self::ERR_INVALID_VALUE);
+            throw new hashValidatorException('input:' . $val . ' less than ' . $def['min'] . ' at ' . implode('', $this->path), self::ERR_INVALID_VALUE);
         }
         if (isset($def['max']) && $val > $def['max']) {
-            throw new hashValidatorException('input:' . $val . ' grater than ' . $def['min'], self::ERR_INVALID_VALUE);
+            throw new hashValidatorException('input:' . $val . ' grater than ' . $def['min'] . ' at ' . implode('', $this->path), self::ERR_INVALID_VALUE);
         }
         return $val;
     }
@@ -93,14 +99,14 @@ class hashValidator
     private function _validateFloat($arg, $def)
     {
         if (!is_numeric($arg)) {
-            throw new hashValidatorException('invalid int value:' . var_export($arg, true), self::ERR_INVALID_VALUE);
+            throw new hashValidatorException('invalid int value:' . var_export($arg, true) . ' at ' . implode('', $this->path), self::ERR_INVALID_VALUE);
         }
         $val = (float)$arg;
         if (isset($def['min']) && $val < $def['min']) {
-            throw new hashValidatorException('input:' . $val . ' less than ' . $def['min'], self::ERR_INVALID_VALUE);
+            throw new hashValidatorException('input:' . $val . ' less than ' . $def['min'] . ' at ' . implode('', $this->path), self::ERR_INVALID_VALUE);
         }
         if (isset($def['max']) && $val > $def['max']) {
-            throw new hashValidatorException('input:' . $val . ' grater than ' . $def['min'], self::ERR_INVALID_VALUE);
+            throw new hashValidatorException('input:' . $val . ' grater than ' . $def['min'] . ' at ' . implode('', $this->path), self::ERR_INVALID_VALUE);
         }
         return $val;
     }
@@ -113,13 +119,13 @@ class hashValidator
         $val = (string)$arg;
         $len = strlen($val);
         if (isset($def['min']) && $len < $def['min']) {
-            throw new hashValidatorException('input length:' . $len . ' less than ' . $def['min'], self::ERR_INVALID_VALUE);
+            throw new hashValidatorException('input length:' . $len . ' less than ' . $def['min'] . ' at ' . implode('', $this->path), self::ERR_INVALID_VALUE);
         }
         if (isset($def['max']) && $len > $def['max']) {
-            throw new hashValidatorException('input length:' . $len . ' grater than ' . $def['min'], self::ERR_INVALID_VALUE);
+            throw new hashValidatorException('input length:' . $len . ' grater than ' . $def['min'] . ' at ' . implode('', $this->path), self::ERR_INVALID_VALUE);
         }
         if (isset($def['preg']) && !preg_match($def['preg'], $arg)) {
-            throw new hashValidatorException('input:' . $arg . ' not match ' . $def['preg'], self::ERR_INVALID_VALUE);
+            throw new hashValidatorException('input:' . $arg . ' not match ' . $def['preg'] . ' at ' . implode('', $this->path), self::ERR_INVALID_VALUE);
         }
         return $val;
     }
@@ -127,10 +133,44 @@ class hashValidator
     private function _validateEnum($arg, $def)
     {
         if (!in_array($arg, $def['value'])) {
-            throw new hashValidatorException('input:' . $arg . ' not found in [' . implode(',', $def['value']) . ']', self::ERR_INVALID_VALUE);
+            throw new hashValidatorException('input:' . $arg . ' not found in [' . implode(',', $def['value']) . ']' . ' at ' . implode('', $this->path), self::ERR_INVALID_VALUE);
         }
         return $arg;
     }
+
+    private function _validateCallBack($arg, $def)
+    {
+        try {
+            if (call_user_func($def['value'], $arg)) {
+                return $arg;
+            }
+
+        } catch (\Exception $e) {
+
+        }
+        $func = is_array($arg) ? implode('::', $arg) : $arg;
+        throw new hashValidatorException('input:' . $arg . ' invalid ' . $func . ' at ' . implode('', $this->path), self::ERR_INVALID_VALUE);
+    }
+
+    private function _validateHash($arg, $def)
+    {
+        $return = [];
+        foreach ($def['value'] as $key => $elmDef) {
+            if (false === array_key_exists($key, $arg)) {
+                if (false !== array_key_exists('optional', $elmDef)) {
+                    continue;
+                } else {
+                    throw new hashValidatorException('undefined key:' . $key . ' at ' . implode('', $this->path), self::ERR_INVALID_VALUE);
+                }
+            }
+            array_push($this->path, '[' . $key . ']');
+            $return[$key] = $this->_validate($arg[$key], $def['value'][$key]);
+            array_pop($this->path);
+        }
+        return $return;
+    }
+
+
 }
 
 class hashValidatorException extends \Exception

@@ -22,6 +22,7 @@ class hashValidatorTest extends \PHPUnit_Framework_TestCase
             $this->fail();
         } catch (hashValidatorException $e) {
             $this->assertEquals(hashValidator::ERR_FILE_NOT_READ, $e->getCode());
+            echo $e->getMessage() . PHP_EOL;
         } catch (\exception $e) {
             $this->fail();
         }
@@ -35,6 +36,7 @@ class hashValidatorTest extends \PHPUnit_Framework_TestCase
             $this->fail();
         } catch (hashValidatorException $e) {
             $this->assertEquals(hashValidator::ERR_FILE_NOT_READ, $e->getCode());
+            echo $e->getMessage() . PHP_EOL;
         } catch (\exception $e) {
             $this->fail();
         }
@@ -57,6 +59,7 @@ class hashValidatorTest extends \PHPUnit_Framework_TestCase
                 $validator->validate($data);
                 $this->fail();
             } catch (hashValidatorException $e) {
+                echo $e->getMessage() . PHP_EOL;
                 $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
             }
         }
@@ -71,6 +74,7 @@ class hashValidatorTest extends \PHPUnit_Framework_TestCase
                 $validator->validate($data);
                 $this->fail();
             } catch (hashValidatorException $e) {
+                echo $e->getMessage() . PHP_EOL;
                 $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
             }
         }
@@ -88,6 +92,7 @@ class hashValidatorTest extends \PHPUnit_Framework_TestCase
                 $validator->validate($data);
                 $this->fail();
             } catch (hashValidatorException $e) {
+                echo $e->getMessage() . PHP_EOL;
                 $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
             }
         }
@@ -101,6 +106,7 @@ class hashValidatorTest extends \PHPUnit_Framework_TestCase
                 $validator->validate($data);
                 $this->fail();
             } catch (hashValidatorException $e) {
+                echo $e->getMessage() . PHP_EOL;
                 $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
             }
         }
@@ -117,6 +123,7 @@ class hashValidatorTest extends \PHPUnit_Framework_TestCase
                 $validator->validate($data);
                 $this->fail();
             } catch (hashValidatorException $e) {
+                echo $e->getMessage() . PHP_EOL;
                 $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
             }
         }
@@ -130,6 +137,7 @@ class hashValidatorTest extends \PHPUnit_Framework_TestCase
                 $validator->validate($data);
                 $this->fail();
             } catch (hashValidatorException $e) {
+                echo $e->getMessage() . PHP_EOL;
                 $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
             }
         }
@@ -143,6 +151,7 @@ class hashValidatorTest extends \PHPUnit_Framework_TestCase
                 $validator->validate($data);
                 $this->fail();
             } catch (hashValidatorException $e) {
+                echo $e->getMessage() . PHP_EOL;
                 $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
             }
         }
@@ -159,8 +168,76 @@ class hashValidatorTest extends \PHPUnit_Framework_TestCase
                 $validator->validate($data);
                 $this->fail();
             } catch (hashValidatorException $e) {
+                echo $e->getMessage() . PHP_EOL;
                 $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
             }
+        }
+
+    }
+
+    public function testHash()
+    {
+        $def = ['type' => 'hash', 'value' => ['key' => ['type' => 'int'],]];
+        $validator = new hashValidator($def, hashValidator::DEFINE_ARRAY);
+        foreach ([[], ['key' => 'hoge']] as $data) {
+            try {
+                $validator->validate($data);
+                $this->fail($data);
+            } catch (hashValidatorException $e) {
+                echo $e->getMessage() . PHP_EOL;
+                $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
+            }
+        }
+        $this->assertSame($validator->validate(['key' => 10]), ['key' => 10]);
+        $this->assertSame($validator->validate(['key' => 10, 'hoge' => 'fuga']), ['key' => 10]);
+    }
+
+    public function testHashOptional()
+    {
+        $def = ['type' => 'hash', 'value' => ['key' => ['type' => 'int', 'optional' => true],]];
+        $validator = new hashValidator($def, hashValidator::DEFINE_ARRAY);
+
+        try {
+            $validator->validate(['key' => 'fuga']);
+            $this->fail();
+        } catch (hashValidatorException $e) {
+            echo $e->getMessage() . PHP_EOL;
+            $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
+        }
+
+        $this->assertSame($validator->validate([]), []);
+        $this->assertSame($validator->validate(['key' => 10]), ['key' => 10]);
+        $this->assertSame($validator->validate(['key' => 10, 'hoge' => 'fuga']), ['key' => 10]);
+
+    }
+
+    public static function callbackEcho($arg){
+        return $arg;
+    }
+    public static function callbackThrow($arg){
+        throw new \Exception($arg);
+    }
+    public function testCallBack(){
+        $def = ['type' => 'callback', 'value' =>[__CLASS__,'callbackEcho'] ];
+        $validator = new hashValidator($def, hashValidator::DEFINE_ARRAY);
+
+        $this->assertTrue($validator->validate(true));
+        try {
+            $validator->validate(false);
+            $this->fail();
+        } catch (hashValidatorException $e) {
+            echo $e->getMessage() . PHP_EOL;
+            $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
+        }
+
+        $def = ['type' => 'callback', 'value' =>[__CLASS__,'callbackThrow'] ];
+        $validator = new hashValidator($def, hashValidator::DEFINE_ARRAY);
+        try {
+            $validator->validate(false);
+            $this->fail();
+        } catch (hashValidatorException $e) {
+            echo $e->getMessage() . PHP_EOL;
+            $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
         }
 
     }
