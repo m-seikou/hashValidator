@@ -97,7 +97,8 @@ class hashValidatorTest extends \PHPUnit_Framework_TestCase
             }
         }
         // ãŒÀ‰ºŒÀ
-        $validator = new hashValidator(['type' => 'float', 'max' => 3.141, 'min' => 2.828], hashValidator::DEFINE_ARRAY);
+        $validator =
+            new hashValidator(['type' => 'float', 'max' => 3.141, 'min' => 2.828], hashValidator::DEFINE_ARRAY);
         foreach ([2.828, 3, 3.141,] as $data) {
             $this->assertEquals($data, $validator->validate($data), $data);
         }
@@ -211,14 +212,19 @@ class hashValidatorTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public static function callbackEcho($arg){
+    public static function callbackEcho($arg)
+    {
         return $arg;
     }
-    public static function callbackThrow($arg){
+
+    public static function callbackThrow($arg)
+    {
         throw new \Exception($arg);
     }
-    public function testCallBack(){
-        $def = ['type' => 'callback', 'value' =>[__CLASS__,'callbackEcho'] ];
+
+    public function testCallBack()
+    {
+        $def = ['type' => 'callback', 'value' => [__CLASS__, 'callbackEcho']];
         $validator = new hashValidator($def, hashValidator::DEFINE_ARRAY);
 
         $this->assertTrue($validator->validate(true));
@@ -230,7 +236,7 @@ class hashValidatorTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
         }
 
-        $def = ['type' => 'callback', 'value' =>[__CLASS__,'callbackThrow'] ];
+        $def = ['type' => 'callback', 'value' => [__CLASS__, 'callbackThrow']];
         $validator = new hashValidator($def, hashValidator::DEFINE_ARRAY);
         try {
             $validator->validate(false);
@@ -238,6 +244,25 @@ class hashValidatorTest extends \PHPUnit_Framework_TestCase
         } catch (hashValidatorException $e) {
             echo $e->getMessage() . PHP_EOL;
             $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
+        }
+
+    }
+
+    public function testList()
+    {
+        $def = ['type' => 'list', 'value' => ['type' => 'int'], 'min' => 1, 'max' => 2];
+        $validator = new hashValidator($def, hashValidator::DEFINE_ARRAY);
+        foreach ([[], [1, 2, 3]] as $data) {
+            try {
+                $validator->validate($data);
+                $this->fail($data);
+            } catch (hashValidatorException $e) {
+                echo $e->getMessage() . PHP_EOL;
+                $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
+            }
+        }
+        foreach ([[1], [1, 2],['a' => 3]] as $data) {
+            $this->assertSame($data, $validator->validate($data));
         }
 
     }
