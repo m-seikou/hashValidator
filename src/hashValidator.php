@@ -4,16 +4,14 @@ namespace mihoshi\hashValidator;
 
 class hashValidator
 {
-    const DEFINE_ARRAY = 0;
-    const DEFINE_YAML_FILE = 1;
-    const DEFINE_JSON_FILE = 2;
-
-    /** ファイルがないとか読めないとか */
-    const ERR_FILE_NOT_READ = 1;
     /** 定義がおかしい系 */
     const ERR_INVALID_DEFINE = 2;
     /** 値がおかしい系 */
     const ERR_INVALID_VALUE = 3;
+
+    const DEFINE_ARRAY = 0;
+    const DEFINE_YAML_FILE = 1;
+    const DEFINE_JSON_FILE = 2;
 
     /** @var  array validation rule */
     private $define;
@@ -38,7 +36,7 @@ class hashValidator
                 $this->loader = new jsonLoader();
                 break;
             default:
-                throw new hashValidatorException('invalid data type:' . $type, self::ERR_FILE_NOT_READ);
+                throw new hashValidatorException('invalid data type:' . $type);
         }
         $define = $this->loader->load($arg);
         $this->define = $this->resolveInclude($define);

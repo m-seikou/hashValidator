@@ -1,7 +1,8 @@
 <?php
 
 namespace mihoshi\hashValidator;
-include_once '../interface/loaderInterface.php';
+include_once dirname(__DIR__) . '/interface/loaderInterface.php';
+include_once 'loaderException.php';
 
 class yamlLoader implements loaderInterface
 {
@@ -10,7 +11,7 @@ class yamlLoader implements loaderInterface
         try {
             return yaml_parse_file($file);
         } catch (\Exception $e) {
-            throw new hashValidatorException($e->getMessage(), hashValidator::ERR_FILE_NOT_READ, $e);
+            throw new loaderException($e->getMessage(), loaderException::ERR_FILE_NOT_READ, $e);
         }
     }
 

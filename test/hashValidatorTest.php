@@ -8,10 +8,11 @@
 
 namespace mihoshi\hashValidator;
 
-require_once 'hashValidator.php';
+include_once 'hashValidatorTestCase.php';
+include_once str_replace(TEST_ROOT, SRC_ROOT, __DIR__) . '/' . str_replace('Test.php','.php',basename(__FILE__));
 
 
-class hashValidatorTest extends \PHPUnit_Framework_TestCase
+class hashValidatorTest extends hashValidatorTestCase
 {
 
     public function testReadYaml()
@@ -28,19 +29,7 @@ class hashValidatorTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testReadJson()
-    {
-        // ŽÀ‘¶‚µ‚È‚¢ƒtƒ@ƒCƒ‹
-        try {
-            new hashValidator('testData/testReadJsonXX.yml', hashValidator::DEFINE_JSON_FILE);
-            $this->fail();
-        } catch (hashValidatorException $e) {
-            $this->assertEquals(hashValidator::ERR_FILE_NOT_READ, $e->getCode());
-            echo $e->getMessage() . PHP_EOL;
-        } catch (\exception $e) {
-            $this->fail();
-        }
-    }
+
 
     public function testGetDefine()
     {
