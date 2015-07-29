@@ -9,27 +9,11 @@
 namespace mihoshi\hashValidator;
 
 include_once 'hashValidatorTestCase.php';
-include_once str_replace(TEST_ROOT, SRC_ROOT, __DIR__) . '/' . str_replace('Test.php','.php',basename(__FILE__));
+include_once str_replace(TEST_ROOT, SRC_ROOT, __DIR__) . '/' . str_replace('Test.php', '.php', basename(__FILE__));
 
 
 class hashValidatorTest extends hashValidatorTestCase
 {
-
-    public function testReadYaml()
-    {
-        // À‘¶‚µ‚È‚¢ƒtƒ@ƒCƒ‹
-        try {
-            new hashValidator('testData/testReadYamlXX.yml', hashValidator::DEFINE_YAML_FILE);
-            $this->fail();
-        } catch (hashValidatorException $e) {
-            $this->assertEquals(hashValidator::ERR_FILE_NOT_READ, $e->getCode());
-            echo $e->getMessage() . PHP_EOL;
-        } catch (\exception $e) {
-            $this->fail();
-        }
-    }
-
-
 
     public function testGetDefine()
     {
@@ -250,7 +234,7 @@ class hashValidatorTest extends hashValidatorTestCase
                 $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
             }
         }
-        foreach ([[1], [1, 2],['a' => 3]] as $data) {
+        foreach ([[1], [1, 2], ['a' => 3]] as $data) {
             $this->assertSame($data, $validator->validate($data));
         }
 

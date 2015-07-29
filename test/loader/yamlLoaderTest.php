@@ -4,12 +4,13 @@ namespace mihoshi\hashValidator;
 include_once '../hashValidatorTestCase.php';
 include_once str_replace(TEST_ROOT, SRC_ROOT, __DIR__) . '/' . str_replace('Test.php', '.php', basename(__FILE__));
 
-class jsonLoaderTest extends hashValidatorTestCase
+
+class yamlLoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testRead()
     {
         // 実存しないファイル
-        $loader = new jsonLoader();
+        $loader = new yamlLoader();
         try {
             $loader->load('testReadJsonXX.yml');
             $this->fail();
@@ -20,16 +21,17 @@ class jsonLoaderTest extends hashValidatorTestCase
         }
 
         // json以外のファイル
-        $loader = new jsonLoader();
+        $loader = new yamlLoader();
         try {
-            $loader->load('../testData/testReadYaml01.yml');
-            $this->fail();
+            $result = $loader->load(__FILE__);
+            $this->fail($result);
         } catch (loaderException $e) {
             $this->assertEquals(loaderException::ERR_FILE_NOT_READ, $e->getCode());
         } catch (\exception $e) {
-            $this->fail();
+            $this->fail(get_class($e) . PHP_EOL . $e->getMessage() . PHP_EOL.$e->getTraceAsString());
         }
 
-        $this->assertSame(['key' => 'int', 'min' => 0], $loader->load('../testData/testReadJson01.json'));
+        $this->assertSame(['type' => 'int', 'min' => 0], $loader->load('../testData/testReadYaml01.yml'));
     }
+
 }

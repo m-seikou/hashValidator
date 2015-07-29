@@ -13,18 +13,17 @@ class hashValidator
     const DEFINE_YAML_FILE = 1;
     const DEFINE_JSON_FILE = 2;
 
-    /** @var  array validation rule */
-    private $define;
-
     /** @var array hash key list for error message */
     private $path = ['$arg'];
 
     /** @var  loaderInterface */
     private $loader;
 
+    /** @var array include files */
+    private $files = [];
+
     public function __construct($arg, $type = self::DEFINE_ARRAY)
     {
-        $this->defineType = $type;
         switch ($type) {
             case self::DEFINE_ARRAY:
                 $this->loader = new hashLoader();
@@ -38,15 +37,17 @@ class hashValidator
             default:
                 throw new hashValidatorException('invalid data type:' . $type);
         }
-        $define = $this->loader->load($arg);
-        $this->define = $this->resolveInclude($define);
+        $this->define = $this->loader->load($arg);
     }
 
+    // @todo ‚â‚Á‚Ï‚èLoader‚ÉˆÚ‚·‚×‚«‚â‚È
     private function resolveInclude($def)
     {
         switch ($def['type']) {
             case 'include':
-                $array = $this->loader->load($def['value']);
+                $file = dirname(end($this->files)) . DIRECTORY_SEPARATOR . $def['value'];
+                $array = $this->loader->load($file);
+                array_push($this->files, $file);
                 return $this->resolveInclude($array);
             case 'hash':
                 foreach ($def['value'] as $key => &$val) {
@@ -62,6 +63,7 @@ class hashValidator
     {
         return $this->define;
     }
+
 
     public function validate($arg)
     {
