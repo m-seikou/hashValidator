@@ -26,12 +26,15 @@ class hashValidator
     {
         switch ($type) {
             case self::DEFINE_ARRAY:
+                require_once __DIR__ . DIRECTORY_SEPARATOR . 'loader' . DIRECTORY_SEPARATOR . 'hashLoader.php';
                 $this->loader = new hashLoader();
                 break;
             case self::DEFINE_YAML_FILE:
+                require_once __DIR__ . DIRECTORY_SEPARATOR . 'loader' . DIRECTORY_SEPARATOR . 'yamlLoader.php';
                 $this->loader = new yamlLoader();
                 break;
             case self::DEFINE_JSON_FILE:
+                require_once __DIR__ . DIRECTORY_SEPARATOR . 'loader' . DIRECTORY_SEPARATOR . 'jsonLoader.php';
                 $this->loader = new jsonLoader();
                 break;
             default:

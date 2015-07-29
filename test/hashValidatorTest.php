@@ -21,38 +21,6 @@ class hashValidatorTest extends hashValidatorTestCase
         $this->assertEquals(['type' => 'hash', 'value' => []], $validator->getDefine());
     }
 
-    public function testIntValidation()
-    {
-        $validator = new hashValidator(['type' => 'int'], hashValidator::DEFINE_ARRAY);
-        foreach ([-PHP_INT_MAX, 0, PHP_INT_MAX, '12345',] as $data) {
-            $this->assertEquals($data, $validator->validate($data));
-        }
-        foreach (['a', [], new \stdClass()] as $data) {
-            try {
-                $validator->validate($data);
-                $this->fail();
-            } catch (hashValidatorException $e) {
-                echo $e->getMessage() . PHP_EOL;
-                $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
-            }
-        }
-
-        // ãŒÀ‰ºŒÀ
-        $validator = new hashValidator(['type' => 'int', 'max' => 10, 'min' => 2], hashValidator::DEFINE_ARRAY);
-        foreach ([2, 3, 9, 10] as $data) {
-            $this->assertEquals($data, $validator->validate($data));
-        }
-        foreach ([0, 1, 11, 12] as $data) {
-            try {
-                $validator->validate($data);
-                $this->fail();
-            } catch (hashValidatorException $e) {
-                echo $e->getMessage() . PHP_EOL;
-                $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
-            }
-        }
-
-    }
 
     public function testFloatValidation()
     {
