@@ -1,7 +1,7 @@
 <?php
 
 namespace mihoshi\hashValidator;
-include_once '../hashValidatorTestCase.php';
+include_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'hashValidatorTestCase.php';
 include_once str_replace(TEST_ROOT, SRC_ROOT, __DIR__) . '/' . str_replace('Test.php', '.php', basename(__FILE__));
 
 class jsonLoaderTest extends hashValidatorTestCase
@@ -30,6 +30,7 @@ class jsonLoaderTest extends hashValidatorTestCase
             $this->fail();
         }
 
-        $this->assertSame(['key' => 'int', 'min' => 0], $loader->load('../testData/testReadJson01.json'));
+        $this->assertSame(['key' => 'int', 'min' => 0],
+            $loader->load(dirname(__DIR__) . '/testData/testReadJson01.json'));
     }
 }

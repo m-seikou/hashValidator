@@ -4,15 +4,15 @@ namespace mihoshi\hashValidator;
 include_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'hashValidatorTestCase.php';
 include_once str_replace(TEST_ROOT, SRC_ROOT, __DIR__) . '/' . str_replace('Test.php', '.php', basename(__FILE__));
 
-class intRuleTest extends \PHPUnit_Framework_TestCase
+class stringRuleTest extends \PHPUnit_Framework_TestCase
 {
-    public function testIntValidation()
+    public function testStringValidation()
     {
-        $validator = new intRule([]);
-        foreach ([-PHP_INT_MAX, 0, PHP_INT_MAX, '12345',] as $data) {
+        $validator = new stringRule([]);
+        foreach (['', 'hogehogehogehoge'] as $data) {
             $this->assertEquals($data, $validator->check($data));
         }
-        foreach (['a', [], new \stdClass()] as $data) {
+        foreach ([[], new \stdClass()] as $data) {
             try {
                 $validator->check($data);
                 $this->fail();
@@ -21,15 +21,27 @@ class intRuleTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        // ãŒÀ‰ºŒÀ
-        $validator = new intRule(['max' => 10, 'min' => 2]);
-        foreach ([2, 3, 9, 10] as $data) {
-            $this->assertEquals($data, $validator->check($data));
+        $validator = new stringRule(['max' => 5, 'min' => 2]);
+        foreach (['22', '333', '55555'] as $data) {
+            $this->assertEquals($data, $validator->check($data), $data);
         }
-        foreach ([0, 1, 11, 12] as $data) {
+        foreach (['2', '666666'] as $data) {
             try {
                 $validator->check($data);
                 $this->fail();
+            } catch (ruleException $e) {
+                echo $e->getMessage() . PHP_EOL;
+            }
+        }
+
+        $validator = new stringRule(['preg' => '/hogehoge/']);
+        foreach (['hogehoge', 'aaaahogehogeffuuuu', 'aaaaaaaaaahogehoge'] as $data) {
+            $this->assertEquals($data, $validator->check($data), $data);
+        }
+        foreach (['hogeahoge'] as $data) {
+            try {
+                $validator->check($data);
+                $this->fail($data);
             } catch (ruleException $e) {
                 echo $e->getMessage() . PHP_EOL;
             }
@@ -38,17 +50,16 @@ class intRuleTest extends \PHPUnit_Framework_TestCase
 
     public function testDump()
     {
-        $rule = new intRule([]);
+        $rule = new stringRule([]);
         $this->assertArrayHasKey('max', $rule->dump());
-        $this->assertEquals(PHP_INT_MAX, $rule->dump()['max']);
-        $this->assertArrayHasKey('min', $rule->dump());
-        $this->assertEquals(-PHP_INT_MAX, $rule->dump()['min']);
+        $this->assertNull($rule->dump()['max']);
+        $this->assertNull($rule->dump()['min']);
         $this->assertArrayHasKey('comment', $rule->dump());
         $this->assertEquals('', $rule->dump()['comment']);
         $this->assertArrayHasKey('optional', $rule->dump());
         $this->assertEquals(false, $rule->dump()['optional']);
 
-        $rule = new intRule([
+        $rule = new stringRule([
             'max' => 100,
             'min' => 10,
             'comment' => 'hogehoge',

@@ -4,11 +4,11 @@ namespace mihoshi\hashValidator;
 include_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'hashValidatorTestCase.php';
 include_once str_replace(TEST_ROOT, SRC_ROOT, __DIR__) . '/' . str_replace('Test.php', '.php', basename(__FILE__));
 
-class intRuleTest extends \PHPUnit_Framework_TestCase
+class floatRuleTest extends \PHPUnit_Framework_TestCase
 {
     public function testIntValidation()
     {
-        $validator = new intRule([]);
+        $validator = new floatRule([]);
         foreach ([-PHP_INT_MAX, 0, PHP_INT_MAX, '12345',] as $data) {
             $this->assertEquals($data, $validator->check($data));
         }
@@ -22,11 +22,11 @@ class intRuleTest extends \PHPUnit_Framework_TestCase
         }
 
         // ãŒÀ‰ºŒÀ
-        $validator = new intRule(['max' => 10, 'min' => 2]);
-        foreach ([2, 3, 9, 10] as $data) {
+        $validator = new floatRule(['max' => 3.141, 'min' => 2.828]);
+        foreach ([2.828, 3, 3.141,] as $data) {
             $this->assertEquals($data, $validator->check($data));
         }
-        foreach ([0, 1, 11, 12] as $data) {
+        foreach ([2.827999999, 3.1410001] as $data) {
             try {
                 $validator->check($data);
                 $this->fail();
@@ -38,17 +38,16 @@ class intRuleTest extends \PHPUnit_Framework_TestCase
 
     public function testDump()
     {
-        $rule = new intRule([]);
+        $rule = new floatRule([]);
         $this->assertArrayHasKey('max', $rule->dump());
-        $this->assertEquals(PHP_INT_MAX, $rule->dump()['max']);
-        $this->assertArrayHasKey('min', $rule->dump());
-        $this->assertEquals(-PHP_INT_MAX, $rule->dump()['min']);
+        $this->assertNull($rule->dump()['max']);
+        $this->assertNull($rule->dump()['min']);
         $this->assertArrayHasKey('comment', $rule->dump());
         $this->assertEquals('', $rule->dump()['comment']);
         $this->assertArrayHasKey('optional', $rule->dump());
         $this->assertEquals(false, $rule->dump()['optional']);
 
-        $rule = new intRule([
+        $rule = new floatRule([
             'max' => 100,
             'min' => 10,
             'comment' => 'hogehoge',
