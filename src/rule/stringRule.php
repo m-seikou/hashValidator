@@ -58,9 +58,10 @@ class stringRule implements ruleInterface
     public function dump()
     {
         return [
-            'type' => 'int',
+            'type' => 'string',
             'min' => $this->min,
             'max' => $this->max,
+            'preg' => $this->preg,
             'comment' => $this->comment,
             'optional' => $this->optional
         ];

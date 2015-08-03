@@ -50,7 +50,7 @@ class floatRule implements ruleInterface
     public function dump()
     {
         return [
-            'type' => 'int',
+            'type' => 'float',
             'min' => $this->min,
             'max' => $this->max,
             'comment' => $this->comment,

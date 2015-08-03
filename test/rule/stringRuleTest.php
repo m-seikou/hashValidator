@@ -4,9 +4,9 @@ namespace mihoshi\hashValidator;
 include_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'hashValidatorTestCase.php';
 include_once str_replace(TEST_ROOT, SRC_ROOT, __DIR__) . '/' . str_replace('Test.php', '.php', basename(__FILE__));
 
-class stringRuleTest extends \PHPUnit_Framework_TestCase
+class stringRuleTest extends hashValidatorTestCase
 {
-    public function testStringValidation()
+    public function testType()
     {
         $validator = new stringRule([]);
         foreach (['', 'hogehogehogehoge'] as $data) {
@@ -20,6 +20,10 @@ class stringRuleTest extends \PHPUnit_Framework_TestCase
                 echo $e->getMessage() . PHP_EOL;
             }
         }
+    }
+
+    public function testLength()
+    {
 
         $validator = new stringRule(['max' => 5, 'min' => 2]);
         foreach (['22', '333', '55555'] as $data) {
@@ -33,6 +37,10 @@ class stringRuleTest extends \PHPUnit_Framework_TestCase
                 echo $e->getMessage() . PHP_EOL;
             }
         }
+    }
+
+    public function testPreg()
+    {
 
         $validator = new stringRule(['preg' => '/hogehoge/']);
         foreach (['hogehoge', 'aaaahogehogeffuuuu', 'aaaaaaaaaahogehoge'] as $data) {
