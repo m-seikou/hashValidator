@@ -14,9 +14,6 @@ class hashValidator
     const DEFINE_YAML_FILE = 1;
     const DEFINE_JSON_FILE = 2;
 
-    /** @var array hash key list for error message */
-    private $path = ['$arg'];
-
     /** @var  loaderInterface */
     private $loader;
 
