@@ -11,5 +11,7 @@ interface ruleInterface
 
     public function check($value);
 
+    public function isOptional();
+
     public function dump();
 }

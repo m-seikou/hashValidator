@@ -39,6 +39,11 @@ class listRule implements ruleInterface
         $this->rule = ruleFactory::getInstance($rule['rule']);
     }
 
+    public function isOptional()
+    {
+        return $this->optional;
+    }
+
     public function check($value)
     {
         $return = [];

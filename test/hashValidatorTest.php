@@ -55,23 +55,4 @@ class hashValidatorTest extends hashValidatorTestCase
         $this->assertSame($validator->validate(['key' => 10]), ['key' => 10]);
         $this->assertSame($validator->validate(['key' => 10, 'hoge' => 'fuga']), ['key' => 10]);
     }
-
-    public function testList()
-    {
-        $def = ['type' => 'list', 'value' => ['type' => 'int'], 'min' => 1, 'max' => 2];
-        $validator = new hashValidator($def, hashValidator::DEFINE_ARRAY);
-        foreach ([[], [1, 2, 3]] as $data) {
-            try {
-                $validator->validate($data);
-                $this->fail($data);
-            } catch (hashValidatorException $e) {
-                echo $e->getMessage() . PHP_EOL;
-                $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
-            }
-        }
-        foreach ([[1], [1, 2], ['a' => 3]] as $data) {
-            $this->assertSame($data, $validator->validate($data));
-        }
-
-    }
 }

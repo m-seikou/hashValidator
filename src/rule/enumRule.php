@@ -32,13 +32,18 @@ class enumRule implements ruleInterface
         }
     }
 
+    public function isOptional()
+    {
+        return $this->optional;
+    }
+
     public function check($value)
     {
         if (!is_scalar($value)) {
             throw new ruleException('invalid enum value:' . var_export($value, true));
         }
         if (!in_array($value, $this->value)) {
-            throw new ruleException('invalid enum value:' . $value . ' in ['.implode(',',$this->value) . ']');
+            throw new ruleException('invalid enum value:' . $value . ' in [' . implode(',', $this->value) . ']');
         }
         return $this->value[array_search($value, $this->value)];
     }

@@ -32,6 +32,11 @@ class floatRule implements ruleInterface
         }
     }
 
+    public function isOptional()
+    {
+        return $this->optional;
+    }
+
     public function check($value)
     {
         if (!is_numeric($value)) {
