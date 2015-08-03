@@ -15,44 +15,22 @@ include_once str_replace(TEST_ROOT, SRC_ROOT, __DIR__) . '/' . str_replace('Test
 class hashValidatorTest extends hashValidatorTestCase
 {
 
+    public function testValidate()
+    {
+        $validator =
+            new hashValidator(['type' => 'hash', 'key' => ['hoge' => ['type' => 'int']]], hashValidator::DEFINE_ARRAY);
+        $validator->validate(['hoge' => 10]);
+    }
+
     public function testGetDefine()
     {
-        $validator = new hashValidator(['type' => 'hash', 'value' => []], hashValidator::DEFINE_ARRAY);
-        $this->assertEquals(['type' => 'hash', 'value' => []], $validator->getDefine());
+        $validator =
+            new hashValidator(['type' => 'hash', 'key' => ['hoge' => ['type' => 'int']]], hashValidator::DEFINE_ARRAY);
+        $def = $validator->getDefine();
+        $this->assertArrayHasKey('type', $def);
+        $this->assertArrayHasKey('key', $def);
+        $this->assertArrayHasKey('hoge', $def['key']);
+        $this->assertArrayHasKey('type', $def['key']['hoge']);
     }
 
-    public function testHash()
-    {
-        $def = ['type' => 'hash', 'value' => ['key' => ['type' => 'int'],]];
-        $validator = new hashValidator($def, hashValidator::DEFINE_ARRAY);
-        foreach ([[], ['key' => 'hoge']] as $data) {
-            try {
-                $validator->validate($data);
-                $this->fail($data);
-            } catch (hashValidatorException $e) {
-                echo $e->getMessage() . PHP_EOL;
-                $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
-            }
-        }
-        $this->assertSame($validator->validate(['key' => 10]), ['key' => 10]);
-        $this->assertSame($validator->validate(['key' => 10, 'hoge' => 'fuga']), ['key' => 10]);
-    }
-
-    public function testHashOptional()
-    {
-        $def = ['type' => 'hash', 'value' => ['key' => ['type' => 'int', 'optional' => true],]];
-        $validator = new hashValidator($def, hashValidator::DEFINE_ARRAY);
-
-        try {
-            $validator->validate(['key' => 'fuga']);
-            $this->fail();
-        } catch (hashValidatorException $e) {
-            echo $e->getMessage() . PHP_EOL;
-            $this->assertEquals(hashValidator::ERR_INVALID_VALUE, $e->getCode());
-        }
-
-        $this->assertSame($validator->validate([]), []);
-        $this->assertSame($validator->validate(['key' => 10]), ['key' => 10]);
-        $this->assertSame($validator->validate(['key' => 10, 'hoge' => 'fuga']), ['key' => 10]);
-    }
 }
