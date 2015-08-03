@@ -54,7 +54,6 @@ class hashValidatorTest extends hashValidatorTestCase
         $this->assertSame($validator->validate([]), []);
         $this->assertSame($validator->validate(['key' => 10]), ['key' => 10]);
         $this->assertSame($validator->validate(['key' => 10, 'hoge' => 'fuga']), ['key' => 10]);
-
     }
 
     public function testList()
