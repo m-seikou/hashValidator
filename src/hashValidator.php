@@ -1,7 +1,8 @@
 <?php
 
 namespace mihoshi\hashValidator;
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'rule/ruleFactory.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'rule' . DIRECTORY_SEPARATOR . 'ruleFactory.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'hashValidatorException.php';
 
 class hashValidator
 {
@@ -14,14 +15,8 @@ class hashValidator
     const DEFINE_YAML_FILE = 'yaml';
     const DEFINE_JSON_FILE = 'json';
 
-    /** @var  loaderInterface */
-    private $loader;
-
-    /** @var array include files */
-    private $files = [];
-
     /** @var  ruleInterface */
-    private $define;
+    private $rule;
 
     public function __construct($arg, $type = self::DEFINE_ARRAY)
     {
@@ -31,23 +26,23 @@ class hashValidator
         }
         require_once $file;
         $class = __NAMESPACE__ . '\\' . $type . 'Loader';
-        $this->loader = new $class();
-        $this->define = ruleFactory::getInstance($this->loader->load($arg));
+        /** @var loaderInterface $loader */
+        $loader = new $class();
+        $this->rule = ruleFactory::getInstance($loader->load($arg));
     }
 
-    public function getDefine()
+    public function dump()
     {
-        return $this->define->dump();
+        return $this->rule->dump();
     }
 
-
-    public function validate($arg)
+    public function check($arg)
     {
-        return $this->define->check($arg);
+        return $this->rule->check($arg);
     }
 
-}
-
-class hashValidatorException extends \Exception
-{
+    public function toText()
+    {
+        return $this->rule->toText();
+    }
 }
