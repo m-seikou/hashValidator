@@ -28,7 +28,21 @@ class jsonLoader implements loaderInterface
         } catch (\Exception $e) {
             throw new loaderException($e->getMessage(), loaderException::ERR_FILE_NOT_READ, $e);
         }
+        $return = $this->resolveIncludeFile($return,dirname($fileName));
         return $return;
     }
 
+    private function resolveIncludeFile($def,$path){
+        if(!is_array($def)){
+            return $def;
+        }
+        foreach($def as &$d){
+            if(isset($d['include'])){
+                $fileName = realpath($path . DIRECTORY_SEPARATOR . $d['include']);
+                $d = $this->load($fileName);
+            }
+            $d = $this->resolveIncludeFile($d,$path);
+        }
+        return $def;
+    }
 }

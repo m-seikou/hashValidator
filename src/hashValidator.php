@@ -10,9 +10,9 @@ class hashValidator
     /** ’l‚ª‚¨‚©‚µ‚¢Œn */
     const ERR_INVALID_VALUE = 3;
 
-    const DEFINE_ARRAY = 0;
-    const DEFINE_YAML_FILE = 1;
-    const DEFINE_JSON_FILE = 2;
+    const DEFINE_ARRAY = 'hash';
+    const DEFINE_YAML_FILE = 'yaml';
+    const DEFINE_JSON_FILE = 'json';
 
     /** @var  loaderInterface */
     private $loader;
@@ -25,42 +25,14 @@ class hashValidator
 
     public function __construct($arg, $type = self::DEFINE_ARRAY)
     {
-        switch ($type) {
-            case self::DEFINE_ARRAY:
-                require_once __DIR__ . DIRECTORY_SEPARATOR . 'loader' . DIRECTORY_SEPARATOR . 'hashLoader.php';
-                $this->loader = new hashLoader();
-                break;
-            case self::DEFINE_YAML_FILE:
-                require_once __DIR__ . DIRECTORY_SEPARATOR . 'loader' . DIRECTORY_SEPARATOR . 'yamlLoader.php';
-                $this->loader = new yamlLoader();
-                break;
-            case self::DEFINE_JSON_FILE:
-                require_once __DIR__ . DIRECTORY_SEPARATOR . 'loader' . DIRECTORY_SEPARATOR . 'jsonLoader.php';
-                $this->loader = new jsonLoader();
-                break;
-            default:
-                throw new hashValidatorException('invalid data type:' . $type);
+        $file = __DIR__ . DIRECTORY_SEPARATOR . 'loader' . DIRECTORY_SEPARATOR . $type . 'Loader.php';
+        if (!file_exists($file)) {
+            throw new hashValidatorException('invalid data type:' . $type);
         }
+        require_once $file;
+        $class = __NAMESPACE__ . '\\' . $type . 'Loader';
+        $this->loader = new $class();
         $this->define = ruleFactory::getInstance($this->loader->load($arg));
-    }
-
-    // @todo ‚â‚Á‚Ï‚èLoader‚ÉˆÚ‚·‚×‚«‚â‚È
-    private function resolveInclude($def)
-    {
-        switch ($def['type']) {
-            case 'include':
-                $file = dirname(end($this->files)) . DIRECTORY_SEPARATOR . $def['value'];
-                $array = $this->loader->load($file);
-                array_push($this->files, $file);
-                return $this->resolveInclude($array);
-            case 'hash':
-                foreach ($def['value'] as $key => &$val) {
-                    $val = $this->resolveInclude($val);
-                }
-                return $def;
-            default:
-                return $def;
-        }
     }
 
     public function getDefine()
