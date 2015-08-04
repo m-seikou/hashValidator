@@ -5,12 +5,20 @@ require_once dirname(__DIR__) . '/rule/ruleException.php';
 
 interface ruleInterface
 {
-    const ERR_INVALID_VALUE = 1;
 
     public function __construct($rule);
 
+    /**
+     * @param $value
+     * @return mixed バリデーションをかけた値
+     * @throws ruleException バリデーションを通過できない場合に発生する例外
+     */
     public function check($value);
 
+    /**
+     * hash の必須設定を参照するためのインターフェース
+     * @return bool
+     */
     public function isOptional();
 
     public function dump();

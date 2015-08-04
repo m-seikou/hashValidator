@@ -6,19 +6,10 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'hashValidatorException.php';
 
 class hashValidator
 {
-    /** ’è‹`‚ª‚¨‚©‚µ‚¢Œn */
-    const ERR_INVALID_DEFINE = 2;
-    /** ’l‚ª‚¨‚©‚µ‚¢Œn */
-    const ERR_INVALID_VALUE = 3;
-
-    const DEFINE_ARRAY = 'hash';
-    const DEFINE_YAML_FILE = 'yaml';
-    const DEFINE_JSON_FILE = 'json';
-
     /** @var  ruleInterface */
     private $rule;
 
-    public function __construct($arg, $type = self::DEFINE_ARRAY)
+    public function __construct($arg, $type = 'hash')
     {
         $file = __DIR__ . DIRECTORY_SEPARATOR . 'loader' . DIRECTORY_SEPARATOR . $type . 'Loader.php';
         if (!file_exists($file)) {
