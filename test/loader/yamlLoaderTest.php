@@ -34,6 +34,7 @@ class yamlLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(['type' => 'int', 'min' => 0],
             $loader->load(dirname(__DIR__) . '/testData/testReadYaml01.yml'));
     }
+
     public function testInclude()
     {
         $loader = new yamlLoader();

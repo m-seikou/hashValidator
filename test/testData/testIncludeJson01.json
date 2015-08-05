@@ -1,8 +1,8 @@
 {
-  "type":"hash",
-  "key":{
-    "key1":{
-      "include":"./testIncludeJson02.json"
+  "type": "hash",
+  "key": {
+    "key1": {
+      "include": "./testIncludeJson02.json"
     }
   }
 }

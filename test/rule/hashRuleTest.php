@@ -24,7 +24,7 @@ class hashRuleTest extends hashValidatorTestCase
         } catch (ruleException $e) {
             echo $e->getMessage() . PHP_EOL;
         }
-        $validator = new hashRule(['key' => ['hoge' => ['type' => 'int','optional' => true]]]);
+        $validator = new hashRule(['key' => ['hoge' => ['type' => 'int', 'optional' => true]]]);
         $this->assertSame([], $validator->check(['fuga' => 1]));
 
         $validator = new hashRule(
@@ -41,9 +41,9 @@ class hashRuleTest extends hashValidatorTestCase
                 ]
             ]
         );
-        $this->assertSame(['hoge' => ['fuga'=>1 ]], $validator->check(['hoge' => ['fuga'=>1 ]]));
+        $this->assertSame(['hoge' => ['fuga' => 1]], $validator->check(['hoge' => ['fuga' => 1]]));
         try {
-            $validator->check(['hoge' => ['fuga'=>'bb' ]]);
+            $validator->check(['hoge' => ['fuga' => 'bb']]);
             $this->fail();
         } catch (ruleException $e) {
             echo $e->getMessage() . PHP_EOL;
