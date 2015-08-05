@@ -20,6 +20,7 @@ class yamlLoader implements loaderInterface
         } catch (\Exception $e) {
             throw new loaderException($e->getMessage(), loaderException::ERR_FILE_NOT_READ, $e);
         }
+        $return = $this->resolveIncludeFile($return, dirname($fileName));
         return $return;
     }
 
