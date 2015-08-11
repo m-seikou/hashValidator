@@ -58,5 +58,12 @@ class enumRule implements ruleInterface
         ];
     }
 
+    public function toText($indentStr, $indentNum)
+    {
+        $indent = str_repeat($indentStr, $indentNum);
+        $return = '';
+        $return .= $indent . 'type:enum [' . implode(',', $this->value) . ']' . $this->comment;
+        return $return;
+    }
 
 }

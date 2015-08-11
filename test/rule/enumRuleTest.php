@@ -61,4 +61,10 @@ class enumRuleTest extends hashValidatorTestCase
         $this->assertEquals(true, $rule->dump()['optional']);
     }
 
+    public function testToText()
+    {
+        $rule = new enumRule(['value' => [1]]);
+        echo $rule->toText('    ', 1);
+        $this->assertStringStartsWith(' ', $rule->toText('    ', 1));
+    }
 }
