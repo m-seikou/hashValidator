@@ -52,7 +52,7 @@ class funcRuleTest extends hashValidatorTestCase
 
     public function testDump()
     {
-        $rule = new funcRule(['function' =>'is_array']);
+        $rule = new funcRule(['function' => 'is_array']);
         $this->assertArrayHasKey('type', $rule->dump());
         $this->assertEquals('is_array', $rule->dump()['function']);
         $this->assertArrayHasKey('comment', $rule->dump());
@@ -61,7 +61,7 @@ class funcRuleTest extends hashValidatorTestCase
         $this->assertEquals(false, $rule->dump()['optional']);
 
         $rule = new funcRule([
-            'function' =>'is_array',
+            'function' => 'is_array',
             'comment' => 'hogehoge',
             'optional' => true
         ]);

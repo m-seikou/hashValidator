@@ -31,6 +31,13 @@ class jsonLoaderTest extends hashValidatorTestCase
         }
 
         $this->assertSame(['key' => 'int', 'min' => 0],
-            $loader->load(dirname(__DIR__) . '/testData/testReadJson01.json'));
+            $loader->load(realpath(dirname(__DIR__) . '/testData/testReadJson01.json')));
+    }
+
+    public function testInclude()
+    {
+        $loader = new jsonLoader();
+        $def = $loader->load(realpath(dirname(__DIR__) . '/testData/testIncludeJson01.json'));
+        $this->assertSame(["type" => "hash", "key" => ["key1" => ["type" => "int", "min" => 0,]]], $def);
     }
 }

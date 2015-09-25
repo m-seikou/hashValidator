@@ -1,81 +1,39 @@
 <?php
 
 namespace mihoshi\hashValidator;
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'rule/ruleFactory.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'rule' . DIRECTORY_SEPARATOR . 'ruleFactory.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'hashValidatorException.php';
 
 class hashValidator
 {
-    /** ’è‹`‚ª‚¨‚©‚µ‚¢Œn */
-    const ERR_INVALID_DEFINE = 2;
-    /** ’l‚ª‚¨‚©‚µ‚¢Œn */
-    const ERR_INVALID_VALUE = 3;
-
-    const DEFINE_ARRAY = 0;
-    const DEFINE_YAML_FILE = 1;
-    const DEFINE_JSON_FILE = 2;
-
-    /** @var  loaderInterface */
-    private $loader;
-
-    /** @var array include files */
-    private $files = [];
-
     /** @var  ruleInterface */
-    private $define;
+    private $rule;
 
-    public function __construct($arg, $type = self::DEFINE_ARRAY)
+    public function __construct($arg, $type = 'hash')
     {
-        switch ($type) {
-            case self::DEFINE_ARRAY:
-                require_once __DIR__ . DIRECTORY_SEPARATOR . 'loader' . DIRECTORY_SEPARATOR . 'hashLoader.php';
-                $this->loader = new hashLoader();
-                break;
-            case self::DEFINE_YAML_FILE:
-                require_once __DIR__ . DIRECTORY_SEPARATOR . 'loader' . DIRECTORY_SEPARATOR . 'yamlLoader.php';
-                $this->loader = new yamlLoader();
-                break;
-            case self::DEFINE_JSON_FILE:
-                require_once __DIR__ . DIRECTORY_SEPARATOR . 'loader' . DIRECTORY_SEPARATOR . 'jsonLoader.php';
-                $this->loader = new jsonLoader();
-                break;
-            default:
-                throw new hashValidatorException('invalid data type:' . $type);
+        $file = __DIR__ . DIRECTORY_SEPARATOR . 'loader' . DIRECTORY_SEPARATOR . $type . 'Loader.php';
+        if (!file_exists($file)) {
+            throw new hashValidatorException('invalid data type:' . $type);
         }
-        $this->define = ruleFactory::getInstance($this->loader->load($arg));
+        require_once $file;
+        $class = __NAMESPACE__ . '\\' . $type . 'Loader';
+        /** @var loaderInterface $loader */
+        $loader = new $class();
+        $this->rule = ruleFactory::getInstance($loader->load($arg));
     }
 
-    // @todo ‚â‚Á‚Ï‚èLoader‚ÉˆÚ‚·‚×‚«‚â‚È
-    private function resolveInclude($def)
+    public function dump()
     {
-        switch ($def['type']) {
-            case 'include':
-                $file = dirname(end($this->files)) . DIRECTORY_SEPARATOR . $def['value'];
-                $array = $this->loader->load($file);
-                array_push($this->files, $file);
-                return $this->resolveInclude($array);
-            case 'hash':
-                foreach ($def['value'] as $key => &$val) {
-                    $val = $this->resolveInclude($val);
-                }
-                return $def;
-            default:
-                return $def;
-        }
+        return $this->rule->dump();
     }
 
-    public function getDefine()
+    public function check($arg)
     {
-        return $this->define->dump();
+        return $this->rule->check($arg);
     }
 
-
-    public function validate($arg)
+    public function toText()
     {
-        return $this->define->check($arg);
+        return $this->rule->toText();
     }
-
-}
-
-class hashValidatorException extends \Exception
-{
 }

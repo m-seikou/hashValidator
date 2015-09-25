@@ -13,7 +13,7 @@ class ruleFactoryTest extends hashValidatorTestCase
         try {
             ruleFactory::getInstance(['type' => 'integer']);
             $this->fail();
-        }catch(ruleException $e) {
+        } catch (ruleException $e) {
             echo $e->getMessage() . PHP_EOL;
         }
     }

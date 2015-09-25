@@ -18,15 +18,15 @@ class hashValidatorTest extends hashValidatorTestCase
     public function testValidate()
     {
         $validator =
-            new hashValidator(['type' => 'hash', 'key' => ['hoge' => ['type' => 'int']]], hashValidator::DEFINE_ARRAY);
-        $validator->validate(['hoge' => 10]);
+            new hashValidator(['type' => 'hash', 'key' => ['hoge' => ['type' => 'int']]], 'hash');
+        $validator->check(['hoge' => 10]);
     }
 
     public function testGetDefine()
     {
         $validator =
-            new hashValidator(['type' => 'hash', 'key' => ['hoge' => ['type' => 'int']]], hashValidator::DEFINE_ARRAY);
-        $def = $validator->getDefine();
+            new hashValidator(['type' => 'hash', 'key' => ['hoge' => ['type' => 'int']]], 'hash');
+        $def = $validator->dump();
         $this->assertArrayHasKey('type', $def);
         $this->assertArrayHasKey('key', $def);
         $this->assertArrayHasKey('hoge', $def['key']);
