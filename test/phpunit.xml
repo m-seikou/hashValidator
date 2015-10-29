@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<phpunit>
+    <testsuites>
+        <testsuite name="hashValidator unit test">
+            <directory>loader</directory>
+            <directory>rule</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
