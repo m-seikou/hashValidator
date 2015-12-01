@@ -7,16 +7,15 @@
  */
 
 namespace mihoshi\hashValidator;
-require_once dirname(__DIR__) . '/interface/ruleInterface.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'abstractRule.php';
 
-class funcRule implements ruleInterface
+class funcRule extends abstractRule
 {
-    private $comment = '';
-    private $optional = false;
     private $function = NULL;
 
     public function __construct($rule)
     {
+        parent::__construct($rule);
         if (isset($rule['class'])) {
             if (!class_exists($rule['class'])) {
                 throw new ruleException('class:' . $rule['class'] . ' not exist');
@@ -44,11 +43,6 @@ class funcRule implements ruleInterface
         }
     }
 
-    public function isOptional()
-    {
-        return $this->optional;
-    }
-
     public function check($value)
     {
         try {
@@ -64,20 +58,16 @@ class funcRule implements ruleInterface
     public function dump()
     {
         if (is_array($this->function)) {
-            return [
+            return array_merge(parent::dump(),[
                 'type' => 'func',
                 'class' => $this->function[0],
                 'method' => $this->function[1],
-                'comment' => $this->comment,
-                'optional' => $this->optional
-            ];
-        } else {
-            return [
+            ]);
+        }else{
+            return array_merge(parent::dump(),[
                 'type' => 'func',
                 'function' => $this->function,
-                'comment' => $this->comment,
-                'optional' => $this->optional
-            ];
+            ]);
         }
     }
 

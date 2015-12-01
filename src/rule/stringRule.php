@@ -7,18 +7,17 @@
  */
 
 namespace mihoshi\hashValidator;
-require_once dirname(__DIR__) . '/interface/ruleInterface.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'abstractRule.php';
 
-class stringRule implements ruleInterface
+class stringRule extends abstractRule
 {
     private $min = NULL;
     private $max = NULL;
     private $preg = NULL;
-    private $comment = '';
-    private $optional = false;
 
     public function __construct($rule)
     {
+        parent::__construct($rule);
         if (isset($rule['min'])) {
             $this->min = $rule['min'];
         }
@@ -28,17 +27,6 @@ class stringRule implements ruleInterface
         if (isset($rule['preg'])) {
             $this->preg = $rule['preg'];
         }
-        if (isset($rule['comment'])) {
-            $this->comment = $rule['comment'];
-        }
-        if (isset($rule['optional'])) {
-            $this->optional = $rule['optional'];
-        }
-    }
-
-    public function isOptional()
-    {
-        return $this->optional;
     }
 
     public function check($value)
@@ -62,14 +50,12 @@ class stringRule implements ruleInterface
 
     public function dump()
     {
-        return [
+        return array_merge(parent::dump(),[
             'type' => 'string',
             'min' => $this->min,
             'max' => $this->max,
             'preg' => $this->preg,
-            'comment' => $this->comment,
-            'optional' => $this->optional
-        ];
+        ]);
     }
 
 

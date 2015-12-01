@@ -7,16 +7,15 @@
  */
 
 namespace mihoshi\hashValidator;
-require_once dirname(__DIR__) . '/interface/ruleInterface.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'abstractRule.php';
 
-class enumRule implements ruleInterface
+class enumRule extends abstractRule
 {
     private $value = [];
-    private $comment = '';
-    private $optional = false;
 
     public function __construct($rule)
     {
+        parent::__construct($rule);
         if (!is_array($rule['value'])) {
             throw new ruleException();
         }
@@ -32,11 +31,6 @@ class enumRule implements ruleInterface
         }
     }
 
-    public function isOptional()
-    {
-        return $this->optional;
-    }
-
     public function check($value)
     {
         if (!is_scalar($value)) {
@@ -50,12 +44,10 @@ class enumRule implements ruleInterface
 
     public function dump()
     {
-        return [
+        return array_merge(parent::dump(), [
             'type' => 'enum',
             'value' => $this->value,
-            'comment' => $this->comment,
-            'optional' => $this->optional
-        ];
+        ]);
     }
 
     public function toText($indentStr, $indentNum)

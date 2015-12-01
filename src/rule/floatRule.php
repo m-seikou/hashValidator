@@ -7,34 +7,22 @@
  */
 
 namespace mihoshi\hashValidator;
-require_once dirname(__DIR__) . '/interface/ruleInterface.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'abstractRule.php';
 
-class floatRule implements ruleInterface
+class floatRule extends abstractRule
 {
     private $min = NULL;
     private $max = NULL;
-    private $comment = '';
-    private $optional = false;
 
     public function __construct($rule)
     {
+        parent::__construct($rule);
         if (isset($rule['min'])) {
             $this->min = $rule['min'];
         }
         if (isset($rule['max'])) {
             $this->max = $rule['max'];
         }
-        if (isset($rule['comment'])) {
-            $this->comment = $rule['comment'];
-        }
-        if (isset($rule['optional'])) {
-            $this->optional = $rule['optional'];
-        }
-    }
-
-    public function isOptional()
-    {
-        return $this->optional;
     }
 
     public function check($value)
@@ -54,13 +42,11 @@ class floatRule implements ruleInterface
 
     public function dump()
     {
-        return [
+        return array_merge(parent::dump(), [
             'type' => 'float',
             'min' => $this->min,
             'max' => $this->max,
-            'comment' => $this->comment,
-            'optional' => $this->optional
-        ];
+        ]);
     }
 
 
