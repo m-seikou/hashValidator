@@ -12,7 +12,7 @@ class yamlLoader implements loaderInterface
             if (!file_exists($fileName)) {
                 throw new loaderException('file not found:' . $fileName, loaderException::ERR_FILE_NOT_READ);
             }
-            if (NULL === $return = yaml_parse_file($fileName)) {
+            if (!is_array($return = yaml_parse_file($fileName))) {
                 throw new loaderException('file not yaml:' . $fileName, loaderException::ERR_FILE_NOT_READ);
             }
         } catch (loaderException $e) {
