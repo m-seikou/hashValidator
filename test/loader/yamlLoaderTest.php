@@ -24,7 +24,7 @@ class yamlLoaderTest extends \PHPUnit_Framework_TestCase
         $loader = new yamlLoader();
         try {
             $result = $loader->load(__FILE__);
-            $this->fail($result);
+            $this->fail(var_export($result, true));
         } catch (loaderException $e) {
             $this->assertEquals(loaderException::ERR_FILE_NOT_READ, $e->getCode());
         } catch (\exception $e) {
