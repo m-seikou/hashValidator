@@ -9,7 +9,7 @@ class yamlLoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testRead()
     {
-        // ŽÀ‘¶‚µ‚È‚¢ƒtƒ@ƒCƒ‹
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½
         $loader = new yamlLoader();
         try {
             $loader->load('testReadJsonXX.yml');
@@ -20,7 +20,7 @@ class yamlLoaderTest extends \PHPUnit_Framework_TestCase
             $this->fail();
         }
 
-        // jsonˆÈŠO‚Ìƒtƒ@ƒCƒ‹
+        // jsonï¿½ÈŠOï¿½Ìƒtï¿½@ï¿½Cï¿½ï¿½
         $loader = new yamlLoader();
         try {
             $result = $loader->load(__FILE__);

@@ -21,7 +21,7 @@ class intRuleTest extends hashValidatorTestCase
             }
         }
 
-        // ãŒÀ‰ºŒÀ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         $validator = new intRule(['max' => 10, 'min' => 2]);
         foreach ([2, 3, 9, 10] as $data) {
             $this->assertEquals($data, $validator->check($data));

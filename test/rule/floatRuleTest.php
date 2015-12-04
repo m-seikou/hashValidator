@@ -21,7 +21,7 @@ class floatRuleTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        // ãŒÀ‰ºŒÀ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         $validator = new floatRule(['max' => 3.141, 'min' => 2.828]);
         foreach ([2.828, 3, 3.141,] as $data) {
             $this->assertEquals($data, $validator->check($data));

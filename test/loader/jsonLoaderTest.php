@@ -8,7 +8,7 @@ class jsonLoaderTest extends hashValidatorTestCase
 {
     public function testRead()
     {
-        // ŽÀ‘¶‚µ‚È‚¢ƒtƒ@ƒCƒ‹
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½
         $loader = new jsonLoader();
         try {
             $loader->load('testReadJsonXX.yml');
@@ -19,7 +19,7 @@ class jsonLoaderTest extends hashValidatorTestCase
             $this->fail();
         }
 
-        // jsonˆÈŠO‚Ìƒtƒ@ƒCƒ‹
+        // jsonï¿½ÈŠOï¿½Ìƒtï¿½@ï¿½Cï¿½ï¿½
         $loader = new jsonLoader();
         try {
             $loader->load('../testData/testReadYaml01.yml');
