@@ -10,13 +10,13 @@ interface ruleInterface
 
     /**
      * @param $value
-     * @return mixed �o���f�[�V�������������l
-     * @throws ruleException �o���f�[�V������ʉ߂ł��Ȃ��ꍇ�ɔ��������O
+     * @return mixed バリデーションをかけた値
+     * @throws ruleException バリデーションを通過できない場合に発生する例外
      */
     public function check($value);
 
     /**
-     * hash �̕K�{�ݒ���Q�Ƃ��邽�߂̃C���^�[�t�F�[�X
+     * hashの必須設定を参照するためのインターフェース
      * @return bool
      */
     public function isOptional();
