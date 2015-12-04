@@ -11,7 +11,7 @@ namespace mihoshi\hashValidator;
 class loaderException extends \Exception
 {
 
-    /** ƒtƒ@ƒCƒ‹‚ª‚È‚¢‚Æ‚©“Ç‚ß‚È‚¢‚Æ‚© */
+    /** ãƒ•ã‚¡ã‚¤ãƒ«ãŒãªã„ã¨ã‹èª­ã‚ãªã„ã¨ã‹ */
     const ERR_FILE_NOT_READ = 1;
 
 }

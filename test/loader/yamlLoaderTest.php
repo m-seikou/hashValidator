@@ -9,7 +9,7 @@ class yamlLoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testRead()
     {
-        // 実存しないファイル
+        // 螳溷ｭ倥＠縺ｪ縺�繝輔ぃ繧､繝ｫ
         $loader = new yamlLoader();
         try {
             $loader->load('testReadJsonXX.yml');
@@ -20,11 +20,11 @@ class yamlLoaderTest extends \PHPUnit_Framework_TestCase
             $this->fail();
         }
 
-        // json以外のファイル
+        // yaml莉･螟悶�ｮ繝輔ぃ繧､繝ｫ
         $loader = new yamlLoader();
         try {
             $result = $loader->load(__FILE__);
-            $this->fail($result);
+            $this->fail(var_export($result, true));
         } catch (loaderException $e) {
             $this->assertEquals(loaderException::ERR_FILE_NOT_READ, $e->getCode());
         } catch (\exception $e) {

@@ -10,13 +10,13 @@ interface ruleInterface
 
     /**
      * @param $value
-     * @return mixed ƒoƒŠƒf[ƒVƒ‡ƒ“‚ğ‚©‚¯‚½’l
-     * @throws ruleException ƒoƒŠƒf[ƒVƒ‡ƒ“‚ğ’Ê‰ß‚Å‚«‚È‚¢ê‡‚É”­¶‚·‚é—áŠO
+     * @return mixed ãƒãƒªãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’ã‹ã‘ãŸå€¤
+     * @throws ruleException ãƒãƒªãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’é€šéã§ããªã„å ´åˆã«ç™ºç”Ÿã™ã‚‹ä¾‹å¤–
      */
     public function check($value);
 
     /**
-     * hash ‚Ì•K{İ’è‚ğQÆ‚·‚é‚½‚ß‚ÌƒCƒ“ƒ^[ƒtƒF[ƒX
+     * hashã®å¿…é ˆè¨­å®šã‚’å‚ç…§ã™ã‚‹ãŸã‚ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹
      * @return bool
      */
     public function isOptional();

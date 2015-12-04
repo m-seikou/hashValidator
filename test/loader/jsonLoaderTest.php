@@ -8,7 +8,7 @@ class jsonLoaderTest extends hashValidatorTestCase
 {
     public function testRead()
     {
-        // 実存しないファイル
+        // 螳溷ｭ倥＠縺ｪ縺�繝輔ぃ繧､繝ｫ
         $loader = new jsonLoader();
         try {
             $loader->load('testReadJsonXX.yml');
@@ -19,7 +19,7 @@ class jsonLoaderTest extends hashValidatorTestCase
             $this->fail();
         }
 
-        // json以外のファイル
+        // json莉･螟悶�ｮ繝輔ぃ繧､繝ｫ
         $loader = new jsonLoader();
         try {
             $loader->load('../testData/testReadYaml01.yml');
