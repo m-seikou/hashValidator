@@ -10,17 +10,16 @@ namespace mihoshi\hashValidator;
 require_once dirname(__DIR__) . '/interface/ruleInterface.php';
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'ruleFactory.php';
 
-class listRule implements ruleInterface
+class listRule extends abstractRule
 {
     /** @var  ruleInterface */
     private $rule;
     private $min;
     private $max;
-    private $comment = '';
-    private $optional = false;
 
     public function __construct($rule)
     {
+        parent::__construct($rule);
         if (!isset($rule['rule'])) {
             throw new ruleException();
         }
@@ -30,18 +29,7 @@ class listRule implements ruleInterface
         if (isset($rule['max'])) {
             $this->max = $rule['max'];
         }
-        if (isset($rule['comment'])) {
-            $this->comment = $rule['comment'];
-        }
-        if (isset($rule['optional'])) {
-            $this->optional = $rule['optional'];
-        }
         $this->rule = ruleFactory::getInstance($rule['rule']);
-    }
-
-    public function isOptional()
-    {
-        return $this->optional;
     }
 
     public function check($value)
@@ -68,12 +56,11 @@ class listRule implements ruleInterface
 
     public function dump()
     {
-        $return = [
-            'type' => 'list',
+        $return = array_merge(parent::dump(), [
+            'type' => 'int',
             'rule' => $this->rule->dump(),
-            'comment' => $this->comment,
-            'optional' => $this->optional
-        ];
+        ]);
+
         if (!is_null($this->min)) {
             $return['min'] = $this->min;
         }
