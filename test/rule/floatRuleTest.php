@@ -1,6 +1,7 @@
 <?php
 
 namespace mihoshi\hashValidator;
+
 include_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'hashValidatorTestCase.php';
 include_once str_replace(TEST_ROOT, SRC_ROOT, __DIR__) . '/' . str_replace('Test.php', '.php', basename(__FILE__));
 
@@ -47,10 +48,10 @@ class floatRuleTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $rule->dump()['optional']);
 
         $rule = new floatRule([
-            'max' => 100,
-            'min' => 10,
-            'comment' => 'hogehoge',
-            'optional' => true
+            'max'      => 100,
+            'min'      => 10,
+            'comment'  => 'hogehoge',
+            'optional' => true,
         ]);
         $this->assertArrayHasKey('max', $rule->dump());
         $this->assertEquals(100, $rule->dump()['max']);

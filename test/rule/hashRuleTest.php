@@ -1,6 +1,7 @@
 <?php
 
 namespace mihoshi\hashValidator;
+
 include_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'hashValidatorTestCase.php';
 include_once str_replace(TEST_ROOT, SRC_ROOT, __DIR__) . '/' . str_replace('Test.php', '.php', basename(__FILE__));
 
@@ -32,13 +33,13 @@ class hashRuleTest extends hashValidatorTestCase
                 'key' => [
                     'hoge' => [
                         'type' => 'hash',
-                        'key' => [
+                        'key'  => [
                             'fuga' => [
-                                'type' => 'int'
-                            ]
+                                'type' => 'int',
+                            ],
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ]
         );
         $this->assertSame(['hoge' => ['fuga' => 1]], $validator->check(['hoge' => ['fuga' => 1]]));

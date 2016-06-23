@@ -1,6 +1,7 @@
 <?php
 
 namespace mihoshi\hashValidator;
+
 include_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'hashValidatorTestCase.php';
 include_once str_replace(TEST_ROOT, SRC_ROOT, __DIR__) . '/' . str_replace('Test.php', '.php', basename(__FILE__));
 
@@ -51,9 +52,9 @@ class enumRuleTest extends hashValidatorTestCase
         $this->assertEquals(false, $rule->dump()['optional']);
 
         $rule = new enumRule([
-            'value' => [1],
-            'comment' => 'hogehoge',
-            'optional' => true
+            'value'    => [1],
+            'comment'  => 'hogehoge',
+            'optional' => true,
         ]);
         $this->assertArrayHasKey('comment', $rule->dump());
         $this->assertEquals('hogehoge', $rule->dump()['comment']);

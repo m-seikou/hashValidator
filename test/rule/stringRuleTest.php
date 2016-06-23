@@ -1,6 +1,7 @@
 <?php
 
 namespace mihoshi\hashValidator;
+
 include_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'hashValidatorTestCase.php';
 include_once str_replace(TEST_ROOT, SRC_ROOT, __DIR__) . '/' . str_replace('Test.php', '.php', basename(__FILE__));
 
@@ -68,10 +69,10 @@ class stringRuleTest extends hashValidatorTestCase
         $this->assertEquals(false, $rule->dump()['optional']);
 
         $rule = new stringRule([
-            'max' => 100,
-            'min' => 10,
-            'comment' => 'hogehoge',
-            'optional' => true
+            'max'      => 100,
+            'min'      => 10,
+            'comment'  => 'hogehoge',
+            'optional' => true,
         ]);
         $this->assertArrayHasKey('max', $rule->dump());
         $this->assertEquals(100, $rule->dump()['max']);
