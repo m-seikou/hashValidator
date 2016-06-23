@@ -1,6 +1,7 @@
 <?php
 
 namespace mihoshi\hashValidator;
+
 include_once dirname(__DIR__) . '/interface/loaderInterface.php';
 include_once 'loaderException.php';
 
@@ -20,7 +21,7 @@ class jsonLoader implements loaderInterface
             if (empty($file = file_get_contents($fileName))) {
                 throw new loaderException('file not read:' . $fileName, loaderException::ERR_FILE_NOT_READ);
             }
-            if (NULL === $return = json_decode($file, true)) {
+            if (null === $return = json_decode($file, true)) {
                 throw new loaderException('file not json:' . $fileName, loaderException::ERR_FILE_NOT_READ);
             }
         } catch (loaderException $e) {

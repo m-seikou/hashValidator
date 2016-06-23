@@ -1,6 +1,7 @@
 <?php
 
 namespace mihoshi\hashValidator;
+
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'rule' . DIRECTORY_SEPARATOR . 'ruleFactory.php';
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'hashValidatorException.php';
 

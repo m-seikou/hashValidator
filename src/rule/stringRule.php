@@ -7,13 +7,14 @@
  */
 
 namespace mihoshi\hashValidator;
+
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'abstractRule.php';
 
 class stringRule extends abstractRule
 {
-    private $min = NULL;
-    private $max = NULL;
-    private $preg = NULL;
+    private $min = null;
+    private $max = null;
+    private $preg = null;
 
     public function __construct($rule)
     {
@@ -50,10 +51,10 @@ class stringRule extends abstractRule
 
     public function dump()
     {
-        return array_merge(parent::dump(),[
+        return array_merge(parent::dump(), [
             'type' => 'string',
-            'min' => $this->min,
-            'max' => $this->max,
+            'min'  => $this->min,
+            'max'  => $this->max,
             'preg' => $this->preg,
         ]);
     }

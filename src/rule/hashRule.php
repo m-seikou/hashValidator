@@ -7,6 +7,7 @@
  */
 
 namespace mihoshi\hashValidator;
+
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'abstractRule.php';
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'ruleFactory.php';
 
@@ -51,7 +52,7 @@ class hashRule extends abstractRule
     {
         $return = array_merge(parent::dump(), [
             'type' => 'hash',
-            'key' => [],
+            'key'  => [],
         ]);
         foreach ($this->rule as $key => $rule) {
             $return['key'][$key] = $rule->dump();

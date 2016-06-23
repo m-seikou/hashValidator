@@ -7,12 +7,13 @@
  */
 
 namespace mihoshi\hashValidator;
+
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'abstractRule.php';
 
 class floatRule extends abstractRule
 {
-    private $min = NULL;
-    private $max = NULL;
+    private $min = null;
+    private $max = null;
 
     public function __construct($rule)
     {
@@ -44,8 +45,8 @@ class floatRule extends abstractRule
     {
         return array_merge(parent::dump(), [
             'type' => 'float',
-            'min' => $this->min,
-            'max' => $this->max,
+            'min'  => $this->min,
+            'max'  => $this->max,
         ]);
     }
 

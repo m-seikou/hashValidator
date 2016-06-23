@@ -7,6 +7,7 @@
  */
 
 namespace mihoshi\hashValidator;
+
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'ruleException.php';
 
 class ruleFactory

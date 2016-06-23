@@ -7,11 +7,12 @@
  */
 
 namespace mihoshi\hashValidator;
+
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'abstractRule.php';
 
 class funcRule extends abstractRule
 {
-    private $function = NULL;
+    private $function = null;
 
     public function __construct($rule)
     {
@@ -58,14 +59,14 @@ class funcRule extends abstractRule
     public function dump()
     {
         if (is_array($this->function)) {
-            return array_merge(parent::dump(),[
-                'type' => 'func',
-                'class' => $this->function[0],
+            return array_merge(parent::dump(), [
+                'type'   => 'func',
+                'class'  => $this->function[0],
                 'method' => $this->function[1],
             ]);
-        }else{
-            return array_merge(parent::dump(),[
-                'type' => 'func',
+        } else {
+            return array_merge(parent::dump(), [
+                'type'     => 'func',
                 'function' => $this->function,
             ]);
         }

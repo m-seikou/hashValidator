@@ -7,6 +7,7 @@
  */
 
 namespace mihoshi\hashValidator;
+
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'abstractRule.php';
 
 class intRule extends abstractRule
@@ -44,8 +45,8 @@ class intRule extends abstractRule
     {
         return array_merge(parent::dump(), [
             'type' => 'int',
-            'min' => $this->min,
-            'max' => $this->max,
+            'min'  => $this->min,
+            'max'  => $this->max,
         ]);
     }
 

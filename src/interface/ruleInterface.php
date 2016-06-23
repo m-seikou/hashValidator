@@ -1,6 +1,7 @@
 <?php
 
 namespace mihoshi\hashValidator;
+
 require_once dirname(__DIR__) . '/rule/ruleException.php';
 
 interface ruleInterface
@@ -22,4 +23,6 @@ interface ruleInterface
     public function isOptional();
 
     public function dump();
+
+    public function getDefault();
 }

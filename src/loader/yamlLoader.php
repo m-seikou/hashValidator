@@ -1,6 +1,7 @@
 <?php
 
 namespace mihoshi\hashValidator;
+
 include_once dirname(__DIR__) . '/interface/loaderInterface.php';
 include_once 'loaderException.php';
 

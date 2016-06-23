@@ -7,12 +7,14 @@
  */
 
 namespace mihoshi\hashValidator;
+
 require_once dirname(__DIR__) . '/interface/ruleInterface.php';
 
 abstract class abstractRule implements ruleInterface
 {
     protected $comment = '';
     protected $optional = false;
+    protected $default = null;
 
     public function __construct($rule)
     {
@@ -21,6 +23,9 @@ abstract class abstractRule implements ruleInterface
         }
         if (isset($rule['optional'])) {
             $this->optional = $rule['optional'];
+        }
+        if (isset($rule['default'])) {
+            $this->default = $rule['default'];
         }
     }
 
@@ -36,9 +41,14 @@ abstract class abstractRule implements ruleInterface
     public function dump()
     {
         return [
-            'comment' => $this->comment,
-            'optional' => $this->optional
+            'comment'  => $this->comment,
+            'optional' => $this->optional,
         ];
     }
 
+    public function getDefault()
+    {
+        return $this->default;
+
+    }
 }

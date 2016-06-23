@@ -7,6 +7,7 @@
  */
 
 namespace mihoshi\hashValidator;
+
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'abstractRule.php';
 
 class enumRule extends abstractRule
@@ -45,7 +46,7 @@ class enumRule extends abstractRule
     public function dump()
     {
         return array_merge(parent::dump(), [
-            'type' => 'enum',
+            'type'  => 'enum',
             'value' => $this->value,
         ]);
     }
