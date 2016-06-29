@@ -17,7 +17,7 @@ class yamlLoaderTest extends \PHPUnit_Framework_TestCase
             $this->fail();
         } catch (loaderException $e) {
             $this->assertEquals(loaderException::ERR_FILE_NOT_READ, $e->getCode());
-        } catch (\exception $e) {
+        } catch (\Exception $e) {
             $this->fail();
         }
 
@@ -28,7 +28,7 @@ class yamlLoaderTest extends \PHPUnit_Framework_TestCase
             $this->fail(var_export($result, true));
         } catch (loaderException $e) {
             $this->assertEquals(loaderException::ERR_FILE_NOT_READ, $e->getCode());
-        } catch (\exception $e) {
+        } catch (\Exception $e) {
             $this->fail(get_class($e) . PHP_EOL . $e->getMessage() . PHP_EOL . $e->getTraceAsString());
         }
 
@@ -40,7 +40,13 @@ class yamlLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $loader = new yamlLoader();
         $def = $loader->load(realpath(dirname(__DIR__) . '/testData/testIncludeYaml01.yml'));
-        $this->assertSame(["type" => "hash", "key" => ["key1" => ["type" => "int", "min" => 0,]]], $def);
+        $this->assertSame([
+            "type" => "hash",
+            "key"  => [
+                "key1" => ["type" => "int", "min" => 0,],
+                'key2' => ['type' => 'int'],
+            ],
+        ], $def);
     }
 
 }

@@ -41,6 +41,7 @@ abstract class abstractRule implements ruleInterface
     public function dump()
     {
         return [
+            'type'     => str_replace(__NAMESPACE__ . '\\', '', str_replace('Rule', '', get_called_class())),
             'comment'  => $this->comment,
             'optional' => $this->optional,
         ];

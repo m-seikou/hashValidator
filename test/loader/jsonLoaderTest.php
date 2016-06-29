@@ -16,7 +16,7 @@ class jsonLoaderTest extends hashValidatorTestCase
             $this->fail();
         } catch (loaderException $e) {
             $this->assertEquals(loaderException::ERR_FILE_NOT_READ, $e->getCode());
-        } catch (\exception $e) {
+        } catch (\Exception $e) {
             $this->fail();
         }
 
@@ -27,7 +27,7 @@ class jsonLoaderTest extends hashValidatorTestCase
             $this->fail();
         } catch (loaderException $e) {
             $this->assertEquals(loaderException::ERR_FILE_NOT_READ, $e->getCode());
-        } catch (\exception $e) {
+        } catch (\Exception $e) {
             $this->fail();
         }
 
