@@ -34,6 +34,9 @@ class hashRule extends abstractRule
             if (false === array_key_exists($key, $value)) {
                 if ($rule->isOptional()) {
                     continue;
+                } elseif (!is_null($default = $rule->getDefault())) {
+                    $return[$key] = $default;
+                    continue;
                 } else {
                     throw new ruleException('undefined key:' . $key);
                 }

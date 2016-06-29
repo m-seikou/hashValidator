@@ -49,6 +49,5 @@ abstract class abstractRule implements ruleInterface
     public function getDefault()
     {
         return $this->default;
-
     }
 }

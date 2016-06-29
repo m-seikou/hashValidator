@@ -33,7 +33,8 @@ class yamlLoader implements loaderInterface
         foreach ($def as &$d) {
             if (isset($d['include'])) {
                 $fileName = realpath($path . DIRECTORY_SEPARATOR . $d['include']);
-                $d = $this->load($fileName);
+                unset($d['include']);
+                $d = array_merge_recursive($d, $this->load($fileName));
             }
             $d = $this->resolveIncludeFile($d, $path);
         }

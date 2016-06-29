@@ -8,8 +8,7 @@
 
 namespace mihoshi\hashValidator;
 
-require_once dirname(__DIR__) . '/interface/ruleInterface.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'ruleFactory.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'abstractRule.php';
 
 class listRule extends abstractRule
 {
