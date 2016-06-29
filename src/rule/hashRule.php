@@ -54,7 +54,6 @@ class hashRule extends abstractRule
     public function dump()
     {
         $return = array_merge(parent::dump(), [
-            'type' => 'hash',
             'key'  => [],
         ]);
         foreach ($this->rule as $key => $rule) {

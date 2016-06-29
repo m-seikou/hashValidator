@@ -60,13 +60,11 @@ class funcRule extends abstractRule
     {
         if (is_array($this->function)) {
             return array_merge(parent::dump(), [
-                'type'   => 'func',
                 'class'  => $this->function[0],
                 'method' => $this->function[1],
             ]);
         } else {
             return array_merge(parent::dump(), [
-                'type'     => 'func',
                 'function' => $this->function,
             ]);
         }

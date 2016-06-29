@@ -33,13 +33,4 @@ class boolRule extends abstractRule
         $value = (bool)$value;
         return $value;
     }
-
-    public function dump()
-    {
-        return array_merge(parent::dump(), [
-            'type' => 'bool',
-        ]);
-    }
-
-
 }
