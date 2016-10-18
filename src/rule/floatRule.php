@@ -44,7 +44,6 @@ class floatRule extends abstractRule
     public function dump()
     {
         return array_merge(parent::dump(), [
-            'type' => 'float',
             'min'  => $this->min,
             'max'  => $this->max,
         ]);

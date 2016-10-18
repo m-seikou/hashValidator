@@ -46,7 +46,6 @@ class enumRule extends abstractRule
     public function dump()
     {
         return array_merge(parent::dump(), [
-            'type'  => 'enum',
             'value' => $this->value,
         ]);
     }

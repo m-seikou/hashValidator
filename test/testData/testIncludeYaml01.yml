@@ -3,3 +3,5 @@ type: hash
 key:
   key1:
     include: "./testIncludeYaml02.yml"
+  key2:
+    type: int
