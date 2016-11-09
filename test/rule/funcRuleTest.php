@@ -29,17 +29,16 @@ class funcRuleTest extends hashValidatorTestCase
         throw new \Exception($arg);
     }
 
+    public static function callbackInstance($arg){
+        return new \stdClass();
+    }
+
     public function testValue()
     {
         $validator = new funcRule(['class' => __CLASS__, 'method' => 'callbackEcho']);
 
         $this->assertTrue($validator->check(true));
-        try {
-            $validator->check(false);
-            $this->fail();
-        } catch (invalidDataException $e) {
-            echo $e->getMessage() . PHP_EOL;
-        }
+        $this->assertFalse($validator->check(false));
 
         $validator = new funcRule(['class' => __CLASS__, 'method' => 'callbackThrow']);
         try {
@@ -48,6 +47,10 @@ class funcRuleTest extends hashValidatorTestCase
         } catch (invalidDataException $e) {
             echo $e->getMessage() . PHP_EOL;
         }
+        $validator = new funcRule(['class' => __CLASS__, 'method' => 'callbackInstance']);
+
+        $this->assertInstanceOf('stdClass',$validator->check(false));
+
     }
 
 
