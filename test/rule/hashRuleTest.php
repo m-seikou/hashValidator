@@ -16,13 +16,13 @@ class hashRuleTest extends hashValidatorTestCase
         try {
             $validator->check(['fuga' => 1]);
             $this->fail();
-        } catch (ruleException $e) {
+        } catch (invalidDataException $e) {
             echo $e->getMessage() . PHP_EOL;
         }
         try {
             $validator->check(['hoge' => 'aa']);
             $this->fail();
-        } catch (ruleException $e) {
+        } catch (invalidDataException $e) {
             echo $e->getMessage() . PHP_EOL;
         }
         $validator = new hashRule(['key' => ['hoge' => ['type' => 'int', 'optional' => true]]]);
@@ -46,7 +46,7 @@ class hashRuleTest extends hashValidatorTestCase
         try {
             $validator->check(['hoge' => ['fuga' => 'bb']]);
             $this->fail();
-        } catch (ruleException $e) {
+        } catch (invalidDataException $e) {
             echo $e->getMessage() . PHP_EOL;
         }
 

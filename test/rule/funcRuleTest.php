@@ -13,7 +13,7 @@ class funcRuleTest extends hashValidatorTestCase
             try {
                 new funcRule([$value]);
                 $this->fail();
-            } catch (ruleException $e) {
+            } catch (invalidRuleException $e) {
                 echo $e->getMessage() . PHP_EOL;
             }
         }
@@ -37,7 +37,7 @@ class funcRuleTest extends hashValidatorTestCase
         try {
             $validator->check(false);
             $this->fail();
-        } catch (ruleException $e) {
+        } catch (invalidDataException $e) {
             echo $e->getMessage() . PHP_EOL;
         }
 
@@ -45,7 +45,7 @@ class funcRuleTest extends hashValidatorTestCase
         try {
             $validator->check(false);
             $this->fail();
-        } catch (ruleException $e) {
+        } catch (invalidDataException $e) {
             echo $e->getMessage() . PHP_EOL;
         }
     }

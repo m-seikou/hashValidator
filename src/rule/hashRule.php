@@ -20,7 +20,7 @@ class hashRule extends abstractRule
     {
         parent::__construct($rule);
         if (!isset($rule['key']) && is_array($rule['key'])) {
-            throw new ruleException();
+            throw new invalidRuleException();
         }
         foreach ($rule['key'] as $key => $rule) {
             $this->rule[$key] = ruleFactory::getInstance($rule);
@@ -38,14 +38,14 @@ class hashRule extends abstractRule
                     $return[$key] = $default;
                     continue;
                 } else {
-                    throw new ruleException('undefined key:' . $key);
+                    throw new invalidDataException('undefined key:' . $key);
                 }
             }
 
             try {
                 $return[$key] = $rule->check($value[$key]);
             } catch (\Exception $e) {
-                throw new ruleException('[' . $key . ']' . $e->getMessage(), $e->getCode(), $e);
+                throw new invalidDataException('[' . $key . ']' . $e->getMessage(), $e->getCode(), $e);
             }
         }
         return $return;

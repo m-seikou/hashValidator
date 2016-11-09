@@ -28,7 +28,7 @@ class boolRule extends abstractRule
             return null;
         }
         if (!is_bool($value)) {
-            throw new ruleException('invalid int value:' . var_export($value, true));
+            throw new invalidDataException('invalid int value:' . var_export($value, true));
         }
         $value = (bool)$value;
         return $value;

@@ -36,14 +36,14 @@ class intRule extends abstractRule
             return null;
         }
         if (!is_numeric($value)) {
-            throw new ruleException('invalid int value:' . var_export($value, true));
+            throw new invalidDataException('invalid int value:' . var_export($value, true));
         }
         $value = (int)$value;
         if ($value < $this->min) {
-            throw new ruleException('input:' . $value . ' less than ' . $this->min);
+            throw new invalidDataException('input:' . $value . ' less than ' . $this->min);
         }
         if ($value > $this->max) {
-            throw new ruleException('input:' . $value . ' grater than ' . $this->max);
+            throw new invalidDataException('input:' . $value . ' grater than ' . $this->max);
         }
         return $value;
     }

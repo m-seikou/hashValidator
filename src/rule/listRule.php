@@ -21,7 +21,7 @@ class listRule extends abstractRule
     {
         parent::__construct($rule);
         if (!isset($rule['rule'])) {
-            throw new ruleException();
+            throw new invalidRuleException();
         }
         if (isset($rule['min'])) {
             $this->min = $rule['min'];
@@ -36,19 +36,19 @@ class listRule extends abstractRule
     {
         $return = [];
         if (!is_array($value)) {
-            throw new ruleException('invalid list value:' . $value . ' not array');
+            throw new invalidDataException('invalid list value:' . $value . ' not array');
         }
         if (!is_null($this->min) && count($value) < $this->min) {
-            throw new ruleException('fewer element :' . count($value));
+            throw new invalidDataException('fewer element :' . count($value));
         }
         if (!is_null($this->max) && count($value) > $this->max) {
-            throw new ruleException('more element :' . count($value));
+            throw new invalidDataException('more element :' . count($value));
         }
         foreach ($value as $key => $element) {
             try {
                 $return[$key] = $this->rule->check($element);
-            } catch (ruleException $e) {
-                throw new ruleException('[' . $key . ']' . $e->getMessage(), $e->getCode(), $e);
+            } catch (invalidDataException $e) {
+                throw new invalidDataException('[' . $key . ']' . $e->getMessage(), $e->getCode(), $e);
             }
         }
         return $return;
