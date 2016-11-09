@@ -17,7 +17,7 @@ class floatRuleTest extends \PHPUnit_Framework_TestCase
             try {
                 $validator->check($data);
                 $this->fail();
-            } catch (ruleException $e) {
+            } catch (invalidDataException $e) {
                 echo $e->getMessage() . PHP_EOL;
             }
         }
@@ -30,7 +30,7 @@ class floatRuleTest extends \PHPUnit_Framework_TestCase
             try {
                 $validator->check($data);
                 $this->fail();
-            } catch (ruleException $e) {
+            } catch (invalidDataException $e) {
                 echo $e->getMessage() . PHP_EOL;
             }
         }

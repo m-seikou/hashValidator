@@ -13,7 +13,7 @@ class enumRuleTest extends hashValidatorTestCase
             try {
                 new enumRule(['value' => $value]);
                 $this->fail();
-            } catch (ruleException $e) {
+            } catch (invalidRuleException $e) {
                 echo $e->getMessage() . PHP_EOL;
             }
         }
@@ -31,7 +31,7 @@ class enumRuleTest extends hashValidatorTestCase
             try {
                 $validator->check($data);
                 $this->fail();
-            } catch (ruleException $e) {
+            } catch (invalidDataException $e) {
                 echo $e->getMessage() . PHP_EOL;
             }
         }

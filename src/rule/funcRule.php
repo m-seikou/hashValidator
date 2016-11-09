@@ -19,22 +19,22 @@ class funcRule extends abstractRule
         parent::__construct($rule);
         if (isset($rule['class'])) {
             if (!class_exists($rule['class'])) {
-                throw new ruleException('class:' . $rule['class'] . ' not exist');
+                throw new invalidRuleException('class:' . $rule['class'] . ' not exist');
             }
             if (!isset($rule['method'])) {
-                throw new ruleException('method is not undefined');
+                throw new invalidRuleException('method is not undefined');
             }
             if (!method_exists($rule['class'], $rule['method'])) {
-                throw new ruleException('method:' . $rule['method'] . ' not exist in ' . $rule['class']);
+                throw new invalidRuleException('method:' . $rule['method'] . ' not exist in ' . $rule['class']);
             }
             $this->function = [$rule['class'], $rule['method']];
         } elseif (isset($rule['function'])) {
             if (!function_exists($rule['function'])) {
-                throw new ruleException('method:' . $rule['method'] . ' not exist in ' . $rule['class']);
+                throw new invalidRuleException('method:' . $rule['method'] . ' not exist in ' . $rule['class']);
             }
             $this->function = $rule['function'];
         } else {
-            throw new ruleException('func rule require "class" or "function" property');
+            throw new invalidRuleException('func rule require "class" or "function" property');
         }
         if (isset($rule['comment'])) {
             $this->comment = $rule['comment'];
@@ -48,10 +48,10 @@ class funcRule extends abstractRule
     {
         try {
             if (!call_user_func($this->function, $value)) {
-                throw new ruleException('invalid value:' . var_export($value, true));
+                throw new invalidDataException('invalid value:' . var_export($value, true));
             }
         } catch (\Exception $e) {
-            throw new ruleException($e->getMessage(), $e->getCode(), $e);
+            throw new invalidDataException($e->getMessage(), $e->getCode(), $e);
         }
         return $value;
     }

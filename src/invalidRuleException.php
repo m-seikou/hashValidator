@@ -9,7 +9,7 @@
 namespace mihoshi\hashValidator;
 
 
-class hashValidatorException extends \Exception
+class invalidRuleException extends \InvalidArgumentException
 {
 
 }

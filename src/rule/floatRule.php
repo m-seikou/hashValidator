@@ -29,14 +29,14 @@ class floatRule extends abstractRule
     public function check($value)
     {
         if (!is_numeric($value)) {
-            throw new ruleException('invalid int value:' . var_export($value, true));
+            throw new invalidDataException('invalid int value:' . var_export($value, true));
         }
         $value = (float)$value;
         if (!is_null($this->min) && $value < $this->min) {
-            throw new ruleException('input:' . $value . ' less than ' . $this->min);
+            throw new invalidDataException('input:' . $value . ' less than ' . $this->min);
         }
         if (!is_null($this->max) && $value > $this->max) {
-            throw new ruleException('input:' . $value . ' grater than ' . $this->max);
+            throw new invalidDataException('input:' . $value . ' grater than ' . $this->max);
         }
         return $value;
     }

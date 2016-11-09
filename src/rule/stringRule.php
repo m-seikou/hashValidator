@@ -40,18 +40,18 @@ class stringRule extends abstractRule
             return null;
         }
         if (!is_scalar($value)) {
-            throw new ruleException('invalid string value:' . var_export($value, true));
+            throw new invalidDataException('invalid string value:' . var_export($value, true));
         }
         $value = (string)$value;
         $len = strlen($value);
         if (isset($this->min) && $len < $this->min) {
-            throw new ruleException('input length:' . $len . ' less than ' . $this->min);
+            throw new invalidDataException('input length:' . $len . ' less than ' . $this->min);
         }
         if (isset($this->max) && $len > $this->max) {
-            throw new ruleException('input length:' . $len . ' grater than ' . $this->max);
+            throw new invalidDataException('input length:' . $len . ' grater than ' . $this->max);
         }
         if (isset($this->preg) && !preg_match($this->preg, $value)) {
-            throw new ruleException('input:' . $value . ' not match ' . $this->preg);
+            throw new invalidDataException('input:' . $value . ' not match ' . $this->preg);
         }
         return $value;
     }

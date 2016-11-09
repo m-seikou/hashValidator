@@ -15,7 +15,7 @@ class listRuleTest extends hashValidatorTestCase
         try {
             $validator->check([0, 1, 2, 'a']);
             $this->fail();
-        } catch (ruleException $e) {
+        } catch (invalidDataException $e) {
             echo $e->getMessage() . PHP_EOL;
         }
         $validator = new listRule(['rule' => ['type' => 'int'], 'min' => 2]);
@@ -23,7 +23,7 @@ class listRuleTest extends hashValidatorTestCase
         try {
             $validator->check([0]);
             $this->fail();
-        } catch (ruleException $e) {
+        } catch (invalidDataException $e) {
             echo $e->getMessage() . PHP_EOL;
         }
         $validator = new listRule(['rule' => ['type' => 'int'], 'max' => 3]);
@@ -31,7 +31,7 @@ class listRuleTest extends hashValidatorTestCase
         try {
             $validator->check([0, 1, 2, 3]);
             $this->fail();
-        } catch (ruleException $e) {
+        } catch (invalidDataException $e) {
             echo $e->getMessage() . PHP_EOL;
         }
     }

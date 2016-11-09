@@ -17,16 +17,16 @@ class ruleFactory
         try {
             $class = $rule['type'] . 'Rule';
             if (!file_exists(__DIR__ . DIRECTORY_SEPARATOR . $class . '.php')) {
-                throw new ruleException('rule not found:' . $rule['type']);
+                throw new invalidRuleException('rule not found:' . $rule['type']);
             }
             require_once __DIR__ . DIRECTORY_SEPARATOR . $class . '.php';
             $class = __NAMESPACE__ . '\\' . $class;
             unset($rule['type']);
             return new $class($rule);
-        } catch (ruleException $e) {
+        } catch (invalidRuleException $e) {
             throw $e;
         } catch (\Exception $e) {
-            throw new ruleException($e->getMessage(), $e->getCode(), $e);
+            throw new invalidRuleException($e->getMessage(), $e->getCode(), $e);
         }
     }
 }

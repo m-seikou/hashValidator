@@ -17,7 +17,7 @@ class stringRuleTest extends hashValidatorTestCase
             try {
                 $validator->check($data);
                 $this->fail();
-            } catch (ruleException $e) {
+            } catch (invalidDataException $e) {
                 echo $e->getMessage() . PHP_EOL;
             }
         }
@@ -34,7 +34,7 @@ class stringRuleTest extends hashValidatorTestCase
             try {
                 $validator->check($data);
                 $this->fail();
-            } catch (ruleException $e) {
+            } catch (invalidDataException $e) {
                 echo $e->getMessage() . PHP_EOL;
             }
         }
@@ -51,7 +51,7 @@ class stringRuleTest extends hashValidatorTestCase
             try {
                 $validator->check($data);
                 $this->fail($data);
-            } catch (ruleException $e) {
+            } catch (invalidDataException $e) {
                 echo $e->getMessage() . PHP_EOL;
             }
         }

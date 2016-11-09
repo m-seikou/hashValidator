@@ -17,7 +17,7 @@ class intRuleTest extends hashValidatorTestCase
             try {
                 $validator->check($data);
                 $this->fail();
-            } catch (ruleException $e) {
+            } catch (invalidDataException $e) {
                 echo $e->getMessage() . PHP_EOL;
             }
         }
@@ -30,7 +30,7 @@ class intRuleTest extends hashValidatorTestCase
             try {
                 $validator->check($data);
                 $this->fail();
-            } catch (ruleException $e) {
+            } catch (invalidDataException $e) {
                 echo $e->getMessage() . PHP_EOL;
             }
         }

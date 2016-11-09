@@ -2,7 +2,8 @@
 
 namespace mihoshi\hashValidator;
 
-require_once dirname(__DIR__) . '/rule/ruleException.php';
+require_once dirname(__DIR__) . '/invalidDataException.php';
+require_once dirname(__DIR__) . '/invalidRuleException.php';
 
 interface ruleInterface
 {
