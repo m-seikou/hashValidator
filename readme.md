@@ -65,7 +65,8 @@ $result = (new \mihoshi\hashValidator\hashValidator($def))
 
 `function` または`class` `method`の組のどちらかが必須。
 指定の関数を呼び出します。(`class` `method`の場合静的methodを呼ぶ)
-この関数は、チェック対象の値を受け取り、booleanを返す必要があります。
+この関数は、チェック対象の値を受け取り、条件に合わない場合例外をthrowする。
+また、チェック対象の値は関数の戻り値に置き換えられる
 
 ### リスト
 

@@ -47,9 +47,7 @@ class funcRule extends abstractRule
     public function check($value)
     {
         try {
-            if (!call_user_func($this->function, $value)) {
-                throw new invalidDataException('invalid value:' . var_export($value, true));
-            }
+            $value = call_user_func($this->function, $value);
         } catch (\Exception $e) {
             throw new invalidDataException($e->getMessage(), $e->getCode(), $e);
         }
