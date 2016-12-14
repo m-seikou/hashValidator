@@ -24,9 +24,10 @@ function export($fp, array $rule, string $class, int $indent, bool $addProp)
             fputs($fp, indent($indent) . 'public ' . $rule['type'] . ' ' . $class . ';' . PHP_EOL);
             return $rule['type'];
         case 'hash':
+            $classPrefix = $indent === 0 ? '' : 'cls_';
             fputs($fp, PHP_EOL .
                 indent($indent) . '[System.Serializable]' . PHP_EOL .
-                indent($indent) . 'public class cls_' . $class . ' {' . PHP_EOL
+                indent($indent) . 'public class ' . $classPrefix . $class . ' {' . PHP_EOL
             );
             foreach ($rule['key'] as $name => $r) {
                 export($fp, $r, $name, $indent + 1, true);

@@ -54,6 +54,7 @@ option
     -o output file path *required*
     --namespace output file add `namespace ..`
     --class output top level class name (for hash rule)
+
 USAGE;
     exit(1);
 }
