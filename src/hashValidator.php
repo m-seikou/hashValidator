@@ -2,6 +2,8 @@
 
 namespace mihoshi\hashValidator;
 
+use mihoshi\hashValidator\exceptions\loaderException;
+
 require_once '../vendor/autoload.php';
 
 /**
@@ -17,17 +19,19 @@ class hashValidator
      * hashValidator constructor.
      * @param array|String $arg ルール配列 or ルールファイルのパス
      * @param string $type [hash|yaml|json] $arg 種類
-     * @throws exceptions\invalidRuleException
+     * @throws exceptions\loaderException
      */
     public function __construct($arg, $type = 'hash')
     {
-        $file = __DIR__ . DIRECTORY_SEPARATOR . $type . 'Loader.php';
-        if (!file_exists($file)) {
-            throw new exceptions\invalidRuleException('invalid data type:' . $type);
-        }
-        require_once $file;
         $class = __NAMESPACE__ . '\\' . $type . 'Loader';
-        /** @var interfaces\loaderInterface $loader */
+        if (!class_exists($class, false)) {
+            $file = __DIR__ . DIRECTORY_SEPARATOR . 'loader' . DIRECTORY_SEPARATOR . $type . 'Loader.php';
+            if (!file_exists($file)) {
+                throw new loaderException('invalid data type:' . $type);
+            }
+            require_once $file;
+        }
+        /** @var Interfaces\loaderInterface $loader */
         $loader = new $class();
 
         $this->rule = rule\ruleFactory::getInstance($loader->load($arg));
