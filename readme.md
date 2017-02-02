@@ -102,31 +102,32 @@ $result = (new \mihoshi\hashValidator\hashValidator($def))
 
 ```yml:example.yaml
 type:hash
-hoge_int:
-    type:int
-    min:1
-    max:9999
-hoge_string:
-    preg:/\Ahoge/
-hoge_list:
-    rule:
-        type:string
-hoge_enum:
-    type:enum
-    value:
-        - a
-        - b
-        - x
-        - z
+key:
+    hoge_int:
+        type:int
+        min:1
+        max:9999
+    hoge_string:
+        preg:/\Ahoge/
+    hoge_list:
+        rule:
+            type:string
+    hoge_enum:
+        type:enum
+        value:
+            - a
+            - b
+            - x
+            - z
 ```
 のようなルールがあって、
 ```php:data.php
-$data = array(
+$data = [
     'hoge_int' => 1234,
     'hoge_string' => 'hogehoge',
     'hoge_list' => ['fuga','piyo','honyara'],
     'hoge_enum' => 'b',
-);
+];
 ```
 のデータに対してバリデーションを行うには
 ```php:example.php

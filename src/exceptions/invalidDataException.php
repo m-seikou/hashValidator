@@ -9,7 +9,20 @@
 namespace mihoshi\hashValidator\exceptions;
 
 
+use Exception;
+
 class invalidDataException extends \UnexpectedValueException
 {
+    protected $clientMessage = '';
 
+    public function __construct($message = "", $code = 0, Exception $previous = null, $clientMessage = '')
+    {
+        parent::__construct($message, $code, $previous);
+        $this->clientMessage = $clientMessage;
+    }
+
+    public function getClientMessage()
+    {
+        return $this->clientMessage;
+    }
 }

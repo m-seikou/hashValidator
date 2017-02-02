@@ -47,10 +47,10 @@ final class enumRule extends abstractRule
     public function check($value)
     {
         if (!is_scalar($value)) {
-            throw new invalidDataException('invalid enum value:' . var_export($value, true));
+            throw new invalidDataException('invalid enum value:' . var_export($value, true), 0, null, $this->message);
         }
         if (!in_array($value, $this->value)) {
-            throw new invalidDataException('invalid enum value:' . $value . ' in [' . implode(',', $this->value) . ']');
+            throw new invalidDataException('invalid enum value:' . $value . ' in [' . implode(',', $this->value) . ']', 0, null, $this->message);
         }
         return $this->value[array_search($value, $this->value)];
     }

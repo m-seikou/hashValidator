@@ -54,7 +54,7 @@ final class funcRule extends abstractRule
         try {
             $value = call_user_func($this->function, $value);
         } catch (\Exception $e) {
-            throw new invalidDataException($e->getMessage(), $e->getCode(), $e);
+            throw new invalidDataException($e->getMessage(), $e->getCode(), $e, $this->message);
         }
         return $value;
     }
