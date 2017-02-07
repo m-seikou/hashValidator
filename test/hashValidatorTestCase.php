@@ -8,6 +8,7 @@
 
 namespace mihoshi\hashValidator;
 
+include_once dirname(__DIR__).DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
 define('SRC_ROOT', dirname(__DIR__) . '/src');
 define('TEST_ROOT', __DIR__);
 

@@ -23,17 +23,9 @@ class hashValidator
      */
     public function __construct($arg, $type = 'hash')
     {
-        $class = __NAMESPACE__ . '\\' . $type . 'Loader';
-        if (!class_exists($class, false)) {
-            $file = __DIR__ . DIRECTORY_SEPARATOR . 'loader' . DIRECTORY_SEPARATOR . $type . 'Loader.php';
-            if (!file_exists($file)) {
-                throw new loaderException('invalid data type:' . $type);
-            }
-            require_once $file;
-        }
+        $class = __NAMESPACE__ . '\\loader\\' . $type . 'Loader';
         /** @var Interfaces\loaderInterface $loader */
         $loader = new $class();
-
         $this->rule = rule\ruleFactory::getInstance($loader->load($arg));
     }
 

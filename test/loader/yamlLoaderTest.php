@@ -5,7 +5,7 @@ namespace mihoshi\hashValidator;
 use mihoshi\hashValidator\loaders\yamlLoader;
 use mihoshi\hashValidator\exceptions\loaderException;
 
-class yamlLoaderTest extends \PHPUnit_Framework_TestCase
+class yamlLoaderTest extends hashValidatorTestCase
 {
     public function testRead()
     {

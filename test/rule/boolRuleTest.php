@@ -11,7 +11,7 @@ namespace mihoshi\hashValidator;
 use mihoshi\hashValidator\rule\boolRule;
 use mihoshi\hashValidator\exceptions\invalidDataException;
 
-class boolRuleTest extends \PHPUnit_Framework_TestCase
+class boolRuleTest extends hashValidatorTestCase
 {
     public function dataPass()
     {

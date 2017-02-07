@@ -4,7 +4,7 @@ namespace mihoshi\hashValidator;
 
 use mihoshi\hashValidator\rule\floatRule;
 
-class floatRuleTest extends \PHPUnit_Framework_TestCase
+class floatRuleTest extends hashValidatorTestCase
 {
     public function dataPass()
     {

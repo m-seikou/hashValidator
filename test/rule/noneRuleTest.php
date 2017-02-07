@@ -10,7 +10,7 @@ namespace mihoshi\hashValidator;
 
 use mihoshi\hashValidator\rule\noneRule;
 
-class noneRuleTest extends \PHPUnit_Framework_TestCase
+class noneRuleTest extends hashValidatorTestCase
 {
     public function dataPass()
     {

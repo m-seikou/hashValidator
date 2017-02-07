@@ -3,7 +3,6 @@
 namespace mihoshi\hashValidator;
 
 use mihoshi\hashValidator\rule\intRule;
-use mihoshi\hashValidator\exceptions\invalidDataException;
 
 class intRuleTest extends hashValidatorTestCase
 {

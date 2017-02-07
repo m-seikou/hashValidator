@@ -3,8 +3,6 @@
 namespace mihoshi\hashValidator;
 
 use mihoshi\hashValidator\rule\funcRule;
-use mihoshi\hashValidator\exceptions\invalidDataException;
-use mihoshi\hashValidator\exceptions\invalidRuleException;
 
 class funcRuleTest extends hashValidatorTestCase
 {

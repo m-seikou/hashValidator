@@ -3,16 +3,12 @@
  * Created by PhpStorm.
  * User: 423
  * Date: 2015/07/29
- * Time: 17:43
+ * Time: 18:25
  */
 
 namespace mihoshi\hashValidator\rule;
 
-final class noneRule extends abstractRule
+class ruleException extends \Exception
 {
-	public function check($value)
-	{
-		return $value;
-	}
 
 }
