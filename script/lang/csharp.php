@@ -39,7 +39,12 @@ function export($fp, array $rule, string $class, int $indent, bool $addProp)
             }
             return 'cls_' . $class;
         case 'list':
-            $type = export($fp, $rule['rule'], $class, $indent, false);
+            var_dump($rule);
+            if($rule['rule'] === 'hash'){
+                $type = export($fp, $rule['rule'], $class, $indent, false);
+            }else{
+                $type = $rule['rule'];
+            }
             fputs($fp, indent($indent) . 'public ' . $type . '[] ' . $class . ';' . PHP_EOL);
             return $type;
         case 'enum':
