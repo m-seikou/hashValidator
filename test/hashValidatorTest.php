@@ -20,8 +20,7 @@ class hashValidatorTest extends hashValidatorTestCase
 
     public function testGetDefine()
     {
-        $validator =
-            new hashValidator(['type' => 'hash', 'key' => ['hoge' => ['type' => 'int']]], 'hash');
+        $validator = new hashValidator(['type' => 'hash', 'key' => ['hoge' => ['type' => 'int']]], 'hash');
         $def = $validator->dump();
         $this->assertArrayHasKey('type', $def);
         $this->assertArrayHasKey('key', $def);
@@ -29,4 +28,22 @@ class hashValidatorTest extends hashValidatorTestCase
         $this->assertArrayHasKey('type', $def['key']['hoge']);
     }
 
+    /**
+     * @expectedException \mihoshi\hashValidator\invalidRuleException
+     * @expectedExceptionMessage [aaa][hoge]rule not found:noRule
+     */
+    public function testInvalidRule()
+    {
+        new hashValidator([
+            'type' => 'hash',
+            'key' => [
+                'aaa' => [
+                    'type' => 'hash',
+                    'key' => [
+                        'hoge' => ['type' => 'noRule'] // ここでエラーになる
+                    ]
+                ],
+            ]
+        ], 'hash');
+    }
 }

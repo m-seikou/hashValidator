@@ -21,10 +21,14 @@ final class hashRule extends abstractRule
     {
         parent::__construct($rule);
         if (!isset($rule['key']) || !is_array($rule['key'])) {
-            throw new invalidRuleException();
+            throw new invalidRuleException('undefined "key" data ');
         }
         foreach ($rule['key'] as $key => $rule) {
-            $this->rule[$key] = ruleFactory::getInstance($rule);
+            try {
+                $this->rule[$key] = ruleFactory::getInstance($rule);
+            } catch (invalidRuleException $e) {
+                throw new invalidRuleException('[' . $key . ']' . $e->getMessage(), $e->getCode(), $e);
+            }
         }
     }
 

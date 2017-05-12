@@ -26,7 +26,11 @@ class hashValidator
         $class = __NAMESPACE__ . '\\loader\\' . $type . 'Loader';
         /** @var Interfaces\loaderInterface $loader */
         $loader = new $class();
-        $this->rule = rule\ruleFactory::getInstance($loader->load($arg));
+        try {
+            $this->rule = rule\ruleFactory::getInstance($loader->load($arg));
+        } catch (\Exception $e) {
+            throw new loaderException($e->getMessage(), $e->getCode());
+        }
     }
 
     public function dump()

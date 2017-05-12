@@ -22,7 +22,7 @@ final class listRule extends abstractRule
     {
         parent::__construct($rule);
         if (!isset($rule['rule'])) {
-            throw new invalidRuleException();
+            throw new invalidRuleException('invalid rule format');
         }
         if (isset($rule['min'])) {
             $this->min = (int)$rule['min'];
@@ -30,7 +30,11 @@ final class listRule extends abstractRule
         if (isset($rule['max'])) {
             $this->max = (int)$rule['max'];
         }
-        $this->rule = ruleFactory::getInstance($rule['rule']);
+        try {
+            $this->rule = ruleFactory::getInstance($rule['rule']);
+        } catch (invalidRuleException $e) {
+            throw new invalidRuleException('[list]' . $e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     public function check($value)
