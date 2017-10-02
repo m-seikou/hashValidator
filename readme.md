@@ -84,6 +84,18 @@ $result = (new \mihoshi\hashValidator\hashValidator($def))
 |type|hash|
 |(キー名)|キーに適用するルール|
 
+### 日時
+
+|key|value|
+|:---|:---|
+|type|datetime|
+|format|出力時のフォーマット|
+|timezone|内部計算で使用するタイムゾーン|
+|min|最小値|
+|max|最大値|
+
+
+
 ### 例
 
 ルールだけだとイメージつかないよね
