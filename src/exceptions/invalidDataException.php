@@ -6,7 +6,7 @@
  * Time: 9:48
  */
 
-namespace mihoshi\hashValidator;
+namespace mihoshi\hashValidator\exceptions;
 
 
 class invalidDataException extends \UnexpectedValueException

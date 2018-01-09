@@ -6,12 +6,12 @@
  * Time: 11:21
  */
 
-namespace mihoshi\hashValidator;
+namespace mihoshi\hashValidator\exceptions;
 
 class loaderException extends \Exception
 {
 
-    /** ファイルがないとか読めないとか */
-    const ERR_FILE_NOT_READ = 1;
+	/** ファイルがないとか読めないとか */
+	const ERR_FILE_NOT_READ = 1;
 
 }

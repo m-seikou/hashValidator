@@ -6,7 +6,7 @@
  * Time: 13:50
  */
 
-namespace mihoshi\hashValidator;
+namespace mihoshi\hashValidator\exceptions;
 
 
 class invalidRuleException extends \InvalidArgumentException

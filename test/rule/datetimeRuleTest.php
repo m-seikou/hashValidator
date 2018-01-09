@@ -8,8 +8,7 @@
 
 namespace mihoshi\hashValidator;
 
-require_once dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'src/rule/datetimeRule.php';
-require_once dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'src/invalidRuleException.php';
+use mihoshi\hashValidator\rule\datetimeRule;
 
 class datetimeRuleTest extends \PHPUnit_Framework_TestCase
 {
@@ -36,7 +35,7 @@ class datetimeRuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException mihoshi\hashValidator\invalidRuleException
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidRuleException
      */
     public function testConstruct_invalidFormat_min()
     {
@@ -44,7 +43,7 @@ class datetimeRuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException mihoshi\hashValidator\invalidRuleException
+	 * @expectedException \mihoshi\hashValidator\exceptions\invalidRuleException
      */
     public function testConstruct_invalidFormat_max()
     {
@@ -52,7 +51,7 @@ class datetimeRuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException mihoshi\hashValidator\invalidDataException
+	 * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
     public function testCheck_fail_invalid_format()
     {
@@ -60,7 +59,7 @@ class datetimeRuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException mihoshi\hashValidator\invalidDataException
+	 * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
     public function testCheck_fail_less_than_min()
     {
@@ -91,7 +90,7 @@ class datetimeRuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException mihoshi\hashValidator\invalidDataException
+	 * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
     public function testCheck_fail_grater_than_max()
     {

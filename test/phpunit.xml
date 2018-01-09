@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<phpunit>
+<phpunit bootstrap="phpunit.php">
     <testsuites>
         <testsuite name="hashValidator unit test">
             <directory>loader</directory>

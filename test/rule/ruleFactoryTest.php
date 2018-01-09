@@ -2,15 +2,16 @@
 
 namespace mihoshi\hashValidator;
 
-include_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'hashValidatorTestCase.php';
-include_once str_replace(TEST_ROOT, SRC_ROOT, __DIR__) . '/' . str_replace('Test.php', '.php', basename(__FILE__));
+use mihoshi\hashValidator\rule\intRule;
+use mihoshi\hashValidator\rule\ruleFactory;
+use mihoshi\hashValidator\exceptions\invalidRuleException;
 
 class ruleFactoryTest extends hashValidatorTestCase
 {
 
     public function testFactory()
     {
-        $this->assertInstanceOf(__NAMESPACE__ . '\\' . 'intRule', ruleFactory::getInstance(['type' => 'int']));
+        $this->assertInstanceOf(intRule::class, ruleFactory::getInstance(['type' => 'int']));
         try {
             ruleFactory::getInstance(['type' => 'integer']);
             $this->fail();
