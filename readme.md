@@ -136,3 +136,15 @@ $result = (new \mihoshi\hashValidator\hashValidator('example.yaml','hash'))
         ->check($data);
 ```
 とやればよい。
+
+## 独自のルール
+
+hashValidatorの第三引数で独自ルールの格納ディレクトリを指定できる
+```php:example.php
+include_once './src/hashValidator.php';
+
+$result = (new \mihoshi\hashValidator\hashValidator('example.yaml','hash',['namespace' => 'directory']))
+        ->check($data);
+```
+
+独自に作成したルールは `mihoshi\hashValidator\interfaces\ruleInterface` を実装する。詳細はインターフェースを参照すること

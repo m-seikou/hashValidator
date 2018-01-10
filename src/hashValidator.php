@@ -30,7 +30,11 @@ class hashValidator
 		$class = __NAMESPACE__ . '\\' . $type . 'Loader';
 		/** @var interfaces\loaderInterface $loader */
 		$loader = new $class();
-		$this->rule = rule\ruleFactory::getInstance($loader->load($arg), $additionalTypeDir);
+
+		foreach ($additionalTypeDir as $nameSpace => $dir) {
+			rule\ruleFactory::addRuleDir($dir, $nameSpace);
+		}
+		$this->rule = rule\ruleFactory::getInstance($loader->load($arg));
 	}
 
 	public function dump()

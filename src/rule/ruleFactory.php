@@ -12,29 +12,69 @@ use mihoshi\hashValidator\exceptions\invalidRuleException;
 
 class ruleFactory
 {
-	public static function getInstance(array $rule, array $directories = [])
+	/**
+	 * @var array [ルール => クラス名] ロード済みのルール
+	 */
+	private static $typeList = [];
+
+	/**
+	 * @var array [namespace => directory] ルールクラスの格納ディレクトリ
+	 */
+	private static $ruleDir = [__NAMESPACE__ => __DIR__];
+
+	/**
+	 * ルールクラスの格納先を追加
+	 * @param $dirName
+	 * @param $nameSpace
+	 */
+	public static function addRuleDir($dirName, $nameSpace)
 	{
-		$directories[] = __DIR__;
+		unset(self::$ruleDir[__NAMESPACE__]);
+		$new = [];
+		foreach (self::$ruleDir as $nameSpace => $dirName) {
+			$new[$nameSpace] = $dirName;
+		}
+		$new[$nameSpace] = $dirName;
+		$new[__NAMESPACE__] = __DIR__;
+
+		self::$ruleDir = $new;
+	}
+
+	/**
+	 * ルールクラスの作成
+	 * @param array $rule
+	 * @return mixed
+	 */
+	public static function getInstance(array $rule)
+	{
 		try {
-			$class = $rule['type'] . 'Rule';
-			$exist = false;
-			foreach ($directories as $dir) {
-				if (file_exists($dir . DIRECTORY_SEPARATOR . $class . '.php')) {
-					require_once $dir . DIRECTORY_SEPARATOR . $class . '.php';
-					$exist = true;
-					break;
-				}
-			}
-			if (!$exist) {
-				throw new invalidRuleException('rule not found:' . $rule['type']);
-			}
-			$class = __NAMESPACE__ . '\\' . $class;
+			$className = self::getClassName($rule['type']);
 			unset($rule['type']);
-			return new $class($rule);
+			return new $className($rule);
 		} catch (invalidRuleException $e) {
 			throw $e;
 		} catch (\Exception $e) {
 			throw new invalidRuleException($e->getMessage(), $e->getCode(), $e);
 		}
+	}
+
+	/**
+	 * ルールクラス名の取得
+	 * @param $rule
+	 * @return string
+	 */
+	private static function getClassName($rule)
+	{
+		if (array_key_exists($rule, self::$typeList)) {
+			return self::$typeList[$rule];
+		}
+		foreach (self::$ruleDir as $nameSpace => $dir) {
+			if (file_exists($dir . DIRECTORY_SEPARATOR . $rule . 'Rule.php')) {
+				require_once $dir . DIRECTORY_SEPARATOR . $rule . 'Rule.php';
+				self::$typeList[$rule] = $nameSpace . '\\' . $rule . 'Rule';
+				return self::$typeList[$rule];
+			}
+		}
+		throw new invalidRuleException('rule not found:' . $rule);
 	}
 }

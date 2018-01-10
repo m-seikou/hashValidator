@@ -2,23 +2,25 @@
 
 namespace mihoshi\hashValidator\interfaces;
 
-use mihoshi\hashValidator\exceptions\invalidDataException;
-use mihoshi\hashValidator\exceptions\invalidRuleException;
+use mihoshi\hashValidator\{
+	exceptions\invalidDataException,
+	exceptions\invalidRuleException
+};
 
 interface ruleInterface
 {
 
 	/**
 	 * ruleInterface constructor.
-	 * @param $rule
-	 * @throws invalidRuleException
+	 * @param array $rule
+	 * @throws invalidRuleException $ruleに不備があった場合、この例外をthrowすること
 	 */
 	public function __construct($rule);
 
 	/**
 	 * @param $value
-	 * @return mixed バリデーションをかけた値
-	 * @throws invalidDataException バリデーションを通過できない場合に発生する例外
+	 * @return mixed validatorは入力値 $valueをこの値に置き換えられます
+	 * @throws invalidDataException $valueがパスしない値の場合、この例外をthroeすること
 	 */
 	public function check($value);
 
@@ -28,6 +30,10 @@ interface ruleInterface
 	 */
 	public function isOptional();
 
+	/**
+	 * ルールに関する各種パラメーターを連想配列で返す
+	 * @return array
+	 */
 	public function dump();
 
 	public function getDefault();
