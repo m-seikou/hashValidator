@@ -2,10 +2,8 @@
 
 namespace mihoshi\hashValidator\interfaces;
 
-use mihoshi\hashValidator\{
-	exceptions\invalidDataException,
-	exceptions\invalidRuleException
-};
+use mihoshi\hashValidator\exceptions\invalidDataException;
+use mihoshi\hashValidator\exceptions\invalidRuleException;
 
 interface ruleInterface
 {
