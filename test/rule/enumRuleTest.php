@@ -3,40 +3,60 @@
 namespace mihoshi\hashValidator;
 
 use mihoshi\hashValidator\rule\enumRule;
-use mihoshi\hashValidator\exceptions\invalidDataException;
-use mihoshi\hashValidator\exceptions\invalidRuleException;
 
 class enumRuleTest extends hashValidatorTestCase
 {
-    public function testDefine()
+    public function dataDefine()
     {
-        foreach ([[], new \stdClass()] as $value) {
-            try {
-                new enumRule(['value' => $value]);
-                $this->fail();
-            } catch (invalidRuleException $e) {
-                echo $e->getMessage() . PHP_EOL;
-            }
-        }
+        yield '空定義(配列)' => [[]];
+        yield '空定義(stdclass)' => [new \stdClass()];
     }
 
-    public function testValue()
+    /**
+     * @dataProvider dataDefine
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidRuleException
+     */
+    public function testDefine($value)
     {
+        new enumRule(['value' => $value]);
+    }
 
+    public function dataPass()
+    {
+        yield [2];
+        yield [4];
+        yield [6];
+        yield [8];
+    }
 
+    /**
+     * @param $data
+     * @dataProvider dataPass
+     */
+    public function testPass($data)
+    {
         $validator = new enumRule(['value' => [2, 4, 6, 8]]);
-        foreach ([2, 4, 6, 8] as $data) {
-            $this->assertEquals($data, $validator->check($data), $data);
-        }
-        foreach ([1, 3, 5, 7, 9] as $data) {
-            try {
-                $validator->check($data);
-                $this->fail();
-            } catch (invalidDataException $e) {
-                echo $e->getMessage() . PHP_EOL;
-            }
-        }
+        $this->assertEquals($data, $validator->check($data), $data);
+    }
 
+    public function dataFail()
+    {
+        yield [1];
+        yield [3];
+        yield [5];
+        yield [7];
+        yield [9];
+    }
+
+    /**
+     * @param $data
+     * @dataProvider dataFail
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
+     */
+    public function testFail($data)
+    {
+        $validator = new enumRule(['value' => [2, 4, 6, 8]]);
+        $validator->check($data);
     }
 
 
@@ -53,8 +73,8 @@ class enumRuleTest extends hashValidatorTestCase
         $this->assertEquals(false, $rule->dump()['optional']);
 
         $rule = new enumRule([
-            'value'    => [1],
-            'comment'  => 'hogehoge',
+            'value' => [1],
+            'comment' => 'hogehoge',
             'optional' => true,
         ]);
         $this->assertArrayHasKey('comment', $rule->dump());
@@ -66,7 +86,6 @@ class enumRuleTest extends hashValidatorTestCase
     public function testToText()
     {
         $rule = new enumRule(['value' => [1]]);
-        echo $rule->toText('    ', 1);
         $this->assertStringStartsWith(' ', $rule->toText('    ', 1));
     }
 }

@@ -7,49 +7,63 @@ use mihoshi\hashValidator\exceptions\invalidDataException;
 
 class hashRuleTest extends hashValidatorTestCase
 {
-    public function testHashValidation()
+    public function dataPass()
     {
-        $validator = new hashRule(['key' => ['hoge' => ['type' => 'int']]]);
-        $data = ['hoge' => 10];
-        $this->assertSame($data, $validator->check($data));
+        yield [
+            ['key' => ['hoge' => ['type' => 'int']]],
+            ['hoge' => 10],
+            ['hoge' => 10],
+        ];
+        yield [
+            ['key' => ['hoge' => ['type' => 'int', 'optional' => true]]],
+            ['fuga' => 1],
+            [],
+        ];
+        yield [
+            ['key' => ['hoge' => ['type' => 'hash', 'key' => ['fuga' => ['type' => 'int',],],],],],
+            ['hoge' => ['fuga' => 1]],
+            ['hoge' => ['fuga' => 1]],
+        ];
+    }
 
-        try {
-            $validator->check(['fuga' => 1]);
-            $this->fail();
-        } catch (invalidDataException $e) {
-            echo $e->getMessage() . PHP_EOL;
-        }
-        try {
-            $validator->check(['hoge' => 'aa']);
-            $this->fail();
-        } catch (invalidDataException $e) {
-            echo $e->getMessage() . PHP_EOL;
-        }
-        $validator = new hashRule(['key' => ['hoge' => ['type' => 'int', 'optional' => true]]]);
-        $this->assertSame([], $validator->check(['fuga' => 1]));
+    /**
+     * @param $define
+     * @param $data
+     * @param $excepted
+     * @dataProvider dataPass
+     */
+    public function testPass($define, $data, $excepted)
+    {
+        $validator = new hashRule($define);
+        $this->assertSame($excepted, $validator->check($data));
+    }
 
-        $validator = new hashRule(
-            [
-                'key' => [
-                    'hoge' => [
-                        'type' => 'hash',
-                        'key'  => [
-                            'fuga' => [
-                                'type' => 'int',
-                            ],
-                        ],
-                    ],
-                ],
-            ]
-        );
-        $this->assertSame(['hoge' => ['fuga' => 1]], $validator->check(['hoge' => ['fuga' => 1]]));
-        try {
-            $validator->check(['hoge' => ['fuga' => 'bb']]);
-            $this->fail();
-        } catch (invalidDataException $e) {
-            echo $e->getMessage() . PHP_EOL;
-        }
+    public function dataFail()
+    {
+        yield [
+            ['key' => ['hoge' => ['type' => 'int']]],
+            ['fuga' => 1],
+        ];
+        yield [
+            ['key' => ['hoge' => ['type' => 'int']]],
+            ['hoge' => 'aa'],
+        ];
+        yield [
+            ['key' => ['hoge' => ['type' => 'hash', 'key' => ['fuga' => ['type' => 'int',],],],],],
+            ['hoge' => ['fuga' => 'bb']],
+        ];
+    }
 
+    /**
+     * @param $define
+     * @param $data
+     * @dataProvider dataFail
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
+     */
+    public function teatFail($define, $data)
+    {
+        $validator = new hashRule($define);
+        $validator->check($data);
     }
 
     public function testDump()

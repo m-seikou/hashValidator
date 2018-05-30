@@ -13,23 +13,45 @@ use mihoshi\hashValidator\exceptions\invalidDataException;
 
 class boolRuleTest extends \PHPUnit_Framework_TestCase
 {
-    public function testIntValidation()
+    public function dataPass()
+    {
+        yield [true];
+        yield [false];
+    }
+
+    /**
+     * @param $data
+     * @dataProvider dataPass
+     */
+    public function testPass($data)
     {
         $validator = new boolRule([]);
-        foreach ([true, false] as $data) {
-            $this->assertEquals($data, $validator->check($data));
-        }
-        foreach (['a', [], new \stdClass(), 0, 1, null] as $data) {
-            try {
-                $validator->check($data);
-                $this->fail();
-            } catch (invalidDataException $e) {
-                echo $e->getMessage() . PHP_EOL;
-            }
-        }
+        $this->assertEquals($data, $validator->check($data));
+    }
 
+    public function dataFail()
+    {
+        yield ['a'];
+        yield [[]];
+        yield [new \stdClass()];
+        yield [0];
+        yield [1];
+        yield [null];
+    }
+
+    /**
+     * @param $data
+     * @dataProvider dataFail
+     */
+    public function teatFail($data)
+    {
+        $validator = new boolRule([]);
+        $validator->check($data);
+    }
+
+    public function testArrowNull()
+    {
         $validator = new boolRule(['arrow_null' => true]);
         $this->assertNull($validator->check(null));
     }
-
 }

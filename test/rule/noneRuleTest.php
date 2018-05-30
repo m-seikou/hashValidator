@@ -12,18 +12,29 @@ use mihoshi\hashValidator\rule\noneRule;
 
 class noneRuleTest extends \PHPUnit_Framework_TestCase
 {
-    public function testIntValidation()
+    public function dataPass()
+    {
+        yield [1];
+        yield [12.345];
+        yield ['any string'];
+        yield [[]];
+        yield [new \stdClass()];
+    }
+
+    /**
+     * @param $data
+     * @dataProvider dataPass
+     */
+    public function testPass($data)
     {
         $validator = new noneRule(['rule' => ['type' => 'none']]);
-        foreach([] as $value){
-            $this->assertSame($value , $validator->check($value));
-        }
+        $this->assertSame($data, $validator->check($data));
     }
 
     public function testDump()
     {
         $validator = new noneRule([]);
-        $this->assertEquals( 'none',$validator->dump()['type']);
+        $this->assertEquals('none', $validator->dump()['type']);
     }
 
 }

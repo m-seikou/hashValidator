@@ -43,7 +43,7 @@ class datetimeRuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-	 * @expectedException \mihoshi\hashValidator\exceptions\invalidRuleException
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidRuleException
      */
     public function testConstruct_invalidFormat_max()
     {
@@ -51,7 +51,7 @@ class datetimeRuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-	 * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
     public function testCheck_fail_invalid_format()
     {
@@ -59,7 +59,7 @@ class datetimeRuleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-	 * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
     public function testCheck_fail_less_than_min()
     {
@@ -68,29 +68,42 @@ class datetimeRuleTest extends \PHPUnit_Framework_TestCase
 
     public function testCheck_pass_equals_min()
     {
-        $result = (new datetimeRule(['format' => 'Y-m-d H:i:s', 'min' => '2017-10-01 12:00:00']))->check('2017-10-01 12:00:00');
+        $result = (new datetimeRule([
+            'format' => 'Y-m-d H:i:s',
+            'min' => '2017-10-01 12:00:00',
+        ]))->check('2017-10-01 12:00:00');
         $this->assertEquals('2017-10-01 12:00:00', $result);
     }
 
     public function testCheck_pass_grater_than_min()
     {
-        $result = (new datetimeRule(['format' => 'Y-m-d H:i:s', 'min' => '2017-10-01 12:00:00']))->check('2017-10-01 12:00:01');
+        $result = (new datetimeRule([
+            'format' => 'Y-m-d H:i:s',
+            'min' => '2017-10-01 12:00:00',
+        ]))->check('2017-10-01 12:00:01');
         $this->assertEquals('2017-10-01 12:00:01', $result);
     }
 
     public function testCheck_pass_less_than_max()
     {
-        $result = (new datetimeRule(['format' => 'Y-m-d H:i:s', 'max' => '2017-10-01 12:00:00']))->check('2017-10-01 11:59:59');
+        $result = (new datetimeRule([
+            'format' => 'Y-m-d H:i:s',
+            'max' => '2017-10-01 12:00:00',
+        ]))->check('2017-10-01 11:59:59');
         $this->assertEquals('2017-10-01 11:59:59', $result);
     }
+
     public function testCheck_pass_equal_max()
     {
-        $result = (new datetimeRule(['format' => 'Y-m-d H:i:s', 'max' => '2017-10-01 12:00:00']))->check('2017-10-01 12:00:00');
+        $result = (new datetimeRule([
+            'format' => 'Y-m-d H:i:s',
+            'max' => '2017-10-01 12:00:00',
+        ]))->check('2017-10-01 12:00:00');
         $this->assertEquals('2017-10-01 12:00:00', $result);
     }
 
     /**
-	 * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
     public function testCheck_fail_grater_than_max()
     {

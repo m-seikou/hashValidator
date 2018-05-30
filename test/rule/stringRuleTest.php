@@ -7,54 +7,106 @@ use mihoshi\hashValidator\exceptions\invalidDataException;
 
 class stringRuleTest extends hashValidatorTestCase
 {
-    public function testType()
+    public function dataPass()
+    {
+        yield [''];
+        yield ['hogehogehogehoge'];
+    }
+
+    /**
+     * @param $data
+     * @dataProvider dataPass
+     */
+    public function testPass($data)
     {
         $validator = new stringRule([]);
-        foreach (['', 'hogehogehogehoge'] as $data) {
-            $this->assertEquals($data, $validator->check($data));
-        }
-        foreach ([[], new \stdClass()] as $data) {
-            try {
-                $validator->check($data);
-                $this->fail();
-            } catch (invalidDataException $e) {
-                echo $e->getMessage() . PHP_EOL;
-            }
-        }
+        $this->assertEquals($data, $validator->check($data));
     }
 
-    public function testLength()
+    public function dataFail()
     {
+        yield [[]];
+        yield [new \stdClass()];
+    }
 
+    /**
+     * @param $data
+     * @dataProvider dataFail
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
+     */
+    public function testFail($data)
+    {
+        $validator = new stringRule([]);
+        $validator->check($data);
+    }
+
+
+    public function dataLengthPass()
+    {
+        yield ['333'];
+        yield ['55555'];
+    }
+
+    /**
+     * @param $data
+     * @dataProvider dataLengthPass
+     */
+    public function testLengthPass($data)
+    {
         $validator = new stringRule(['max' => 5, 'min' => 2]);
-        foreach (['22', '333', '55555'] as $data) {
-            $this->assertEquals($data, $validator->check($data), $data);
-        }
-        foreach (['2', '666666'] as $data) {
-            try {
-                $validator->check($data);
-                $this->fail();
-            } catch (invalidDataException $e) {
-                echo $e->getMessage() . PHP_EOL;
-            }
-        }
+        $this->assertEquals($data, $validator->check($data));
     }
 
-    public function testPreg()
-    {
 
+    public function dataLengthFail()
+    {
+        yield ['2'];
+        yield ['666666'];
+    }
+
+    /**
+     * @param $data
+     * @dataProvider dataLengthFail
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
+     */
+    public function testLengthFail($data)
+    {
+        $validator = new stringRule(['max' => 5, 'min' => 2]);
+        $validator->check($data);
+    }
+
+    public function dataPregPass()
+    {
+        yield ['hogehoge'];
+        yield ['aaaahogehogeffuuuu'];
+        yield ['aaaaaaaaaahogehoge'];
+    }
+
+    /**
+     * @param $data
+     * @dataProvider dataPregPass
+     */
+    public function testPregPass($data)
+    {
         $validator = new stringRule(['preg' => '/hogehoge/']);
-        foreach (['hogehoge', 'aaaahogehogeffuuuu', 'aaaaaaaaaahogehoge'] as $data) {
-            $this->assertEquals($data, $validator->check($data), $data);
-        }
-        foreach (['hogeahoge'] as $data) {
-            try {
-                $validator->check($data);
-                $this->fail($data);
-            } catch (invalidDataException $e) {
-                echo $e->getMessage() . PHP_EOL;
-            }
-        }
+        $this->assertEquals($data, $validator->check($data));
+    }
+
+
+    public function dataPregFail()
+    {
+        yield ['hogeahoge'];
+    }
+
+    /**
+     * @param $data
+     * @dataProvider dataPregFail
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
+     */
+    public function testPregFail($data)
+    {
+        $validator = new stringRule(['preg' => '/hogehoge/']);
+        $validator->check($data);
     }
 
     public function testDump()
@@ -69,9 +121,9 @@ class stringRuleTest extends hashValidatorTestCase
         $this->assertEquals(false, $rule->dump()['optional']);
 
         $rule = new stringRule([
-            'max'      => 100,
-            'min'      => 10,
-            'comment'  => 'hogehoge',
+            'max' => 100,
+            'min' => 10,
+            'comment' => 'hogehoge',
             'optional' => true,
         ]);
         $this->assertArrayHasKey('max', $rule->dump());

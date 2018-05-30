@@ -8,50 +8,93 @@ use mihoshi\hashValidator\exceptions\invalidRuleException;
 
 class funcRuleTest extends hashValidatorTestCase
 {
-    public function testDefine()
+    public function dataDefine()
     {
-        foreach (['', 'hogehoge', [], new \stdClass()] as $value) {
-            try {
-                new funcRule([$value]);
-                $this->fail();
-            } catch (invalidRuleException $e) {
-                echo $e->getMessage() . PHP_EOL;
-            }
-        }
+        yield [''];
+        yield ['hogehoge'];
+        yield [[]];
+        yield [new \stdClass()];
     }
 
+    /**
+     * @param $data
+     * @dataProvider dataDefine
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidRuleException
+     */
+    public function testDefine($data)
+    {
+        new funcRule([$data]);
+    }
+
+    /**
+     * 検証用関数 受け取った値を返す
+     * @param $arg
+     * @return mixed
+     */
     public static function callbackEcho($arg)
     {
         return $arg;
     }
 
+    /**
+     * 検証用関数 例外を投げる
+     * @param $arg
+     * @throws \Exception
+     */
     public static function callbackThrow($arg)
     {
         throw new \Exception($arg);
     }
 
-    public static function callbackInstance($arg){
+    /**
+     * 検証用関数 stdClassをかえす
+     * @param $arg
+     * @return \stdClass
+     */
+    public static function callbackInstance($arg)
+    {
         return new \stdClass();
     }
 
-    public function testValue()
+    public function dataPass()
     {
-        $validator = new funcRule(['class' => __CLASS__, 'method' => 'callbackEcho']);
+        yield [['class' => __CLASS__, 'method' => 'callbackEcho'], true, true];
+        yield [['class' => __CLASS__, 'method' => 'callbackEcho'], false, false];
+    }
 
-        $this->assertTrue($validator->check(true));
-        $this->assertFalse($validator->check(false));
+    /**
+     * @param $define
+     * @param $data
+     * @param $expected
+     * @dataProvider dataPass
+     */
+    public function testPass($define, $data, $expected)
+    {
+        $validator = new funcRule($define);
+        $this->assertSame($expected, $validator->check($data));
+    }
 
-        $validator = new funcRule(['class' => __CLASS__, 'method' => 'callbackThrow']);
-        try {
-            $validator->check(false);
-            $this->fail();
-        } catch (invalidDataException $e) {
-            echo $e->getMessage() . PHP_EOL;
-        }
+    public function dataFail()
+    {
+        yield [['class' => __CLASS__, 'method' => 'callbackThrow'], false];
+    }
+
+    /**
+     * @param $define
+     * @param $data
+     * @dataProvider dataFail
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
+     */
+    public function testFail($define, $data)
+    {
+        $validator = new funcRule($define);
+        $validator->check($data);
+    }
+
+    public function testInstance()
+    {
         $validator = new funcRule(['class' => __CLASS__, 'method' => 'callbackInstance']);
-
-        $this->assertInstanceOf('stdClass',$validator->check(false));
-
+        $this->assertInstanceOf('stdClass', $validator->check(false));
     }
 
 
@@ -67,7 +110,7 @@ class funcRuleTest extends hashValidatorTestCase
 
         $rule = new funcRule([
             'function' => 'is_array',
-            'comment'  => 'hogehoge',
+            'comment' => 'hogehoge',
             'optional' => true,
         ]);
         $this->assertArrayHasKey('comment', $rule->dump());
