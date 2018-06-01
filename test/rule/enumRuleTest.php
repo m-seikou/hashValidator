@@ -46,6 +46,8 @@ class enumRuleTest extends hashValidatorTestCase
         yield [5];
         yield [7];
         yield [9];
+        yield [[]];
+        yield [new \stdClass()];
     }
 
     /**

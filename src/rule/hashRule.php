@@ -20,7 +20,7 @@ class hashRule extends abstractRule
 	public function __construct($rule)
 	{
 		parent::__construct($rule);
-		if (!isset($rule['key']) && is_array($rule['key'])) {
+		if (!isset($rule['key']) || !is_array($rule['key'])) {
 			throw new invalidRuleException();
 		}
 		foreach ($rule['key'] as $key => $rule) {

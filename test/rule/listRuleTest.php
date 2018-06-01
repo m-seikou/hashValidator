@@ -29,6 +29,8 @@ class listRuleTest extends hashValidatorTestCase
 
     public function dataFail()
     {
+        yield [['rule' => ['type' => 'int']], 'string'];
+        yield [['rule' => ['type' => 'int']], new \stdClass()];
         yield [['rule' => ['type' => 'int']], [0, 1, 2, 'a']];
         yield [['rule' => ['type' => 'int'], 'min' => 2], [0]];
         yield [['rule' => ['type' => 'int'], 'max' => 3], [0, 1, 2, 3]];
@@ -53,5 +55,15 @@ class listRuleTest extends hashValidatorTestCase
         $this->assertArrayNotHasKey('min', $validator->dump());
         $this->assertArrayHasKey('rule', $validator->dump());
 
+    }
+
+    public function testDumpWithMaxMin()
+    {
+        $dump = (new listRule(['rule' => ['type' => 'int'], 'max' => 3, 'min' => 1]))->dump();
+        $this->assertArrayHasKey('max', $dump);
+        $this->assertEquals(3, $dump['max']);
+        $this->assertArrayHasKey('min', $dump);
+        $this->assertEquals(1, $dump['min']);
+        $this->assertArrayHasKey('rule', $dump);
     }
 }

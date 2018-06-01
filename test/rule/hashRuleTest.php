@@ -3,10 +3,26 @@
 namespace mihoshi\hashValidator;
 
 use mihoshi\hashValidator\rule\hashRule;
-use mihoshi\hashValidator\exceptions\invalidDataException;
 
 class hashRuleTest extends hashValidatorTestCase
 {
+
+    public function dataConstructError()
+    {
+        yield 'undefined "key"' => [[]];
+        yield '"key" is not array' => [['key' => 0]];
+    }
+
+    /**
+     * @param $rule
+     * @dataProvider dataConstructError
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidRuleException
+     */
+    public function testConstructError($rule)
+    {
+        new hashRule($rule);
+    }
+
     public function dataPass()
     {
         yield [
@@ -18,6 +34,11 @@ class hashRuleTest extends hashValidatorTestCase
             ['key' => ['hoge' => ['type' => 'int', 'optional' => true]]],
             ['fuga' => 1],
             [],
+        ];
+        yield [
+            ['key' => ['hoge' => ['type' => 'int', 'default' => 42]]],
+            [],
+            ['hoge' => 42],
         ];
         yield [
             ['key' => ['hoge' => ['type' => 'hash', 'key' => ['fuga' => ['type' => 'int',],],],],],
@@ -68,6 +89,8 @@ class hashRuleTest extends hashValidatorTestCase
 
     public function testDump()
     {
+        $result = (new hashRule(['key' => ['hoge' => ['type' => 'int']]]))->dump();
+        $this->assertArrayHasKey('key',$result);
     }
 
 }

@@ -27,6 +27,7 @@ class stringRuleTest extends hashValidatorTestCase
     {
         yield [[]];
         yield [new \stdClass()];
+        yield [null];
     }
 
     /**
@@ -109,6 +110,11 @@ class stringRuleTest extends hashValidatorTestCase
         $validator->check($data);
     }
 
+    public function testArrowNull(){
+        $validator = new stringRule(['arrow_null' => true]);
+        $this->assertNull($validator->check(null));
+    }
+
     public function testDump()
     {
         $rule = new stringRule([]);
@@ -120,6 +126,9 @@ class stringRuleTest extends hashValidatorTestCase
         $this->assertArrayHasKey('optional', $rule->dump());
         $this->assertEquals(false, $rule->dump()['optional']);
 
+    }
+    public function testDumpWithMaxMin()
+    {
         $rule = new stringRule([
             'max' => 100,
             'min' => 10,

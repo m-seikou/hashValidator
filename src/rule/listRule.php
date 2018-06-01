@@ -25,10 +25,10 @@ class listRule extends abstractRule
 			throw new invalidRuleException();
 		}
 		if (isset($rule['min'])) {
-			$this->min = $rule['min'];
+			$this->min = (int)$rule['min'];
 		}
 		if (isset($rule['max'])) {
-			$this->max = $rule['max'];
+			$this->max = (int)$rule['max'];
 		}
 		$this->rule = ruleFactory::getInstance($rule['rule']);
 	}
@@ -37,7 +37,7 @@ class listRule extends abstractRule
 	{
 		$return = [];
 		if (!is_array($value)) {
-			throw new invalidDataException('invalid list value:' . $value . ' not array');
+			throw new invalidDataException('invalid list value:' . var_export($value,true) . ' not array');
 		}
 		if (!is_null($this->min) && count($value) < $this->min) {
 			throw new invalidDataException('fewer element :' . count($value));
