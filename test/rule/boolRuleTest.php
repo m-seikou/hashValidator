@@ -42,8 +42,9 @@ class boolRuleTest extends \PHPUnit_Framework_TestCase
     /**
      * @param $data
      * @dataProvider dataFail
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
-    public function teatFail($data)
+    public function testFail($data)
     {
         $validator = new boolRule([]);
         $validator->check($data);

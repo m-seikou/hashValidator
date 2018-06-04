@@ -11,7 +11,7 @@ namespace mihoshi\hashValidator\rule;
 use mihoshi\hashValidator\exceptions\invalidRuleException;
 use mihoshi\hashValidator\exceptions\invalidDataException;
 
-class funcRule extends abstractRule
+final class funcRule extends abstractRule
 {
 	private $function = null;
 

@@ -12,7 +12,7 @@ use mihoshi\hashValidator\exceptions\invalidRuleException;
 use mihoshi\hashValidator\exceptions\invalidDataException;
 use mihoshi\hashValidator\interfaces\ruleInterface;
 
-class hashRule extends abstractRule
+final class hashRule extends abstractRule
 {
 	/** @var  ruleInterface[] */
 	private $rule;

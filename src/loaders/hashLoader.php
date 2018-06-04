@@ -4,7 +4,7 @@ namespace mihoshi\hashValidator\loaders;
 
 use mihoshi\hashValidator\interfaces\loaderInterface;
 
-class hashLoader implements loaderInterface
+final class hashLoader implements loaderInterface
 {
 	public function load($array)
 	{

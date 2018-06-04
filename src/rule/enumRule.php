@@ -11,7 +11,7 @@ namespace mihoshi\hashValidator\rule;
 use mihoshi\hashValidator\exceptions\invalidRuleException;
 use mihoshi\hashValidator\exceptions\invalidDataException;
 
-class enumRule extends abstractRule
+final class enumRule extends abstractRule
 {
 	private $value = [];
 

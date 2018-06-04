@@ -10,35 +10,12 @@ namespace mihoshi\hashValidator\rule;
 
 use mihoshi\hashValidator\exceptions\invalidRuleException;
 
-class ruleFactory
+final class ruleFactory
 {
 	/**
 	 * @var array [ルール => クラス名] ロード済みのルール
 	 */
 	private static $typeList = [];
-
-	/**
-	 * @var array [namespace => directory] ルールクラスの格納ディレクトリ
-	 */
-	private static $ruleDir = [__NAMESPACE__ => __DIR__];
-
-	/**
-	 * ルールクラスの格納先を追加
-	 * @param $dirName
-	 * @param $nameSpace
-	 */
-	public static function addRuleDir($dirName, $nameSpace)
-	{
-		unset(self::$ruleDir[__NAMESPACE__]);
-		$new = [];
-		foreach (self::$ruleDir as $nameSpace => $dirName) {
-			$new[$nameSpace] = $dirName;
-		}
-		$new[$nameSpace] = $dirName;
-		$new[__NAMESPACE__] = __DIR__;
-
-		self::$ruleDir = $new;
-	}
 
 	/**
 	 * ルールクラスの作成
@@ -63,18 +40,18 @@ class ruleFactory
 	 * @param $rule
 	 * @return string
 	 */
-	private static function getClassName($rule)
-	{
-		if (array_key_exists($rule, self::$typeList)) {
-			return self::$typeList[$rule];
-		}
-		foreach (self::$ruleDir as $nameSpace => $dir) {
-			if (file_exists($dir . DIRECTORY_SEPARATOR . $rule . 'Rule.php')) {
-				require_once $dir . DIRECTORY_SEPARATOR . $rule . 'Rule.php';
-				self::$typeList[$rule] = $nameSpace . '\\' . $rule . 'Rule';
-				return self::$typeList[$rule];
-			}
-		}
-		throw new invalidRuleException('rule not found:' . $rule);
-	}
+    private static function getClassName($rule)
+    {
+        if (array_key_exists($rule, self::$typeList)) {
+            return self::$typeList[$rule];
+        }
+        if (class_exists(__NAMESPACE__ . '\\' . $rule . 'Rule')) {
+            self::$typeList[$rule] = __NAMESPACE__ . '\\' . $rule . 'Rule';
+        } elseif (class_exists($rule)) {
+            self::$typeList[$rule] = $rule;
+        } else {
+            throw new invalidRuleException('rule not found:' . $rule);
+        }
+        return self::$typeList[$rule];
+    }
 }

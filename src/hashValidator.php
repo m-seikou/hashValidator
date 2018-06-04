@@ -10,53 +10,49 @@ require_once '../vendor/autoload.php';
  */
 class hashValidator
 {
-	/** @var  interfaces\ruleInterface */
-	private $rule;
+    /** @var  interfaces\ruleInterface */
+    private $rule;
 
-	/**
-	 * hashValidator constructor.
-	 * @param array|String $arg ルール配列 or ルールファイルのパス
-	 * @param string $type [hash|yaml|json] $arg 種類
-	 * @param string[] $additionalTypeDir
-	 * @throws exceptions\invalidRuleException
-	 */
-	public function __construct($arg, $type = 'hash', $additionalTypeDir = [])
-	{
-		$file = __DIR__ . DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR . $type . 'Loader.php';
-		if (!file_exists($file)) {
-			throw new exceptions\invalidRuleException('invalid data type:' . $type);
-		}
-		require_once $file;
-		$class = __NAMESPACE__ . '\\' . $type . 'Loader';
-		/** @var interfaces\loaderInterface $loader */
-		$loader = new $class();
+    /**
+     * hashValidator constructor.
+     * @param array|String $arg ルール配列 or ルールファイルのパス
+     * @param string $type [hash|yaml|json] $arg 種類
+     * @throws exceptions\invalidRuleException
+     */
+    public function __construct($arg, $type = 'hash')
+    {
+        $file = __DIR__ . DIRECTORY_SEPARATOR . $type . 'Loader.php';
+        if (!file_exists($file)) {
+            throw new exceptions\invalidRuleException('invalid data type:' . $type);
+        }
+        require_once $file;
+        $class = __NAMESPACE__ . '\\' . $type . 'Loader';
+        /** @var interfaces\loaderInterface $loader */
+        $loader = new $class();
 
-		foreach ($additionalTypeDir as $nameSpace => $dir) {
-			rule\ruleFactory::addRuleDir($dir, $nameSpace);
-		}
-		$this->rule = rule\ruleFactory::getInstance($loader->load($arg));
-	}
+        $this->rule = rule\ruleFactory::getInstance($loader->load($arg));
+    }
 
-	public function dump()
-	{
-		return $this->rule->dump();
-	}
+    public function dump()
+    {
+        return $this->rule->dump();
+    }
 
-	/**
-	 * @param array $arg
-	 * @return array
-	 * @throw exceptions\invalidDataException 入力エラーがあった際にthrowするexception
-	 */
-	public function check($arg)
-	{
-		return $this->rule->check($arg);
-	}
+    /**
+     * @param array $arg
+     * @return array
+     * @throw exceptions\invalidDataException 入力エラーがあった際にthrowするexception
+     */
+    public function check($arg)
+    {
+        return $this->rule->check($arg);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function toText()
-	{
-		return $this->rule->toText();
-	}
+    /**
+     * @return string
+     */
+    public function toText()
+    {
+        return $this->rule->toText();
+    }
 }

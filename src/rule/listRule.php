@@ -11,7 +11,7 @@ namespace mihoshi\hashValidator\rule;
 use mihoshi\hashValidator\exceptions\invalidRuleException;
 use mihoshi\hashValidator\exceptions\invalidDataException;
 
-class listRule extends abstractRule
+final class listRule extends abstractRule
 {
 	/** @var  ruleInterface */
 	private $rule;

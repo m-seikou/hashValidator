@@ -5,7 +5,7 @@ namespace mihoshi\hashValidator\loaders;
 use mihoshi\hashValidator\interfaces\loaderInterface;
 use mihoshi\hashValidator\exceptions\loaderException;
 
-class jsonLoader implements loaderInterface
+final class jsonLoader implements loaderInterface
 {
 	/**
 	 * @param string $fileName

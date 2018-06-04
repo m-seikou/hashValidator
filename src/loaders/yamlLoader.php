@@ -5,7 +5,7 @@ namespace mihoshi\hashValidator\loaders;
 use mihoshi\hashValidator\interfaces\loaderInterface;
 use mihoshi\hashValidator\exceptions\loaderException;
 
-class yamlLoader implements loaderInterface
+final class yamlLoader implements loaderInterface
 {
 	public function load($fileName)
 	{

@@ -28,11 +28,16 @@ interface ruleInterface
 	 */
 	public function isOptional();
 
+    /**
+     * hashのデフォルト値を参照するためのインターフェース
+     * @return mixed
+     */
+    public function getDefault();
+
 	/**
 	 * ルールに関する各種パラメーターを連想配列で返す
 	 * @return array
 	 */
 	public function dump();
 
-	public function getDefault();
 }
