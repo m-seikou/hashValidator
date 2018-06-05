@@ -31,7 +31,7 @@ final class funcRule extends abstractRule
 			$this->function = [$rule['class'], $rule['method']];
 		} elseif (isset($rule['function'])) {
 			if (!function_exists($rule['function'])) {
-				throw new invalidRuleException('method:' . $rule['method'] . ' not exist in ' . $rule['class']);
+				throw new invalidRuleException('function:' . $rule['function'] . ' not exist');
 			}
 			$this->function = $rule['function'];
 		} else {

@@ -31,6 +31,7 @@ class intRuleTest extends hashValidatorTestCase
         yield ['a'];
         yield [[]];
         yield [new \stdClass()];
+        yield [null];
     }
 
     /**
@@ -79,6 +80,11 @@ class intRuleTest extends hashValidatorTestCase
     public function testRangeFail($data){
         $validator = new intRule(['max' => 10, 'min' => 2]);
         $validator->check($data);
+    }
+
+    public function testArrowNull(){
+        $validator = new intRule(['arrow_null' => true]);
+        $this->assertNull($validator->check(null));
     }
 
     public function testDump()

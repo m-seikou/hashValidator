@@ -10,10 +10,14 @@ class funcRuleTest extends hashValidatorTestCase
 {
     public function dataDefine()
     {
-        yield [''];
-        yield ['hogehoge'];
+        yield [['']];
+        yield [['hogehoge']];
         yield [[]];
-        yield [new \stdClass()];
+        yield [[new \stdClass()]];
+        yield [['class' => 'hoge', 'method' => 'callbackEcho']];
+        yield [['class' => __CLASS__]];
+        yield [['class' => __CLASS__, 'method' => 'fuga']];
+        yield [['function' => 'fuga']];
     }
 
     /**
@@ -23,7 +27,7 @@ class funcRuleTest extends hashValidatorTestCase
      */
     public function testDefine($data)
     {
-        new funcRule([$data]);
+        new funcRule($data);
     }
 
     /**
@@ -98,7 +102,7 @@ class funcRuleTest extends hashValidatorTestCase
     }
 
 
-    public function testDump()
+    public function testDump_function()
     {
         $rule = new funcRule(['function' => 'is_array']);
         $this->assertArrayHasKey('type', $rule->dump());
@@ -107,7 +111,10 @@ class funcRuleTest extends hashValidatorTestCase
         $this->assertEquals('', $rule->dump()['comment']);
         $this->assertArrayHasKey('optional', $rule->dump());
         $this->assertEquals(false, $rule->dump()['optional']);
+    }
 
+    public function testDump_baseData()
+    {
         $rule = new funcRule([
             'function' => 'is_array',
             'comment' => 'hogehoge',
@@ -117,6 +124,15 @@ class funcRuleTest extends hashValidatorTestCase
         $this->assertEquals('hogehoge', $rule->dump()['comment']);
         $this->assertArrayHasKey('optional', $rule->dump());
         $this->assertEquals(true, $rule->dump()['optional']);
+    }
+
+    public function testDump_class()
+    {
+        $rule = new funcRule(['class' => __CLASS__, 'method' => 'callbackEcho']);
+        $this->assertArrayHasKey('class', $rule->dump());
+        $this->assertEquals(__CLASS__, $rule->dump()['class']);
+        $this->assertArrayHasKey('method', $rule->dump());
+        $this->assertEquals('callbackEcho', $rule->dump()['method']);
     }
 
 }

@@ -81,7 +81,7 @@ class hashRuleTest extends hashValidatorTestCase
      * @dataProvider dataFail
      * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
-    public function teatFail($define, $data)
+    public function testFail($define, $data)
     {
         $validator = new hashRule($define);
         $validator->check($data);

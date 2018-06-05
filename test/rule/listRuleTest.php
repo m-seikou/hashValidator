@@ -3,10 +3,25 @@
 namespace mihoshi\hashValidator;
 
 use mihoshi\hashValidator\rule\listRule;
-use mihoshi\hashValidator\exceptions\invalidDataException;
 
 class listRuleTest extends hashValidatorTestCase
 {
+    public function dataRuleFail()
+    {
+        yield [['rule' => []]];
+        yield [[]];
+    }
+
+    /**
+     * @param $rule
+     * @dataProvider dataRuleFail
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidRuleException
+     */
+    public function testRuleFail($rule)
+    {
+        new listRule($rule);
+    }
+
     public function dataPass()
     {
         yield [['rule' => ['type' => 'int']], [0, 1, 2, 3], [0, 1, 2, 3]];
