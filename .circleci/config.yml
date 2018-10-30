@@ -39,5 +39,5 @@ jobs:
     # run tests!
     - run: vendor/bin/phpunit -c test/phpunit.xml
     - store_artifacts:
-      path: test/log
-      destination: coverage
+        path: test/log
+        destination: coverage
