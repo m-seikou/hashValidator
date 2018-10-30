@@ -40,7 +40,7 @@ final class ruleFactory
      * @param $rule
      * @return string
      */
-    private static function getClassName($rule)
+    private static function getClassName($rule): string
     {
         try {
             if (array_key_exists($rule, self::$typeList)) {

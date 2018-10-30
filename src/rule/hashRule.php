@@ -20,7 +20,7 @@ final class hashRule extends abstractRule
     public function __construct($rule)
     {
         parent::__construct($rule);
-        if (!isset($rule['key']) || !is_array($rule['key'])) {
+        if (!isset($rule['key']) || !\is_array($rule['key'])) {
             throw new invalidRuleException('undefined "key" data ');
         }
         foreach ($rule['key'] as $key => $rule) {
@@ -39,12 +39,13 @@ final class hashRule extends abstractRule
             if (false === array_key_exists($key, $value)) {
                 if ($rule->isOptional()) {
                     continue;
-                } elseif (!is_null($default = $rule->getDefault())) {
+                }
+                if (($default = $rule->getDefault()) !== null) {
                     $return[$key] = $default;
                     continue;
-                } else {
-                    throw new invalidDataException('undefined key:' . $key, 0, null, $this->message);
                 }
+                throw new invalidDataException('undefined key:' . $key, 0, null, $this->message);
+
             }
 
             try {
@@ -56,7 +57,7 @@ final class hashRule extends abstractRule
         return $return;
     }
 
-    public function dump()
+    public function dump(): array
     {
         $return = array_merge(parent::dump(), [
             'key' => [],

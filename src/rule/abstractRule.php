@@ -14,7 +14,7 @@ abstract class abstractRule implements ruleInterface
 {
     protected $comment = '';
     protected $optional = false;
-    protected $default = null;
+    protected $default;
     protected $message = '';
 
     public function __construct($rule)
@@ -37,12 +37,12 @@ abstract class abstractRule implements ruleInterface
      * hash の必須設定を参照するためのインターフェース
      * @return bool
      */
-    public function isOptional()
+    public function isOptional(): bool
     {
         return $this->optional;
     }
 
-    public function dump()
+    public function dump(): array
     {
         return [
             'type' => str_replace(__NAMESPACE__ . '\\', '', str_replace('Rule', '', get_called_class())),

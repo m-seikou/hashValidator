@@ -6,9 +6,13 @@ use mihoshi\hashValidator\interfaces\loaderInterface;
 
 final class hashLoader implements loaderInterface
 {
-	public function load($array)
-	{
-		return $array;
-	}
+    /**
+     * @param array $array
+     * @return array
+     */
+    public function load($array): array
+    {
+        return $array;
+    }
 
 }

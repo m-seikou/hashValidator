@@ -10,6 +10,7 @@ namespace mihoshi\hashValidator\rule;
 
 use mihoshi\hashValidator\exceptions\invalidRuleException;
 use mihoshi\hashValidator\exceptions\invalidDataException;
+use mihoshi\hashValidator\interfaces\ruleInterface;
 
 final class listRule extends abstractRule
 {
@@ -40,14 +41,15 @@ final class listRule extends abstractRule
     public function check($value)
     {
         $return = [];
-        if (!is_array($value)) {
-            throw new invalidDataException('invalid list value:' . var_export($value,true) . ' not array', 0, null, $this->message);
+        if (!\is_array($value)) {
+            throw new invalidDataException('invalid list value:' . var_export($value, true) . ' not array', 0, null,
+                $this->message);
         }
-        if (!is_null($this->min) && count($value) < $this->min) {
-            throw new invalidDataException('fewer element :' . count($value), 0, null, $this->message);
+        if ($this->min !== null && \count($value) < $this->min) {
+            throw new invalidDataException('fewer element :' . \count($value), 0, null, $this->message);
         }
-        if (!is_null($this->max) && count($value) > $this->max) {
-            throw new invalidDataException('more element :' . count($value), 0, null, $this->message);
+        if ($this->max !== null && \count($value) > $this->max) {
+            throw new invalidDataException('more element :' . \count($value), 0, null, $this->message);
         }
         foreach ($value as $key => $element) {
             try {
@@ -59,16 +61,16 @@ final class listRule extends abstractRule
         return $return;
     }
 
-    public function dump()
+    public function dump(): array
     {
         $return = array_merge(parent::dump(), [
             'rule' => $this->rule->dump(),
         ]);
 
-        if (!is_null($this->min)) {
+        if ($this->min !== null) {
             $return['min'] = $this->min;
         }
-        if (!is_null($this->max)) {
+        if ($this->max !== null) {
             $return['max'] = $this->max;
         }
         return $return;

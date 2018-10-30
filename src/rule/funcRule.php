@@ -13,7 +13,7 @@ use mihoshi\hashValidator\exceptions\invalidDataException;
 
 final class funcRule extends abstractRule
 {
-    private $function = null;
+    private $function;
     private $return;
 
     public function __construct($rule)
@@ -31,7 +31,7 @@ final class funcRule extends abstractRule
             }
             $this->function = [$rule['class'], $rule['method']];
         } elseif (isset($rule['function'])) {
-            if (!function_exists($rule['function'])) {
+            if (!\function_exists($rule['function'])) {
                 throw new invalidRuleException('function:' . $rule['function'] . ' not exist');
             }
             $this->function = $rule['function'];
@@ -52,27 +52,26 @@ final class funcRule extends abstractRule
     public function check($value)
     {
         try {
-            $value = call_user_func($this->function, $value);
+            $value = \call_user_func($this->function, $value);
         } catch (\Exception $e) {
             throw new invalidDataException($e->getMessage(), $e->getCode(), $e, $this->message);
         }
         return $value;
     }
 
-    public function dump()
+    public function dump(): array
     {
-        if (is_array($this->function)) {
+        if (\is_array($this->function)) {
             return array_merge(parent::dump(), [
                 'class' => $this->function[0],
                 'method' => $this->function[1],
                 'return' => $this->return,
             ]);
-        } else {
-            return array_merge(parent::dump(), [
-                'function' => $this->function,
-                'return' => $this->return,
-            ]);
         }
+        return array_merge(parent::dump(), [
+            'function' => $this->function,
+            'return' => $this->return,
+        ]);
     }
 
 }

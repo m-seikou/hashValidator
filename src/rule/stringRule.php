@@ -12,9 +12,9 @@ use mihoshi\hashValidator\exceptions\invalidDataException;
 
 final class stringRule extends abstractRule
 {
-    private $min = null;
-    private $max = null;
-    private $preg = null;
+    private $min;
+    private $max;
+    private $preg;
     private $null = false;
 
     public function __construct($rule)
@@ -36,29 +36,29 @@ final class stringRule extends abstractRule
 
     public function check($value)
     {
-        if (is_null($value) && $this->null) {
+        if ($value === null && $this->null) {
             return null;
         }
         if (!is_scalar($value)) {
             throw new invalidDataException('invalid string value:' . var_export($value, true), 0, null, $this->message);
         }
         $value = (string)$value;
-        $len = strlen($value);
-        if (isset($this->min) && $len < $this->min) {
+        $len = \strlen($value);
+        if ($this->min !== null && $len < $this->min) {
             throw new invalidDataException('input length:' . $len . ' less than ' . $this->min, 0, null,
                 $this->message);
         }
-        if (isset($this->max) && $len > $this->max) {
+        if ($this->max !== null && $len > $this->max) {
             throw new invalidDataException('input length:' . $len . ' grater than ' . $this->max, 0, null,
                 $this->message);
         }
-        if (isset($this->preg) && !preg_match($this->preg, $value)) {
+        if ($this->preg !== null && !preg_match($this->preg, $value)) {
             throw new invalidDataException('input:' . $value . ' not match ' . $this->preg, 0, null, $this->message);
         }
         return $value;
     }
 
-    public function dump()
+    public function dump(): array
     {
         return array_merge(parent::dump(), [
             'min' => $this->min,

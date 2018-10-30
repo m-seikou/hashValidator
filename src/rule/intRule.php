@@ -32,7 +32,7 @@ final class intRule extends abstractRule
 
     public function check($value)
     {
-        if (is_null($value) && $this->null) {
+        if ($value === null && $this->null) {
             return null;
         }
         if (!is_numeric($value)) {
@@ -48,7 +48,7 @@ final class intRule extends abstractRule
         return $value;
     }
 
-    public function dump()
+    public function dump(): array
     {
         return array_merge(parent::dump(), [
             'min' => $this->min,

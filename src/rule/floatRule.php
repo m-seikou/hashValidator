@@ -32,22 +32,21 @@ final class floatRule extends abstractRule
             throw new invalidDataException('invalid int value:' . var_export($value, true), 0, null, $this->message);
         }
         $value = (float)$value;
-        if (!is_null($this->min) && $value < $this->min) {
+        if ($this->min !== null && $value < $this->min) {
             throw new invalidDataException('input:' . $value . ' less than ' . $this->min, 0, null, $this->message);
         }
-        if (!is_null($this->max) && $value > $this->max) {
+        if ($this->max !== null && $value > $this->max) {
             throw new invalidDataException('input:' . $value . ' grater than ' . $this->max, 0, null, $this->message);
         }
         return $value;
     }
 
-    public function dump()
+    public function dump(): array
     {
         return array_merge(parent::dump(), [
             'min' => $this->min,
             'max' => $this->max,
         ]);
     }
-
 
 }

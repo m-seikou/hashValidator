@@ -24,10 +24,10 @@ final class boolRule extends abstractRule
 
     public function check($value)
     {
-        if (is_null($value) && $this->null) {
+        if ($value === null && $this->null) {
             return null;
         }
-        if (!is_bool($value)) {
+        if (!\is_bool($value)) {
             throw new invalidDataException('invalid int value:' . var_export($value, true), 0, null, $this->message);
         }
         $value = (bool)$value;
