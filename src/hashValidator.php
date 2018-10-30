@@ -4,8 +4,6 @@ namespace mihoshi\hashValidator;
 
 use mihoshi\hashValidator\exceptions\loaderException;
 
-require_once '../vendor/autoload.php';
-
 /**
  * Class hashValidator
  * @package mihoshi\hashValidator
