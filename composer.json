@@ -2,8 +2,7 @@
   "name": "mihoshi/hashValidator",
   "license": "MIT",
   "require": {
-    "php": ">= 7.0.0",
-    "ext-yaml":"*"
+    "php": ">= 7.0.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~5."
