@@ -28,7 +28,7 @@ jobs:
 
     - run: sudo apt install -y libyaml-dev
     - run: sudo pecl install yaml
-    - run: sudo docker-php-ext-install yaml
+#    - run: sudo docker-php-ext-install yaml
     - run: composer install -n --prefer-dist
 
     - save_cache:
