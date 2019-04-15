@@ -42,22 +42,14 @@ final class ruleFactory
      */
     private static function getClassName($rule): string
     {
-        try {
-            if (array_key_exists($rule, self::$typeList)) {
-                return self::$typeList[$rule];
-            }
-            if (class_exists(__NAMESPACE__ . '\\' . $rule . 'Rule')) {
-                self::$typeList[$rule] = __NAMESPACE__ . '\\' . $rule . 'Rule';
-            } elseif (class_exists($rule)) {
-                self::$typeList[$rule] = $rule;
-            } else {
-                throw new invalidRuleException('rule not found:' . $rule);
-            }
-        } catch (invalidRuleException $e) {
-            throw $e;
-        } catch (\Exception $e) {
-            throw new invalidRuleException($e->getMessage(), $e->getCode(), $e);
+        if (array_key_exists($rule, self::$typeList)) {
+            return self::$typeList[$rule];
         }
-        return self::$typeList[$rule];
+        if (class_exists(__NAMESPACE__ . '\\' . $rule . 'Rule')) {
+            return self::$typeList[$rule] = __NAMESPACE__ . '\\' . $rule . 'Rule';
+        } elseif (class_exists($rule)) {
+            return self::$typeList[$rule] = $rule;
+        }
+        throw new invalidRuleException('rule not found:' . $rule);
     }
 }
