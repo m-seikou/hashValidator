@@ -24,7 +24,7 @@ class listRuleTest extends hashValidatorTestCase
 
     public function dataPass()
     {
-        yield [['rule' => ['type' => 'int']], [0, 1, 2, 3], [0, 1, 2, 3]];
+        yield [['rule' => ['type' => 'int']], [0, 1, 2, 3, 3], [0, 1, 2, 3, 3]];
         yield [['rule' => ['type' => 'int']], ['a' => 0, 1, 2, 3], ['a' => 0, 1, 2, 3]];
         yield [['rule' => ['type' => 'int'], 'min' => 2], [0, 1], [0, 1]];
         yield [['rule' => ['type' => 'int'], 'max' => 3], [0, 1], [0, 1]];
@@ -80,5 +80,14 @@ class listRuleTest extends hashValidatorTestCase
         $this->assertArrayHasKey('min', $dump);
         $this->assertEquals(1, $dump['min']);
         $this->assertArrayHasKey('rule', $dump);
+    }
+
+    /**
+     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
+     */
+    public function testUniqFail()
+    {
+        $validator = new listRule(['rule' => ['type' => 'int'], 'unique' => true]);
+        $validator->check([1, 1]);
     }
 }

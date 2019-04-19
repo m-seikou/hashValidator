@@ -18,6 +18,7 @@ final class listRule extends abstractRule
     private $rule;
     private $min;
     private $max;
+    private $unique;
 
     public function __construct($rule)
     {
@@ -31,6 +32,7 @@ final class listRule extends abstractRule
         if (isset($rule['max'])) {
             $this->max = (int)$rule['max'];
         }
+        $this->unique = (bool)($rule['unique'] ?? false);
         try {
             $this->rule = ruleFactory::getInstance($rule['rule']);
         } catch (invalidRuleException $e) {
@@ -56,6 +58,16 @@ final class listRule extends abstractRule
                 $return[$key] = $this->rule->check($element);
             } catch (invalidDataException $e) {
                 throw new invalidDataException('[' . $key . ']' . $e->getMessage(), $e->getCode(), $e, $this->message);
+            }
+        }
+        if ($this->unique) {
+            $keys = array_keys($return);
+            while (null !== $targetKey = array_shift($keys)) {
+                foreach ($keys as $key) {
+                    if ($return[$key] === $return[$targetKey]) {
+                        throw new invalidDataException(sprintf('duplicate entry %s key=>[%s, %s]', $return[$key], $key, $targetKey));
+                    }
+                }
             }
         }
         return $return;
