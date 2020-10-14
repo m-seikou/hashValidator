@@ -21,7 +21,7 @@ class hashValidator
      */
     public function __construct($arg, $type = 'hash')
     {
-        $class = __NAMESPACE__ . '\\loader\\' . $type . 'Loader';
+        $class = __NAMESPACE__ . '\\loaders\\' . $type . 'Loader';
         /** @var Interfaces\loaderInterface $loader */
         $loader = new $class();
         try {
