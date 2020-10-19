@@ -10,7 +10,7 @@ if (!isset($argc)) {
     exit (0);
 }
 
-include_once dirname(__DIR__) . '/src/hashValidator.php';
+include_once dirname(__DIR__) . '/../../autoload.php';
 try {
     $opt = (new mihoshi\hashValidator\hashValidator([
         'type' => 'hash',
