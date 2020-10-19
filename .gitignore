@@ -1,5 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 /.idea
+/.vscode
 composer.lock
 composer.phar
 /vendor
+/test/log
