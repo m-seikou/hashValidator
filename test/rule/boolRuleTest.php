@@ -23,10 +23,10 @@ class boolRuleTest extends hashValidatorTestCase
      * @param $data
      * @dataProvider dataPass
      */
-    public function testPass($data)
+    public function testPassStrict($data)
     {
         $validator = new boolRule([]);
-        $this->assertEquals($data, $validator->check($data));
+        self::assertEquals($data, $validator->check($data));
     }
 
     public function dataFail()
@@ -42,10 +42,10 @@ class boolRuleTest extends hashValidatorTestCase
     /**
      * @param $data
      * @dataProvider dataFail
-     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
-    public function testFail($data)
+    public function testFailStrict($data)
     {
+        $this->expectException(invalidDataException::class);
         $validator = new boolRule([]);
         $validator->check($data);
     }
@@ -54,5 +54,15 @@ class boolRuleTest extends hashValidatorTestCase
     {
         $validator = new boolRule(['arrow_null' => true]);
         $this->assertNull($validator->check(null));
+    }
+
+    /**
+     * @param $data
+     * @dataProvider  dataFail
+     */
+    public function testFail($data){
+        $validator = new boolRule(['strict'=>false]);
+        $result = $validator->check($data);
+        self::assertContains($result,[true,false]);
     }
 }

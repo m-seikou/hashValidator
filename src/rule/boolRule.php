@@ -13,12 +13,16 @@ use mihoshi\hashValidator\exceptions\invalidDataException;
 final class boolRule extends abstractRule
 {
     private $null = false;
+    private $strict = true;
 
     public function __construct($rule)
     {
         parent::__construct($rule);
         if (isset($rule['arrow_null'])) {
             $this->null = $rule['arrow_null'];
+        }
+        if(isset($rule['strict'])){
+            $this->strict = $rule['strict'];
         }
     }
 
@@ -27,9 +31,15 @@ final class boolRule extends abstractRule
         if ($value === null && $this->null) {
             return null;
         }
-        if (!\is_bool($value)) {
+        if($this->strict){
+            if($value === true || $value === false){
+                return $value;
+            }
             throw new invalidDataException('invalid int value:' . var_export($value, true), 0, null, $this->message);
         }
+        /**
+         * @see https://www.php.net/manual/ja/language.types.boolean.php
+         */
         $value = (bool)$value;
         return $value;
     }
