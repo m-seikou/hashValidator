@@ -10,7 +10,7 @@ namespace mihoshi\hashValidator\rule;
 
 use mihoshi\hashValidator\exceptions\invalidDataException;
 
-final class floatRule extends abstractRule
+class floatRule extends abstractRule
 {
     private $min = null;
     private $max = null;

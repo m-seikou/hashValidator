@@ -10,7 +10,7 @@ namespace mihoshi\hashValidator\rule;
 
 use mihoshi\hashValidator\exceptions\invalidDataException;
 
-final class intRule extends abstractRule
+class intRule extends abstractRule
 {
     private $min = -PHP_INT_MAX;
     private $max = PHP_INT_MAX;

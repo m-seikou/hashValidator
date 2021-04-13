@@ -8,7 +8,7 @@
 
 namespace mihoshi\hashValidator\rule;
 
-final class noneRule extends abstractRule
+class noneRule extends abstractRule
 {
 	public function check($value)
 	{

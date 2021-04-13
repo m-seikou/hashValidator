@@ -10,7 +10,7 @@ namespace mihoshi\hashValidator\rule;
 
 use mihoshi\hashValidator\exceptions\invalidRuleException;
 
-final class ruleFactory
+class ruleFactory
 {
     /**
      * @var array [ルール => クラス名] ロード済みのルール

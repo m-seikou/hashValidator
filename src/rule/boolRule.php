@@ -10,7 +10,7 @@ namespace mihoshi\hashValidator\rule;
 
 use mihoshi\hashValidator\exceptions\invalidDataException;
 
-final class boolRule extends abstractRule
+class boolRule extends abstractRule
 {
     private $null = false;
     private $strict = true;

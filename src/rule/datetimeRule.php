@@ -11,7 +11,7 @@ namespace mihoshi\hashValidator\rule;
 use mihoshi\hashValidator\exceptions\invalidRuleException;
 use mihoshi\hashValidator\exceptions\invalidDataException;
 
-final class datetimeRule extends abstractRule
+class datetimeRule extends abstractRule
 {
     private $timezone;
     private $format;
