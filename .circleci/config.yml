@@ -37,7 +37,7 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
 
       # run tests!
-      - run: vendor/bin/phpunit -c test/phpunit.xml
+      - run: vendor/bin/phpunit -c phpunit.xml
       - store_artifacts:
-          path: test/log
+          path: log
           destination: coverage
