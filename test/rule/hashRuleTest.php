@@ -2,12 +2,15 @@
 
 namespace mihoshi\hashValidator;
 
+use Generator;
+use mihoshi\hashValidator\exceptions\invalidDataException;
+use mihoshi\hashValidator\exceptions\invalidRuleException;
 use mihoshi\hashValidator\rule\hashRule;
 
 class hashRuleTest extends hashValidatorTestCase
 {
 
-    public function dataConstructError()
+    public function dataConstructError(): Generator
     {
         yield 'undefined "key"' => [[]];
         yield '"key" is not array' => [['key' => 0]];
@@ -16,14 +19,14 @@ class hashRuleTest extends hashValidatorTestCase
     /**
      * @param $rule
      * @dataProvider dataConstructError
-     * @expectedException \mihoshi\hashValidator\exceptions\invalidRuleException
      */
-    public function testConstructError($rule)
+    public function testConstructError($rule): void
     {
+        $this->expectException(invalidRuleException::class);
         new hashRule($rule);
     }
 
-    public function dataPass()
+    public function dataPass(): Generator
     {
         yield [
             ['key' => ['hoge' => ['type' => 'int']]],
@@ -53,13 +56,13 @@ class hashRuleTest extends hashValidatorTestCase
      * @param $excepted
      * @dataProvider dataPass
      */
-    public function testPass($define, $data, $excepted)
+    public function testPass($define, $data, $excepted): void
     {
         $validator = new hashRule($define);
-        $this->assertSame($excepted, $validator->check($data));
+        self::assertSame($excepted, $validator->check($data));
     }
 
-    public function dataFail()
+    public function dataFail(): Generator
     {
         yield [
             ['key' => ['hoge' => ['type' => 'int']]],
@@ -79,18 +82,18 @@ class hashRuleTest extends hashValidatorTestCase
      * @param $define
      * @param $data
      * @dataProvider dataFail
-     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
-    public function testFail($define, $data)
+    public function testFail($define, $data): void
     {
+        $this->expectException(invalidDataException::class);
         $validator = new hashRule($define);
         $validator->check($data);
     }
 
-    public function testDump()
+    public function testDump(): void
     {
         $result = (new hashRule(['key' => ['hoge' => ['type' => 'int']]]))->dump();
-        $this->assertArrayHasKey('key',$result);
+        self::assertArrayHasKey('key', $result);
     }
 
 }

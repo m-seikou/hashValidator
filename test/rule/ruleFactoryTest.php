@@ -9,31 +9,32 @@ use mihoshi\hashValidator\exceptions\invalidRuleException;
 class ruleFactoryTest extends hashValidatorTestCase
 {
 
-    public function testFactoryEnableType()
+    public function testFactoryEnableType():void
     {
-        $this->assertInstanceOf(intRule::class, ruleFactory::getInstance(['type' => 'int']));
+        self::assertInstanceOf(intRule::class, ruleFactory::getInstance(['type' => 'int']));
     }
 
     /**
-     * @expectedException \mihoshi\hashValidator\exceptions\invalidRuleException
      */
-    public function testFactoryIgnoreType()
+    public function testFactoryIgnoreType():void
     {
+        $this->expectException(invalidRuleException::class);
         ruleFactory::getInstance(['type' => 'integer']);
     }
 
-    public function testAdditionalRule()
+    public function testAdditionalRule():void
     {
         require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'testData' . DIRECTORY_SEPARATOR . 'fooRule.php';
         $result = ruleFactory::getInstance(['type' => \testData\fooRule::class]);
-        $this->assertInstanceOf(\testData\fooRule::class, $result);
+        self::assertInstanceOf(\testData\fooRule::class, $result);
     }
 
     /**
-     * @expectedException \mihoshi\hashValidator\exceptions\invalidRuleException
-     * @expectedExceptionCode 999
      */
-    public function testRuleThrowException(){
+    public function testRuleThrowException():void
+    {
+        $this->expectException(invalidRuleException::class);
+        $this->expectExceptionCode(999);
         require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . 'testData' . DIRECTORY_SEPARATOR . 'exception.php';
         $result = ruleFactory::getInstance(['type' => \testData\exception::class]);
     }

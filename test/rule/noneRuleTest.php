@@ -8,11 +8,12 @@
 
 namespace mihoshi\hashValidator;
 
+use Generator;
 use mihoshi\hashValidator\rule\noneRule;
 
 class noneRuleTest extends hashValidatorTestCase
 {
-    public function dataPass()
+    public function dataPass(): Generator
     {
         yield [1];
         yield [12.345];
@@ -25,16 +26,16 @@ class noneRuleTest extends hashValidatorTestCase
      * @param $data
      * @dataProvider dataPass
      */
-    public function testPass($data)
+    public function testPass($data): void
     {
         $validator = new noneRule(['rule' => ['type' => 'none']]);
-        $this->assertSame($data, $validator->check($data));
+        self::assertSame($data, $validator->check($data));
     }
 
-    public function testDump()
+    public function testDump(): void
     {
         $validator = new noneRule([]);
-        $this->assertEquals('none', $validator->dump()['type']);
+        self::assertEquals('none', $validator->dump()['type']);
     }
 
 }

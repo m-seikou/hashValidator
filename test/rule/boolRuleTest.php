@@ -8,12 +8,14 @@
 
 namespace mihoshi\hashValidator;
 
+use Generator;
 use mihoshi\hashValidator\rule\boolRule;
 use mihoshi\hashValidator\exceptions\invalidDataException;
+use stdClass;
 
 class boolRuleTest extends hashValidatorTestCase
 {
-    public function dataPass()
+    public function dataPass(): Generator
     {
         yield [true];
         yield [false];
@@ -23,17 +25,17 @@ class boolRuleTest extends hashValidatorTestCase
      * @param $data
      * @dataProvider dataPass
      */
-    public function testPassStrict($data)
+    public function testPassStrict($data): void
     {
         $validator = new boolRule([]);
         self::assertEquals($data, $validator->check($data));
     }
 
-    public function dataFail()
+    public function dataFail(): Generator
     {
         yield ['a'];
         yield [[]];
-        yield [new \stdClass()];
+        yield [new stdClass()];
         yield [0];
         yield [1];
         yield [null];
@@ -43,24 +45,25 @@ class boolRuleTest extends hashValidatorTestCase
      * @param $data
      * @dataProvider dataFail
      */
-    public function testFailStrict($data)
+    public function testFailStrict($data): void
     {
         $this->expectException(invalidDataException::class);
         $validator = new boolRule([]);
         $validator->check($data);
     }
 
-    public function testArrowNull()
+    public function testArrowNull(): void
     {
         $validator = new boolRule(['arrow_null' => true]);
-        $this->assertNull($validator->check(null));
+        self::assertNull($validator->check(null));
     }
 
     /**
      * @param $data
      * @dataProvider  dataFail
      */
-    public function testFail($data){
+    public function testFail($data): void
+    {
         $validator = new boolRule(['strict'=>false]);
         $result = $validator->check($data);
         self::assertContains($result,[true,false]);

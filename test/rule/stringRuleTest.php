@@ -2,12 +2,13 @@
 
 namespace mihoshi\hashValidator;
 
+use Generator;
 use mihoshi\hashValidator\rule\stringRule;
 use mihoshi\hashValidator\exceptions\invalidDataException;
 
 class stringRuleTest extends hashValidatorTestCase
 {
-    public function dataPass()
+    public function dataPass(): Generator
     {
         yield [''];
         yield ['hogehogehogehoge'];
@@ -17,13 +18,13 @@ class stringRuleTest extends hashValidatorTestCase
      * @param $data
      * @dataProvider dataPass
      */
-    public function testPass($data)
+    public function testPass($data): void
     {
         $validator = new stringRule([]);
-        $this->assertEquals($data, $validator->check($data));
+        self::assertEquals($data, $validator->check($data));
     }
 
-    public function dataFail()
+    public function dataFail(): Generator
     {
         yield [[]];
         yield [new \stdClass()];
@@ -33,16 +34,16 @@ class stringRuleTest extends hashValidatorTestCase
     /**
      * @param $data
      * @dataProvider dataFail
-     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
-    public function testFail($data)
+    public function testFail($data): void
     {
+        $this->expectException(invalidDataException::class);
         $validator = new stringRule([]);
         $validator->check($data);
     }
 
 
-    public function dataLengthPass()
+    public function dataLengthPass(): Generator
     {
         yield ['333'];
         yield ['55555'];
@@ -52,14 +53,14 @@ class stringRuleTest extends hashValidatorTestCase
      * @param $data
      * @dataProvider dataLengthPass
      */
-    public function testLengthPass($data)
+    public function testLengthPass($data): void
     {
         $validator = new stringRule(['max' => 5, 'min' => 2]);
-        $this->assertEquals($data, $validator->check($data));
+        self::assertEquals($data, $validator->check($data));
     }
 
 
-    public function dataLengthFail()
+    public function dataLengthFail(): Generator
     {
         yield ['2'];
         yield ['666666'];
@@ -68,15 +69,15 @@ class stringRuleTest extends hashValidatorTestCase
     /**
      * @param $data
      * @dataProvider dataLengthFail
-     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
-    public function testLengthFail($data)
+    public function testLengthFail($data): void
     {
+        $this->expectException(invalidDataException::class);
         $validator = new stringRule(['max' => 5, 'min' => 2]);
         $validator->check($data);
     }
 
-    public function dataPregPass()
+    public function dataPregPass(): Generator
     {
         yield ['hogehoge'];
         yield ['aaaahogehogeffuuuu'];
@@ -90,11 +91,11 @@ class stringRuleTest extends hashValidatorTestCase
     public function testPregPass($data)
     {
         $validator = new stringRule(['preg' => '/hogehoge/']);
-        $this->assertEquals($data, $validator->check($data));
+        self::assertEquals($data, $validator->check($data));
     }
 
 
-    public function dataPregFail()
+    public function dataPregFail(): Generator
     {
         yield ['hogeahoge'];
     }
@@ -102,32 +103,34 @@ class stringRuleTest extends hashValidatorTestCase
     /**
      * @param $data
      * @dataProvider dataPregFail
-     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
-    public function testPregFail($data)
+    public function testPregFail($data): void
     {
+        $this->expectException(invalidDataException::class);
         $validator = new stringRule(['preg' => '/hogehoge/']);
         $validator->check($data);
     }
 
-    public function testArrowNull(){
+    public function testArrowNull(): void
+    {
         $validator = new stringRule(['arrow_null' => true]);
-        $this->assertNull($validator->check(null));
+        self::assertNull($validator->check(null));
     }
 
-    public function testDump()
+    public function testDump(): void
     {
         $rule = new stringRule([]);
-        $this->assertArrayHasKey('max', $rule->dump());
-        $this->assertNull($rule->dump()['max']);
-        $this->assertNull($rule->dump()['min']);
-        $this->assertArrayHasKey('comment', $rule->dump());
-        $this->assertEquals('', $rule->dump()['comment']);
-        $this->assertArrayHasKey('optional', $rule->dump());
-        $this->assertEquals(false, $rule->dump()['optional']);
+        self::assertArrayHasKey('max', $rule->dump());
+        self::assertNull($rule->dump()['max']);
+        self::assertNull($rule->dump()['min']);
+        self::assertArrayHasKey('comment', $rule->dump());
+        self::assertEquals('', $rule->dump()['comment']);
+        self::assertArrayHasKey('optional', $rule->dump());
+        self::assertEquals(false, $rule->dump()['optional']);
 
     }
-    public function testDumpWithMaxMin()
+
+    public function testDumpWithMaxMin(): void
     {
         $rule = new stringRule([
             'max' => 100,
@@ -135,14 +138,14 @@ class stringRuleTest extends hashValidatorTestCase
             'comment' => 'hogehoge',
             'optional' => true,
         ]);
-        $this->assertArrayHasKey('max', $rule->dump());
-        $this->assertEquals(100, $rule->dump()['max']);
-        $this->assertArrayHasKey('min', $rule->dump());
-        $this->assertEquals(10, $rule->dump()['min']);
-        $this->assertArrayHasKey('comment', $rule->dump());
-        $this->assertEquals('hogehoge', $rule->dump()['comment']);
-        $this->assertArrayHasKey('optional', $rule->dump());
-        $this->assertEquals(true, $rule->dump()['optional']);
+        self::assertArrayHasKey('max', $rule->dump());
+        self::assertEquals(100, $rule->dump()['max']);
+        self::assertArrayHasKey('min', $rule->dump());
+        self::assertEquals(10, $rule->dump()['min']);
+        self::assertArrayHasKey('comment', $rule->dump());
+        self::assertEquals('hogehoge', $rule->dump()['comment']);
+        self::assertArrayHasKey('optional', $rule->dump());
+        self::assertEquals(true, $rule->dump()['optional']);
     }
 
 }

@@ -1,18 +1,21 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<phpunit bootstrap="phpunit.php">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="test/phpunit.php"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory>src</directory>
+        </include>
+        <report>
+            <html outputDirectory="log" lowUpperBound="35" highLowerBound="70"/>
+        </report>
+    </coverage>
     <testsuites>
         <testsuite name="hashValidator unit test">
-            <directory>loader</directory>
-            <directory>rule</directory>
+            <directory>test/loader</directory>
+            <directory>test/rule</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory>../src</directory>
-        </whitelist>
-    </filter>
     <logging>
-        <log type="coverage-html" target="log" lowUpperBound="35" highLowerBound="70"/>
         <!--<log type="coverage-clover" target="/tmp/coverage.xml"/>-->
         <!--<log type="coverage-php" target="/tmp/coverage.serialized"/>-->
         <!--<log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>-->

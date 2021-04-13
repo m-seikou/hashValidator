@@ -2,11 +2,14 @@
 
 namespace mihoshi\hashValidator;
 
+use Generator;
+use mihoshi\hashValidator\exceptions\invalidDataException;
+use mihoshi\hashValidator\exceptions\invalidRuleException;
 use mihoshi\hashValidator\rule\funcRule;
 
 class funcRuleTest extends hashValidatorTestCase
 {
-    public function dataDefine()
+    public function dataDefine(): Generator
     {
         yield [['']];
         yield [['hogehoge']];
@@ -21,10 +24,10 @@ class funcRuleTest extends hashValidatorTestCase
     /**
      * @param $data
      * @dataProvider dataDefine
-     * @expectedException \mihoshi\hashValidator\exceptions\invalidRuleException
      */
-    public function testDefine($data)
+    public function testDefine($data): void
     {
+        $this->expectException(invalidRuleException::class);
         new funcRule($data);
     }
 
@@ -58,7 +61,7 @@ class funcRuleTest extends hashValidatorTestCase
         return new \stdClass();
     }
 
-    public function dataPass()
+    public function dataPass(): Generator
     {
         yield [['class' => __CLASS__, 'method' => 'callbackEcho'], true, true];
         yield [['class' => __CLASS__, 'method' => 'callbackEcho'], false, false];
@@ -70,13 +73,13 @@ class funcRuleTest extends hashValidatorTestCase
      * @param $expected
      * @dataProvider dataPass
      */
-    public function testPass($define, $data, $expected)
+    public function testPass($define, $data, $expected): void
     {
         $validator = new funcRule($define);
         $this->assertSame($expected, $validator->check($data));
     }
 
-    public function dataFail()
+    public function dataFail(): Generator
     {
         yield [['class' => __CLASS__, 'method' => 'callbackThrow'], false];
     }
@@ -85,52 +88,52 @@ class funcRuleTest extends hashValidatorTestCase
      * @param $define
      * @param $data
      * @dataProvider dataFail
-     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
-    public function testFail($define, $data)
+    public function testFail($define, $data): void
     {
+        $this->expectException(invalidDataException::class);
         $validator = new funcRule($define);
         $validator->check($data);
     }
 
-    public function testInstance()
+    public function testInstance(): void
     {
         $validator = new funcRule(['class' => __CLASS__, 'method' => 'callbackInstance']);
-        $this->assertInstanceOf('stdClass', $validator->check(false));
+        self::assertInstanceOf('stdClass', $validator->check(false));
     }
 
 
-    public function testDump_function()
+    public function testDump_function(): void
     {
         $rule = new funcRule(['function' => 'is_array']);
-        $this->assertArrayHasKey('type', $rule->dump());
-        $this->assertEquals('is_array', $rule->dump()['function']);
-        $this->assertArrayHasKey('comment', $rule->dump());
-        $this->assertEquals('', $rule->dump()['comment']);
-        $this->assertArrayHasKey('optional', $rule->dump());
-        $this->assertEquals(false, $rule->dump()['optional']);
+        self::assertArrayHasKey('type', $rule->dump());
+        self::assertEquals('is_array', $rule->dump()['function']);
+        self::assertArrayHasKey('comment', $rule->dump());
+        self::assertEquals('', $rule->dump()['comment']);
+        self::assertArrayHasKey('optional', $rule->dump());
+        self::assertEquals(false, $rule->dump()['optional']);
     }
 
-    public function testDump_baseData()
+    public function testDump_baseData(): void
     {
         $rule = new funcRule([
             'function' => 'is_array',
             'comment' => 'hogehoge',
             'optional' => true,
         ]);
-        $this->assertArrayHasKey('comment', $rule->dump());
-        $this->assertEquals('hogehoge', $rule->dump()['comment']);
-        $this->assertArrayHasKey('optional', $rule->dump());
-        $this->assertEquals(true, $rule->dump()['optional']);
+        self::assertArrayHasKey('comment', $rule->dump());
+        self::assertEquals('hogehoge', $rule->dump()['comment']);
+        self::assertArrayHasKey('optional', $rule->dump());
+        self::assertEquals(true, $rule->dump()['optional']);
     }
 
-    public function testDump_class()
+    public function testDump_class(): void
     {
         $rule = new funcRule(['class' => __CLASS__, 'method' => 'callbackEcho']);
-        $this->assertArrayHasKey('class', $rule->dump());
-        $this->assertEquals(__CLASS__, $rule->dump()['class']);
-        $this->assertArrayHasKey('method', $rule->dump());
-        $this->assertEquals('callbackEcho', $rule->dump()['method']);
+        self::assertArrayHasKey('class', $rule->dump());
+        self::assertEquals(__CLASS__, $rule->dump()['class']);
+        self::assertArrayHasKey('method', $rule->dump());
+        self::assertEquals('callbackEcho', $rule->dump()['method']);
     }
 
 }

@@ -2,11 +2,14 @@
 
 namespace mihoshi\hashValidator;
 
+use Generator;
+use mihoshi\hashValidator\exceptions\invalidDataException;
 use mihoshi\hashValidator\rule\floatRule;
+use stdClass;
 
 class floatRuleTest extends hashValidatorTestCase
 {
-    public function dataPass()
+    public function dataPass(): Generator
     {
         yield [-PHP_INT_MAX, 0, PHP_INT_MAX, '12345',];
         yield [-PHP_INT_MAX];
@@ -18,31 +21,31 @@ class floatRuleTest extends hashValidatorTestCase
      * @param $data
      * @dataProvider dataPass
      */
-    public function testPass($data)
+    public function testPass($data):void
     {
         $validator = new floatRule([]);
-        $this->assertEquals($data, $validator->check($data));
+        self::assertEquals($data, $validator->check($data));
     }
 
-    public function dataFail()
+    public function dataFail(): Generator
     {
         yield ['a'];
         yield [[]];
-        yield [new \stdClass()];
+        yield [new stdClass()];
     }
 
     /**
      * @param $data
      * @dataProvider dataFail
-     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
-    public function testFail($data)
+    public function testFail($data):void
     {
+        $this->expectException(invalidDataException::class);
         $validator = new floatRule([]);
         $validator->check($data);
     }
 
-    public function dataRangePass()
+    public function dataRangePass(): Generator
     {
         yield [2.828];
         yield [3];
@@ -53,13 +56,13 @@ class floatRuleTest extends hashValidatorTestCase
      * @param $data
      * @dataProvider dataRangePass
      */
-    public function testRangePass($data)
+    public function testRangePass($data):void
     {
         $validator = new floatRule(['max' => 3.141, 'min' => 2.828]);
-        $this->assertEquals($data, $validator->check($data));
+        self::assertEquals($data, $validator->check($data));
     }
 
-    public function dataRangeFail()
+    public function dataRangeFail(): Generator
     {
         yield [2.827999999];
         yield [3.1410001];
@@ -68,24 +71,24 @@ class floatRuleTest extends hashValidatorTestCase
     /**
      * @param $data
      * @dataProvider dataRangeFail
-     * @expectedException \mihoshi\hashValidator\exceptions\invalidDataException
      */
-    public function testRangeFail($data)
+    public function testRangeFail($data):void
     {
+        $this->expectException(invalidDataException::class);
         $validator = new floatRule(['max' => 3.141, 'min' => 2.828]);
         $validator->check($data);
     }
 
-    public function testDump()
+    public function testDump():void
     {
         $rule = new floatRule([]);
-        $this->assertArrayHasKey('max', $rule->dump());
-        $this->assertNull($rule->dump()['max']);
-        $this->assertNull($rule->dump()['min']);
-        $this->assertArrayHasKey('comment', $rule->dump());
-        $this->assertEquals('', $rule->dump()['comment']);
-        $this->assertArrayHasKey('optional', $rule->dump());
-        $this->assertEquals(false, $rule->dump()['optional']);
+        self::assertArrayHasKey('max', $rule->dump());
+        self::assertNull($rule->dump()['max']);
+        self::assertNull($rule->dump()['min']);
+        self::assertArrayHasKey('comment', $rule->dump());
+        self::assertEquals('', $rule->dump()['comment']);
+        self::assertArrayHasKey('optional', $rule->dump());
+        self::assertEquals(false, $rule->dump()['optional']);
 
         $rule = new floatRule([
             'max' => 100,
@@ -93,14 +96,14 @@ class floatRuleTest extends hashValidatorTestCase
             'comment' => 'hogehoge',
             'optional' => true,
         ]);
-        $this->assertArrayHasKey('max', $rule->dump());
-        $this->assertEquals(100, $rule->dump()['max']);
-        $this->assertArrayHasKey('min', $rule->dump());
-        $this->assertEquals(10, $rule->dump()['min']);
-        $this->assertArrayHasKey('comment', $rule->dump());
-        $this->assertEquals('hogehoge', $rule->dump()['comment']);
-        $this->assertArrayHasKey('optional', $rule->dump());
-        $this->assertEquals(true, $rule->dump()['optional']);
+        self::assertArrayHasKey('max', $rule->dump());
+        self::assertEquals(100, $rule->dump()['max']);
+        self::assertArrayHasKey('min', $rule->dump());
+        self::assertEquals(10, $rule->dump()['min']);
+        self::assertArrayHasKey('comment', $rule->dump());
+        self::assertEquals('hogehoge', $rule->dump()['comment']);
+        self::assertArrayHasKey('optional', $rule->dump());
+        self::assertEquals(true, $rule->dump()['optional']);
     }
 
 }

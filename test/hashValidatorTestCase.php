@@ -12,7 +12,7 @@ include_once dirname(__DIR__).DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'
 define('SRC_ROOT', dirname(__DIR__) . '/src');
 define('TEST_ROOT', __DIR__);
 
-class hashValidatorTestCase extends \PHPUnit_Framework_TestCase
+class hashValidatorTestCase extends \PHPUnit\Framework\TestCase
 {
 
 }

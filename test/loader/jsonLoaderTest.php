@@ -7,38 +7,35 @@ use mihoshi\hashValidator\exceptions\loaderException;
 
 class jsonLoaderTest extends hashValidatorTestCase
 {
-    public function testRead()
+    public function testLoad_notfound(): void
     {
+        $this->expectException(loaderException::class);
+        $this->expectExceptionCode(loaderException::ERR_FILE_NOT_READ);
         // 実存しないファイル
         $loader = new jsonLoader();
-        try {
-            $loader->load('testReadJsonXX.yml');
-            $this->fail();
-        } catch (loaderException $e) {
-            $this->assertEquals(loaderException::ERR_FILE_NOT_READ, $e->getCode());
-        } catch (\Exception $e) {
-            $this->fail();
-        }
+        $loader->load('testReadJsonXX.yml');
+    }
 
-        // json以外のファイル
+    public function testLoad_notJson(): void
+    {
+        $this->expectException(loaderException::class);
+        $this->expectExceptionCode(loaderException::ERR_FILE_NOT_READ);
+        // 実存しないファイル
         $loader = new jsonLoader();
-        try {
-            $loader->load('../testData/testReadYaml01.yml');
-            $this->fail();
-        } catch (loaderException $e) {
-            $this->assertEquals(loaderException::ERR_FILE_NOT_READ, $e->getCode());
-        } catch (\Exception $e) {
-            $this->fail();
-        }
+        $loader->load('../testData/testReadYaml01.yml');
+    }
 
-        $this->assertSame(['key' => 'int', 'min' => 0],
+    public function testRead(): void
+    {
+        $loader = new jsonLoader();
+        self::assertSame(['key' => 'int', 'min' => 0],
             $loader->load(realpath(dirname(__DIR__) . '/testData/testReadJson01.json')));
     }
 
-    public function testInclude()
+    public function testInclude(): void
     {
         $loader = new jsonLoader();
         $def = $loader->load(realpath(dirname(__DIR__) . '/testData/testIncludeJson01.json'));
-        $this->assertSame(["type" => "hash", "key" => ["key1" => ["type" => "int", "min" => 0,]]], $def);
+        self::assertSame(["type" => "hash", "key" => ["key1" => ["type" => "int", "min" => 0,]]], $def);
     }
 }

@@ -1,12 +1,12 @@
 {
-  "name": "mihoshi/hashValidator",
+  "name": "mihoshi/hashvalidator",
   "license": "MIT",
   "require": {
     "php": ">= 7.0.0",
     "ext-json":"*"
   },
   "require-dev": {
-    "phpunit/phpunit": "~5."
+    "phpunit/phpunit": "*"
   },
   "autoload": {
     "psr-4": {
