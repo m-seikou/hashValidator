@@ -13,8 +13,8 @@ use mihoshi\hashValidator\exceptions\invalidDataException;
 
 class enumRule extends abstractRule
 {
-    private array $value;
-    private string $return;
+    private $value;
+    private $return;
 
     public function __construct($rule)
     {

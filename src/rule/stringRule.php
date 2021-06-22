@@ -15,7 +15,7 @@ class stringRule extends abstractRule
     private $min;
     private $max;
     private $preg;
-    private bool $null = false;
+    private $null = false;
 
     public function __construct($rule)
     {

@@ -14,7 +14,7 @@ use mihoshi\hashValidator\exceptions\invalidDataException;
 class hashRule extends abstractRule
 {
     /** @var array ruleInterface[] */
-    private array $rule;
+    private $rule;
 
     /**
      * hashRule constructor.
