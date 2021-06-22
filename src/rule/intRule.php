@@ -30,7 +30,7 @@ class intRule extends abstractRule
         }
     }
 
-    public function check($value)
+    public function check($value): ?int
     {
         if ($value === null && $this->null) {
             return null;
@@ -53,6 +53,7 @@ class intRule extends abstractRule
         return array_merge(parent::dump(), [
             'min' => $this->min,
             'max' => $this->max,
+            'type' => 'int',
         ]);
     }
 

@@ -15,7 +15,7 @@ class ruleFactory
     /**
      * @var array [ルール => クラス名] ロード済みのルール
      */
-    private static $typeList = [];
+    private static array $typeList = [];
 
     /**
      * ルールクラスの作成
@@ -42,12 +42,16 @@ class ruleFactory
      */
     private static function getClassName($rule): string
     {
+        // ロード済みルール
         if (array_key_exists($rule, self::$typeList)) {
             return self::$typeList[$rule];
         }
+        // hashValidatorで定義済みのルール
         if (class_exists(__NAMESPACE__ . '\\' . $rule . 'Rule')) {
             return self::$typeList[$rule] = __NAMESPACE__ . '\\' . $rule . 'Rule';
-        } elseif (class_exists($rule)) {
+        }
+        // 独自のruleInterfaceを実装したクラス
+        if (class_exists($rule)) {
             return self::$typeList[$rule] = $rule;
         }
         throw new invalidRuleException('rule not found:' . $rule);

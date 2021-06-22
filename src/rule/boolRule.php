@@ -21,18 +21,18 @@ class boolRule extends abstractRule
         if (isset($rule['arrow_null'])) {
             $this->null = $rule['arrow_null'];
         }
-        if(isset($rule['strict'])){
+        if (isset($rule['strict'])) {
             $this->strict = $rule['strict'];
         }
     }
 
-    public function check($value)
+    public function check($value): ?bool
     {
         if ($value === null && $this->null) {
             return null;
         }
-        if($this->strict){
-            if($value === true || $value === false){
+        if ($this->strict) {
+            if ($value === true || $value === false) {
                 return $value;
             }
             throw new invalidDataException('invalid int value:' . var_export($value, true), 0, null, $this->message);
@@ -40,7 +40,13 @@ class boolRule extends abstractRule
         /**
          * @see https://www.php.net/manual/ja/language.types.boolean.php
          */
-        $value = (bool)$value;
-        return $value;
+        return (bool)$value;
+    }
+
+    public function dump(): array
+    {
+        return array_merge(parent::dump(), [
+            'type' => 'bool',
+        ]);
     }
 }

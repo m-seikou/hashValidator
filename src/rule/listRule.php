@@ -40,18 +40,18 @@ class listRule extends abstractRule
         }
     }
 
-    public function check($value)
+    public function check($value): array
     {
         $return = [];
-        if (!\is_array($value)) {
+        if (!is_array($value)) {
             throw new invalidDataException('invalid list value:' . var_export($value, true) . ' not array', 0, null,
                 $this->message);
         }
-        if ($this->min !== null && \count($value) < $this->min) {
-            throw new invalidDataException('fewer element :' . \count($value), 0, null, $this->message);
+        if ($this->min !== null && ($num = count($value)) < $this->min) {
+            throw new invalidDataException('fewer element :' . $num, 0, null, $this->message);
         }
-        if ($this->max !== null && \count($value) > $this->max) {
-            throw new invalidDataException('more element :' . \count($value), 0, null, $this->message);
+        if ($this->max !== null && ($num = count($value)) > $this->max) {
+            throw new invalidDataException('more element :' . $num, 0, null, $this->message);
         }
         foreach ($value as $key => $element) {
             try {

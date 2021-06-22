@@ -10,13 +10,16 @@ namespace mihoshi\hashValidator\rule;
 
 use mihoshi\hashValidator\exceptions\invalidRuleException;
 use mihoshi\hashValidator\exceptions\invalidDataException;
-use mihoshi\hashValidator\interfaces\ruleInterface;
 
 class hashRule extends abstractRule
 {
-    /** @var  ruleInterface[] */
-    private $rule;
+    /** @var array ruleInterface[] */
+    private array $rule;
 
+    /**
+     * hashRule constructor.
+     * @param array $rule
+     */
     public function __construct($rule)
     {
         parent::__construct($rule);
@@ -61,6 +64,7 @@ class hashRule extends abstractRule
     {
         $return = array_merge(parent::dump(), [
             'key' => [],
+            'type' => 'hash',
         ]);
         foreach ($this->rule as $key => $rule) {
             $return['key'][$key] = $rule->dump();

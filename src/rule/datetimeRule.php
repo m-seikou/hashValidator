@@ -68,6 +68,7 @@ class datetimeRule extends abstractRule
         $return = array_merge(parent::dump(), [
             'timezone' => $this->timezone->getName(),
             'format' => $this->format,
+            'type' => 'datetime',
         ]);
         if ($this->min) {
             $return['min'] = $this->min->format($this->format);

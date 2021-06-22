@@ -26,7 +26,7 @@ class floatRule extends abstractRule
         }
     }
 
-    public function check($value)
+    public function check($value):float
     {
         if (!is_numeric($value)) {
             throw new invalidDataException('invalid int value:' . var_export($value, true), 0, null, $this->message);
@@ -46,6 +46,7 @@ class floatRule extends abstractRule
         return array_merge(parent::dump(), [
             'min' => $this->min,
             'max' => $this->max,
+            'type' => 'float',
         ]);
     }
 

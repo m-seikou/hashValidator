@@ -15,7 +15,7 @@ class stringRule extends abstractRule
     private $min;
     private $max;
     private $preg;
-    private $null = false;
+    private bool $null = false;
 
     public function __construct($rule)
     {
@@ -34,7 +34,7 @@ class stringRule extends abstractRule
         }
     }
 
-    public function check($value)
+    public function check($value): ?string
     {
         if ($value === null && $this->null) {
             return null;
@@ -43,7 +43,7 @@ class stringRule extends abstractRule
             throw new invalidDataException('invalid string value:' . var_export($value, true), 0, null, $this->message);
         }
         $value = (string)$value;
-        $len = \strlen($value);
+        $len = strlen($value);
         if ($this->min !== null && $len < $this->min) {
             throw new invalidDataException('input length:' . $len . ' less than ' . $this->min, 0, null,
                 $this->message);
@@ -64,6 +64,7 @@ class stringRule extends abstractRule
             'min' => $this->min,
             'max' => $this->max,
             'preg' => $this->preg,
+            'type' => 'string'
         ]);
     }
 }

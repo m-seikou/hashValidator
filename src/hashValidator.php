@@ -17,11 +17,12 @@ class hashValidator
      * hashValidator constructor.
      * @param array|String $arg ルール配列 or ルールファイルのパス
      * @param string $type [hash|yaml|json] $arg 種類
+     * @param array $namespace
      * @throws exceptions\loaderException
      */
-    public function __construct($arg, $type = 'hash')
+    public function __construct($arg, string $type = 'hash', array $namespace = [])
     {
-        $class = __NAMESPACE__ . '\\loaders\\' . $type . 'Loader';
+        $class = class_exists($type) ? $type : __NAMESPACE__ . '\\loaders\\' . $type . 'Loader';
         /** @var Interfaces\loaderInterface $loader */
         $loader = new $class();
         try {

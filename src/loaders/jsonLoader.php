@@ -5,47 +5,28 @@ namespace mihoshi\hashValidator\loaders;
 use mihoshi\hashValidator\interfaces\loaderInterface;
 use mihoshi\hashValidator\exceptions\loaderException;
 
-final class jsonLoader implements loaderInterface
+final class jsonLoader extends abstractFileLoader
 {
     /**
-     * @param string $fileName
+     * @param string $file
      * @return mixed
      * @throws loaderException
      */
-    public function load($fileName): array
+    public function load($file): array
     {
+        if (!file_exists($file)) {
+            throw new loaderException('file not found:' . $file, loaderException::ERR_FILE_NOT_READ);
+        }
+        if (empty($fileData = file_get_contents($file))) {
+            throw new loaderException('file not read:' . $file, loaderException::ERR_FILE_NOT_READ);
+        }
         try {
-            if (!file_exists($fileName)) {
-                throw new loaderException('file not found:' . $fileName, loaderException::ERR_FILE_NOT_READ);
-            }
-            if (empty($file = file_get_contents($fileName))) {
-                throw new loaderException('file not read:' . $fileName, loaderException::ERR_FILE_NOT_READ);
-            }
-            if (null === $return = json_decode($file, true)) {
-                throw new loaderException('file not json:' . $fileName, loaderException::ERR_FILE_NOT_READ);
-            }
-        } catch (loaderException $e) {
-            throw $e;
+            $return = json_decode($fileData, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            throw new loaderException('file not json:' . $file, loaderException::ERR_FILE_NOT_READ, $e);
         } catch (\Exception $e) {
             throw new loaderException($e->getMessage(), loaderException::ERR_FILE_NOT_READ, $e);
         }
-        $return = $this->resolveIncludeFile($return, \dirname($fileName));
-        return $return;
-    }
-
-    private function resolveIncludeFile($def, $path)
-    {
-        if (!\is_array($def)) {
-            return $def;
-        }
-        foreach ($def as &$d) {
-            if (isset($d['include'])) {
-                $fileName = realpath($path . DIRECTORY_SEPARATOR . $d['include']);
-                unset($d['include']);
-                $d = array_merge_recursive($d, $this->load($fileName));
-            }
-            $d = $this->resolveIncludeFile($d, $path);
-        }
-        return $def;
+        return $this->resolveIncludeFile($return, \dirname($file));
     }
 }

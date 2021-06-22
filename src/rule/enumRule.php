@@ -13,16 +13,16 @@ use mihoshi\hashValidator\exceptions\invalidDataException;
 
 class enumRule extends abstractRule
 {
-    private $value = [];
-    private $return;
+    private array $value;
+    private string $return;
 
     public function __construct($rule)
     {
         parent::__construct($rule);
-        if (!\is_array($rule['value'])) {
+        if (!is_array($rule['value'])) {
             throw new invalidRuleException('array has not key:value');
         }
-        if (\count($rule['value']) === 0) {
+        if (count($rule['value']) === 0) {
             throw new invalidRuleException('value is empty');
         }
         $this->value = $rule['value'];
@@ -33,13 +33,13 @@ class enumRule extends abstractRule
             $this->optional = $rule['optional'];
         }
         $v0 = $rule['value'][0];
-        if (\is_string($v0)) {
+        if (is_string($v0)) {
             $this->return = 'string';
-        } elseif (\is_int($v0)) {
+        } elseif (is_int($v0)) {
             $this->return = 'int';
-        } elseif (\is_float($v0)) {
+        } elseif (is_float($v0)) {
             $this->return = 'float';
-        } elseif (\is_bool($v0)) {
+        } elseif (is_bool($v0)) {
             $this->return = 'bool';
         }
     }
@@ -49,7 +49,7 @@ class enumRule extends abstractRule
         if (!is_scalar($value)) {
             throw new invalidDataException('invalid enum value:' . var_export($value, true), 0, null, $this->message);
         }
-        if (!\in_array($value, $this->value, true)) {
+        if (!in_array($value, $this->value, true)) {
             throw new invalidDataException('invalid enum value:' . $value . ' in [' . implode(',', $this->value) . ']',
                 0, null, $this->message);
         }
@@ -61,14 +61,13 @@ class enumRule extends abstractRule
         return array_merge(parent::dump(), [
             'value' => $this->value,
             'return' => $this->return,
+            'type' => 'enum',
         ]);
     }
 
-    public function toText($indentStr, $indentNum)
+    public function toText($indentStr, $indentNum): string
     {
         $indent = str_repeat($indentStr, $indentNum);
-        $return = '';
-        $return .= $indent . 'type:enum [' . implode(',', $this->value) . ']' . $this->comment;
-        return $return;
+        return $indent . 'type:enum [' . implode(',', $this->value) . ']' . $this->comment;
     }
 }
