@@ -15,7 +15,7 @@ class ruleFactory
     /**
      * @var array [ルール => クラス名] ロード済みのルール
      */
-    private static array $typeList = [];
+    private static $typeList = [];
 
     /**
      * ルールクラスの作成
