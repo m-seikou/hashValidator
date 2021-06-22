@@ -33,17 +33,17 @@ class hashRuleTest extends hashValidatorTestCase
             ['hoge' => 10],
             ['hoge' => 10],
         ];
-        yield [
+        yield '未定義のキーは削除される' => [
             ['key' => ['hoge' => ['type' => 'int', 'optional' => true]]],
             ['fuga' => 1],
             [],
         ];
-        yield [
+        yield 'デフォルト値が設定されている未定義項目はデフォルトの値となる' =>[
             ['key' => ['hoge' => ['type' => 'int', 'default' => 42]]],
             [],
             ['hoge' => 42],
         ];
-        yield [
+        yield '再帰的にチェックされている' =>[
             ['key' => ['hoge' => ['type' => 'hash', 'key' => ['fuga' => ['type' => 'int',],],],],],
             ['hoge' => ['fuga' => 1]],
             ['hoge' => ['fuga' => 1]],
@@ -64,17 +64,21 @@ class hashRuleTest extends hashValidatorTestCase
 
     public function dataFail(): Generator
     {
-        yield [
+        yield '必須のキーがない' => [
             ['key' => ['hoge' => ['type' => 'int']]],
             ['fuga' => 1],
         ];
-        yield [
+        yield 'キーで指定した型と一致しない' => [
             ['key' => ['hoge' => ['type' => 'int']]],
             ['hoge' => 'aa'],
         ];
-        yield [
+        yield '再帰的にエラーを補足している' => [
             ['key' => ['hoge' => ['type' => 'hash', 'key' => ['fuga' => ['type' => 'int',],],],],],
             ['hoge' => ['fuga' => 'bb']],
+        ];
+        yield '配列じゃない' => [
+            ['key' => ['hoge' => ['type' => 'int']]],
+            '{"hoge":2}',
         ];
     }
 

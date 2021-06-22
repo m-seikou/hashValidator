@@ -37,6 +37,9 @@ class hashRule extends abstractRule
 
     public function check($value)
     {
+        if(!is_array($value)){
+            throw new invalidDataException($value . ' not hash data', 0, null, $this->message);
+        }
         $return = [];
         foreach ($this->rule as $key => $rule) {
             if (false === array_key_exists($key, $value)) {
