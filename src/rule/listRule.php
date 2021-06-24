@@ -77,6 +77,7 @@ class listRule extends abstractRule
     {
         $return = array_merge(parent::dump(), [
             'rule' => $this->rule->dump(),
+            'type' => 'list'
         ]);
 
         if ($this->min !== null) {
