@@ -10,6 +10,7 @@ namespace mihoshi\hashValidator\rule;
 
 use mihoshi\hashValidator\exceptions\invalidRuleException;
 use mihoshi\hashValidator\exceptions\invalidDataException;
+use Closure;
 
 class enumRule extends abstractRule
 {
@@ -56,9 +57,9 @@ class enumRule extends abstractRule
         return $this->value[array_search($value, $this->value, true)];
     }
 
-    public function dump(): array
+    public function dump(?Closure $closure = null):array
     {
-        return array_merge(parent::dump(), [
+        return array_merge(parent::dump($closure), [
             'value' => $this->value,
             'return' => $this->return,
             'type' => 'enum',

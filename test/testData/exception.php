@@ -25,14 +25,14 @@ class exception implements \mihoshi\hashValidator\interfaces\ruleInterface
 		return 'hogehoge';
 	}
 
-	public function isOptional()
+	public function isOptional():bool
 	{
-		// TODO: Implement isOptional() method.
+	    return false;
 	}
 
-	public function dump()
+	public function dump():array
 	{
-		// TODO: Implement dump() method.
+        return [];
 	}
 
 	public function getDefault()

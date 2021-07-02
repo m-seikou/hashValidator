@@ -11,6 +11,7 @@ namespace mihoshi\hashValidator\rule;
 use mihoshi\hashValidator\exceptions\invalidRuleException;
 use mihoshi\hashValidator\exceptions\invalidDataException;
 use mihoshi\hashValidator\interfaces\ruleInterface;
+use Closure;
 
 class listRule extends abstractRule
 {
@@ -73,10 +74,10 @@ class listRule extends abstractRule
         return $return;
     }
 
-    public function dump(): array
+    public function dump(?Closure $closure = null):array
     {
-        $return = array_merge(parent::dump(), [
-            'rule' => $this->rule->dump(),
+        $return = array_merge(parent::dump($closure), [
+            'rule' => $this->rule->dump($closure),
             'type' => 'list'
         ]);
 
