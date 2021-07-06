@@ -9,6 +9,7 @@
 namespace mihoshi\hashValidator\rule;
 
 use mihoshi\hashValidator\interfaces\ruleInterface;
+use Closure;
 
 abstract class abstractRule implements ruleInterface
 {
@@ -42,15 +43,19 @@ abstract class abstractRule implements ruleInterface
         return $this->optional;
     }
 
-    public function dump(): array
+    public function dump(?Closure $closure = null):array
     {
-        return [
+        $dump = [
 //            'type' => str_replace(__NAMESPACE__ . '\\', '', str_replace('Rule', '', get_called_class())),
             'type' => static::class,
             'comment' => $this->comment,
             'optional' => $this->optional,
             'message' => $this->message,
         ];
+        if ($closure === null) {
+            return $dump;
+        }
+        return $closure($dump);
     }
 
     public function getDefault()

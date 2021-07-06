@@ -14,6 +14,7 @@ class hashRuleTest extends hashValidatorTestCase
     {
         yield 'undefined "key"' => [[]];
         yield '"key" is not array' => [['key' => 0]];
+        yield 'invalid child rule' => [['key' => ['hoge'=> ['type' => null]]]];
     }
 
     /**

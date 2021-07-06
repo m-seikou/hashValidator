@@ -9,6 +9,7 @@
 namespace mihoshi\hashValidator\rule;
 
 use mihoshi\hashValidator\exceptions\invalidDataException;
+use Closure;
 
 class floatRule extends abstractRule
 {
@@ -41,9 +42,9 @@ class floatRule extends abstractRule
         return $value;
     }
 
-    public function dump(): array
+    public function dump(?Closure $closure = null):array
     {
-        return array_merge(parent::dump(), [
+        return array_merge(parent::dump($closure), [
             'min' => $this->min,
             'max' => $this->max,
             'type' => 'float',

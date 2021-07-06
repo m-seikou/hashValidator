@@ -10,7 +10,7 @@ namespace testData;
 
 use mihoshi\hashValidator\exceptions\invalidDataException;
 use mihoshi\hashValidator\exceptions\invalidRuleException;
-
+use Closure;
 class exception implements \mihoshi\hashValidator\interfaces\ruleInterface
 {
 	public function __construct($rule)
@@ -25,14 +25,14 @@ class exception implements \mihoshi\hashValidator\interfaces\ruleInterface
 		return 'hogehoge';
 	}
 
-	public function isOptional()
+	public function isOptional():bool
 	{
-		// TODO: Implement isOptional() method.
+	    return false;
 	}
 
-	public function dump()
+    public function dump(?Closure $closure = null):array
 	{
-		// TODO: Implement dump() method.
+        return [];
 	}
 
 	public function getDefault()

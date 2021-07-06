@@ -3,7 +3,7 @@
 namespace mihoshi\hashValidator;
 
 use mihoshi\hashValidator\exceptions\loaderException;
-
+use Closure;
 /**
  * Class hashValidator
  * @package mihoshi\hashValidator
@@ -32,9 +32,13 @@ class hashValidator
         }
     }
 
-    public function dump()
+    /**
+     * @param ?Closure $dump
+     * @return array
+     */
+    public function dump(?Closure $dump = null): array
     {
-        return $this->rule->dump();
+        return $this->rule->dump($dump);
     }
 
     /**

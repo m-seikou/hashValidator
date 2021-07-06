@@ -10,6 +10,11 @@ namespace mihoshi\hashValidator\rule;
 
 use mihoshi\hashValidator\exceptions\invalidRuleException;
 use mihoshi\hashValidator\exceptions\invalidDataException;
+use Closure;
+use DateTimeZone;
+use DateTimeImmutable;
+use DateTimeInterface;
+use Exception;
 
 class datetimeRule extends abstractRule
 {
@@ -22,26 +27,26 @@ class datetimeRule extends abstractRule
     {
         parent::__construct($rule);
         if (isset($rule['timezone'])) {
-            $this->timezone = new \DateTimeZone($rule['timezone']);
+            $this->timezone = new DateTimeZone($rule['timezone']);
         } else {
-            $this->timezone = new \DateTimeZone(date_default_timezone_get());
+            $this->timezone = new DateTimeZone(date_default_timezone_get());
         }
         if (isset($rule['format'])) {
             $this->format = $rule['format'];
         } else {
-            $this->format = \DateTime::ATOM;
+            $this->format = DateTimeInterface::ATOM;
         }
         if (isset($rule['min'])) {
             try {
-                $this->min = new \DateTimeImmutable($rule['min']);
-            } catch (\Exception $e) {
+                $this->min = new DateTimeImmutable($rule['min']);
+            } catch (Exception $e) {
                 throw new invalidRuleException($e->getMessage(), $e->getCode(), $e);
             }
         }
         if (isset($rule['max'])) {
             try {
-                $this->max = new \DateTimeImmutable($rule['max']);
-            } catch (\Exception $e) {
+                $this->max = new DateTimeImmutable($rule['max']);
+            } catch (Exception $e) {
                 throw new invalidRuleException($e->getMessage(), $e->getCode(), $e);
             }
         }
@@ -50,8 +55,8 @@ class datetimeRule extends abstractRule
     public function check($value)
     {
         try {
-            $datetime = new \DateTimeImmutable($value, $this->timezone);
-        } catch (\Exception $e) {
+            $datetime = new DateTimeImmutable($value, $this->timezone);
+        } catch (Exception $e) {
             throw new invalidDataException($e->getMessage(), $e->getCode(), $e);
         }
         if ($this->min && $datetime < $this->min) {
@@ -63,9 +68,9 @@ class datetimeRule extends abstractRule
         return $datetime->format($this->format);
     }
 
-    public function dump(): array
+    public function dump(?Closure $closure = null): array
     {
-        $return = array_merge(parent::dump(), [
+        $return = array_merge(parent::dump($closure), [
             'timezone' => $this->timezone->getName(),
             'format' => $this->format,
             'type' => 'datetime',

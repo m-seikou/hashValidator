@@ -10,6 +10,7 @@ namespace mihoshi\hashValidator\rule;
 
 use mihoshi\hashValidator\exceptions\invalidRuleException;
 use mihoshi\hashValidator\exceptions\invalidDataException;
+use Closure;
 
 class hashRule extends abstractRule
 {
@@ -63,14 +64,14 @@ class hashRule extends abstractRule
         return $return;
     }
 
-    public function dump(): array
+    public function dump(?Closure $closure = null):array
     {
-        $return = array_merge(parent::dump(), [
+        $return = array_merge(parent::dump($closure), [
             'key' => [],
             'type' => 'hash',
         ]);
         foreach ($this->rule as $key => $rule) {
-            $return['key'][$key] = $rule->dump();
+            $return['key'][$key] = $rule->dump($closure);
         }
         return $return;
     }

@@ -4,6 +4,7 @@ namespace mihoshi\hashValidator\interfaces;
 
 use mihoshi\hashValidator\exceptions\invalidDataException;
 use mihoshi\hashValidator\exceptions\invalidRuleException;
+use Closure;
 
 interface ruleInterface
 {
@@ -13,7 +14,7 @@ interface ruleInterface
      * @param array $rule
      * @throws invalidRuleException $ruleに不備があった場合、この例外をthrowすること
      */
-    public function __construct($rule);
+    public function __construct(array $rule);
 
     /**
      * @param $value
@@ -26,7 +27,7 @@ interface ruleInterface
      * hashの必須設定を参照するためのインターフェース
      * @return bool
      */
-    public function isOptional();
+    public function isOptional():bool;
 
     /**
      * hashのデフォルト値を参照するためのインターフェース
@@ -36,8 +37,9 @@ interface ruleInterface
 
     /**
      * ルールに関する各種パラメーターを連想配列で返す
+     * @param Closure|null $closure
      * @return array
      */
-    public function dump();
+    public function dump(?Closure $closure = null):array;
 
 }

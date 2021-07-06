@@ -38,4 +38,16 @@ class noneRuleTest extends hashValidatorTestCase
         self::assertEquals('none', $validator->dump()['type']);
     }
 
+    public function testDumpClosure(){
+        $validator = new noneRule(['rule' => ['type' => 'none', 'comment' => 'hogehoge']]);
+        $result = $validator->dump(static function ($array) {
+            $array['comment'] = ['hoge1' => 'hogehoge', 'hoge2' => 'fugafuga'];
+            return $array;
+        });
+        self::assertArrayHasKey('comment',$result);
+        self::assertIsArray($result['comment']);
+        self::assertArrayHasKey('hoge1',$result['comment']);
+        self::assertArrayHasKey('hoge2',$result['comment']);
+
+    }
 }
