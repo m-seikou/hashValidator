@@ -27,7 +27,7 @@ class boolRuleTest extends hashValidatorTestCase
      */
     public function testPassStrict($data): void
     {
-        $validator = new boolRule([]);
+        $validator = new boolRule(['message'=>'error message']);
         self::assertEquals($data, $validator->check($data));
     }
 
@@ -48,7 +48,7 @@ class boolRuleTest extends hashValidatorTestCase
     public function testFailStrict($data): void
     {
         $this->expectException(invalidDataException::class);
-        $validator = new boolRule([]);
+        $validator = new boolRule(['message' => 'error message']);
         $validator->check($data);
     }
 
@@ -67,5 +67,12 @@ class boolRuleTest extends hashValidatorTestCase
         $validator = new boolRule(['strict'=>false]);
         $result = $validator->check($data);
         self::assertContains($result,[true,false]);
+    }
+
+    public function testDump(): void
+    {
+        $validator = new boolRule([]);
+        self::assertEquals('bool',$validator->dump()['type']);
+
     }
 }
